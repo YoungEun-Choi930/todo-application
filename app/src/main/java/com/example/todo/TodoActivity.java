@@ -40,4 +40,6 @@ public class TodoActivity extends AppCompatActivity {
             }
         });
     }
+
+    //어케하는거여?
 }
