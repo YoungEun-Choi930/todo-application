@@ -7,6 +7,7 @@ public class AlarmInfo {
     private String videoLectureAlarmDate;
     private String realTimeLectureAlarmDate;
 
+
     public String getSubjectName() {
         return subjectName;
     }
