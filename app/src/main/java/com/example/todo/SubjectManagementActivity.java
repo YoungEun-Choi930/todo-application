@@ -19,7 +19,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
     }
     public void addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime){
         String query = "INSERT INTO SubjectList VALUES('"+
-                subjectName+","+number+","+startWeekNumber+",'"+startTime+","+endWeekNumber+",'"+endTime+"')";
+                subjectName+"',"+number+","+startWeekNumber+",'"+startTime+"',"+endWeekNumber+",'"+endTime+"');";
         boolean result = sqlitehelper.excuteQuery(query); //성공 또는 실패 값 들고올랬는데 아직 구현 안함
     }
     public void delSubject(String subjectName) {
