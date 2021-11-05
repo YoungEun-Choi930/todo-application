@@ -28,12 +28,15 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                 "(subjectName TEXT, assingmentName TEXT, startDate INT, endDate INT, isDone INT, " +
                 "FOREIGN KEY(subjectName) REFERENCES subjet(subjectName));";
         String friend = "CREATE TABLE IF NOT EXISTS Friends(friendID);";
+        String alarm = "CREATE TABLE IF NOT EXISTS AlarmList"+
+                "(subjectName TEXT, examAlarmDate TEXT, assingmentAlarmDate TEXT, videoAlarmDate TEXT, realTimeAlarmDate TEXT);";
 
         DB.execSQL(subject);
         DB.execSQL(lecture);
         DB.execSQL(exam);
         DB.execSQL(assingment);
         DB.execSQL(friend);
+        DB.execSQL(alarm);
     }
 
     @Override
@@ -61,6 +64,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
             info.setIsDone(Boolean.valueOf(cursor.getString(2)));
             list.add(info);
         }
+        cursor.close();
         return list;
     }
     public List<ExamInfo> loadExamList(String date) {
@@ -75,6 +79,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
             info.setExamName(cursor.getString(1));
             list.add(info);
         }
+        cursor.close();
         return list;
     }
     public List<AssingmentInfo> loadAssingmentList(String date) {
@@ -90,6 +95,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
             info.setIsDone(Boolean.valueOf(cursor.getString(2)));
             list.add(info);
         }
+        cursor.close();
         return list;
     }
     public List<SubjectInfo> loadSubjectList() {
@@ -103,6 +109,25 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
             info.setSubjectName(cursor.getString(0));
             list.add(info);
         }
+        cursor.close();
+        return list;
+    }
+    public List<AlarmInfo> loadAlarmList(){
+        SQLiteDatabase DB = getWritableDatabase();
+        String query = "SELECT * FROM AlarmList;";
+        Cursor cursor = DB.rawQuery(query,null);
+
+        List<AlarmInfo> list = new ArrayList<>();
+        while(cursor.moveToNext()){
+            AlarmInfo info = new AlarmInfo();
+            info.setSubjectName(cursor.getString(0));
+            info.setExamAlarmDate(cursor.getString(1));
+            info.setAssingmentAlarmDate(cursor.getString(2));
+            info.setVideoLectureAlarmDate(cursor.getString(3));
+            info.setRealTimeLectureAlarmDate(cursor.getString(4));
+            list.add(info);
+        }
+        cursor.close();
         return list;
     }
 }
