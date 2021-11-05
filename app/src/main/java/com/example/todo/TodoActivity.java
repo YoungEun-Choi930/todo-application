@@ -3,10 +3,9 @@ package com.example.todo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -26,9 +25,29 @@ public class TodoActivity extends AppCompatActivity {
 
 
         MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+
+        Button btn_subject = (Button) findViewById(R.id.btn_subject);
+        Button btn_friend = (Button) findViewById(R.id.btn_friend);
+        Button btn_alarm = (Button) findViewById(R.id.btn_alarm);
         Button btn_month = (Button) findViewById(R.id.btn_month);
 
-        btn_month.setOnClickListener((view) -> {
+
+        btn_subject.setOnClickListener((view) -> { // 과목관리버튼 선택
+            Intent intent = new Intent(getApplicationContext(), SubjectManagementActivity.class);
+            startActivity(intent);
+
+        });
+        btn_friend.setOnClickListener((view) -> { // 친구관리버튼 선택
+            Intent intent = new Intent(getApplicationContext(), FriendsManagementActivity.class);
+            startActivity(intent);
+
+        });
+        btn_alarm.setOnClickListener((view) -> { // 알림관리버튼 선택
+            Intent intent = new Intent(getApplicationContext(), AlarmManagementActivity.class);
+            startActivity(intent);
+
+        });
+        btn_month.setOnClickListener((view) -> { // 월별주별버튼 선택
             if(btn_month.getText()=="주별"){
                 btn_month.setText("월별");
                 materialCalendarView.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
@@ -38,6 +57,7 @@ public class TodoActivity extends AppCompatActivity {
                 materialCalendarView.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
             }
         });
+
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
