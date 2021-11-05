@@ -20,3 +20,4 @@ public class ExamInfo {
         this.examName = examName;
     }
 }
+//커밋테스ㄹㅇㄹㄹ
