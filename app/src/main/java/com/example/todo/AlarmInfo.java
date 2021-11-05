@@ -5,7 +5,8 @@ public class AlarmInfo {
     private String examAlarmDate;
     private String assingmentAlarmDate;
     private String videoLectureAlarmDate;
-    private String realTimeLectureAlarmDate;//안녕하세요
+    private String realTimeLectureAlarmDate;
+
 
     public String getSubjectName() {
         return subjectName;
