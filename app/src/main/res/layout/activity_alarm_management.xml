@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubjectManagementActivity">
-
+    tools:context=".AlarmManagementActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="과목관리화면"/>
+        android:text="알림관리"/>
 
 </LinearLayout>
