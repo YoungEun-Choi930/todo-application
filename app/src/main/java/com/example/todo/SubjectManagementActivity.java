@@ -14,20 +14,20 @@ public class SubjectManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subject_management);
     }
     public List<SubjectInfo> getSubjectList() {
-        SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         List<SubjectInfo> list = adapter.loadSubjectList();
         return list;
     }
     public boolean addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime){
         String query = "INSERT INTO SubjectList VALUES('"+
                 subjectName+"',"+number+","+startWeekNumber+",'"+startTime+"',"+endWeekNumber+",'"+endTime+"');";
-        SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         boolean result = adapter.excuteQuery(query);
         return result;
     }
     public boolean delSubject(String subjectName) {
         String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
-        SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         boolean result = adapter.excuteQuery(query);
         return result;
     }

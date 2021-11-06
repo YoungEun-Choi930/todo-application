@@ -12,15 +12,24 @@ import java.util.List;
 
 public class SQLiteDBAdapter
 {
+    //Singleton 패턴
 
     private final Context mContext;
     private SQLiteDatabase mDb;
     private SQLiteDBHelper mDbHelper;
 
-    public SQLiteDBAdapter(Context context)
+    private static SQLiteDBAdapter adapter;
+
+    private SQLiteDBAdapter(Context context)
     {
         this.mContext = context;
         mDbHelper = new SQLiteDBHelper(mContext);
+    }
+
+    public static SQLiteDBAdapter getInstance(Context context){
+        if(adapter == null)
+            adapter = new SQLiteDBAdapter(context);
+        return adapter;
     }
 
     public Boolean excuteQuery(String sql)
