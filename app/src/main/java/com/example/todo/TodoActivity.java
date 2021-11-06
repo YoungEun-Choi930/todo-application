@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -12,11 +13,11 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TodoActivity extends AppCompatActivity {
-    SQLiteDBHelper sqlitehelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +63,20 @@ public class TodoActivity extends AppCompatActivity {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 //날짜 선택되면 날짜정보 디비로 날려서 투두리스트 찾아오면 될 듯???
-                List<List> todolist = getToDoList(date.toString().replace("-",""));
-
+                SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
+                List<List> todolist = getToDoList(dateformat.format(date));
+                System.out.println(todolist.get(0));
+                Log.e("DataAdapter", String.valueOf(todolist.get(0)));
             }
         });
     }
     private List<List> getToDoList(String date) {
-        List<LectureInfo> lecturelist = sqlitehelper.loadLectureList(date);
-        List<AssingmentInfo> assingmentlist = sqlitehelper.loadAssingmentList(date);
-        List<ExamInfo> examlist = sqlitehelper.loadExamList(date);
+        SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
+        adapter.open();
+        List<LectureInfo> lecturelist = adapter.loadLectureList(date);
+        List<AssingmentInfo> assingmentlist = adapter.loadAssingmentList(date);
+        List<ExamInfo> examlist = adapter.loadExamList(date);
+        adapter.close();
 
         List<List> todolist = new ArrayList<>();
         todolist.add(lecturelist);
@@ -79,5 +85,4 @@ public class TodoActivity extends AppCompatActivity {
         return todolist;
     }
 
-    //어케하는거여?
 }
