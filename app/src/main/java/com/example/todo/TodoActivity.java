@@ -71,7 +71,7 @@ public class TodoActivity extends AppCompatActivity {
         });
     }
     private List<List> getToDoList(String date) {
-        SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         List<LectureInfo> lecturelist = adapter.loadLectureList(date);
         List<AssingmentInfo> assingmentlist = adapter.loadAssingmentList(date);
         List<ExamInfo> examlist = adapter.loadExamList(date);
