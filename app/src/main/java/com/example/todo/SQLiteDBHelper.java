@@ -13,87 +13,59 @@ import java.util.List;
 
 public class SQLiteDBHelper extends SQLiteOpenHelper {
 
-    private static String DB_PATH = "";
-    
-    private static String DB_NAME ="sqlite_file.db";
-
-    private SQLiteDatabase mDataBase;
-    private final Context mContext;
-
     public SQLiteDBHelper(Context context) {
-        super(context,"sqlite_file.db",null,1);
-        if(android.os.Build.VERSION.SDK_INT >= 17){
-            DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
-        }
-        else
-        {
-            DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
-        }
-        this.mContext = context;
-    }
-    public void createDataBase() throws IOException
-    {
-        //데이터베이스가 없으면 assets폴더에서 복사해온다.
-        boolean mDataBaseExist = checkDataBase();
-        if(!mDataBaseExist)
-        {
-            this.getReadableDatabase();
-            this.close();
-            try
-            {
-                //Copy the database from assests
-                copyDataBase();
-                Log.e("SQLiteDBHelper", "createDatabase database created");
-            }
-            catch (IOException mIOException)
-            {
-                throw new Error("ErrorCopyingDataBase");
-            }
-        }
-    }
-    private boolean checkDataBase()
-    {
-        File dbFile = new File(DB_PATH + DB_NAME);
-        //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
-        return dbFile.exists();
-    }
-
-    //assets폴더에서 데이터베이스를 복사한다.
-    private void copyDataBase() throws IOException
-    {
-        InputStream mInput = mContext.getAssets().open(DB_NAME);
-        String outFileName = DB_PATH + DB_NAME;
-        OutputStream mOutput = new FileOutputStream(outFileName);
-        byte[] mBuffer = new byte[1024];
-        int mLength;
-        while ((mLength = mInput.read(mBuffer))>0)
-        {
-            mOutput.write(mBuffer, 0, mLength);
-        }
-        mOutput.flush();
-        mOutput.close();
-        mInput.close();
-    }
-
-    //데이터베이스를 열어서 쿼리를 쓸수있게만든다.
-    public boolean openDataBase() throws SQLException
-    {
-        String mPath = DB_PATH + DB_NAME;
-        //Log.v("mPath", mPath);
-        mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
-        //mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
-        return mDataBase != null;
+        super(context,"sqlite_file.db",null,3);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase DB) {
+    public void onCreate(SQLiteDatabase db) {
 
+        String subject = "CREATE TABLE IF NOT EXISTS SubjectList (" +
+                "subjectName TEXT NOT NULL, number INTEGER, startWeekNumberINTEGER," +
+                "startTime INTEGER, endWeekNumber INTEGER, endTime INTEGER, PRIMARY KEY(subjectName));";
+        String lecture = "CREATE TABLE IF NOT EXISTS LectureList (" +
+                "subjectName TEXT, lectureName TEXT, startDate INTEGER, endDate INTEGER, isDone INTEGER);";
+        String assingment = "CREATE TABLE IF NOT EXISTS AssingmentList ( " +
+                "subjectName TEXT NOT NULL, assingmentName TEXT NOT NULL, startDate INTEGER NOT NULL," +
+                "endDate INTEGER NOT NULL, isDone INTEGER);";
+        String exam = "CREATE TABLE IF NOT EXISTS ExamList (" +
+                 "subjectName TEXT NOT NULL, examName TEXT NOT NULL, date INTEGER NOT NULL);";
+        String alarm = "CREATE TABLE IF NOT EXISTS AlarmList (" +
+                "subjectName TEXT NOT NULL, examAlarmDate TEXT, AssingmentAlarmDate TEXT," +
+                "videoAlarmDate TEXT, realTimeAlarmDate TEXT, PRIMARY KEY(subjectName));";
+        String  friend = "CREATE TABLE IF NOT EXISTS Friends (friendID TEXT NOT NULL, PRIMARY KEY(friendID));";
+
+        db.execSQL(subject);
+        db.execSQL(lecture);
+        db.execSQL(assingment);
+        db.execSQL(exam);
+        db.execSQL(alarm);
+        db.execSQL(friend);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase DB, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        String subject = "DROP TABLE IF EXISTS SubjectList;";
+        String lecture = "DROP TABLE IF EXISTS LectureList;";
+        String assingment = "DROP TABLE IF EXISTS AssingmentList;";
+        String exam = "DROP TABLE IF EXISTS ExamList;";
+        String alarm = "DROP TABLE IF EXISTS AlarmList;";
+        String friend = "DROP TABLE IF EXISTS Friends;";
 
+        db.execSQL(subject);
+        db.execSQL(lecture);
+        db.execSQL(assingment);
+        db.execSQL(exam);
+        db.execSQL(alarm);
+        db.execSQL(friend);
+
+        onCreate(db);
     }
 
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        db.disableWriteAheadLogging();
+    }
 
 }

@@ -23,46 +23,13 @@ public class SQLiteDBAdapter
         mDbHelper = new SQLiteDBHelper(mContext);
     }
 
-    public SQLiteDBAdapter createDatabase() throws SQLException
-    {
-        try
-        {
-            mDbHelper.createDataBase();
-        }
-        catch (IOException mIOException)
-        {
-            Log.e("DataAdapter", mIOException.toString() + "  UnableToCreateDatabase");
-            throw new Error("UnableToCreateDatabase");
-        }
-        return this;
-    }
-
-    public SQLiteDBAdapter open() throws SQLException
-    {
-        try
-        {
-            mDbHelper.openDataBase();
-            mDbHelper.close();
-            mDb = mDbHelper.getReadableDatabase();
-        }
-        catch (SQLException mSQLException)
-        {
-            Log.e("DataAdapter", "open >>"+ mSQLException.toString());
-            throw mSQLException;
-        }
-        return this;
-    }
-
-    public void close()
-    {
-        mDbHelper.close();
-    }
-
     public Boolean excuteQuery(String sql)
     {
         try
         {
+            mDb = mDbHelper.getWritableDatabase();
             mDb.execSQL(sql);
+            mDbHelper.close();
             return true;
         }
         catch (SQLException mSQLException)
@@ -76,8 +43,9 @@ public class SQLiteDBAdapter
     {
         try
         {
+            mDb = mDbHelper.getReadableDatabase();
             String sql = "SELECT subjectName, lectureName, isDone FROM LectureList WHERE startDate <= "+date+" AND endDate >= "+date+";";
-
+            System.out.println(sql);
             List<LectureInfo> list = new ArrayList();
 
             Cursor cursor = mDb.rawQuery(sql, null);
@@ -96,6 +64,7 @@ public class SQLiteDBAdapter
                 }
             }
             cursor.close();
+            mDbHelper.close();
             return list;
         }
         catch (SQLException mSQLException)
@@ -108,6 +77,7 @@ public class SQLiteDBAdapter
     {
         try
         {
+            mDb = mDbHelper.getReadableDatabase();
             String sql = "SELECT subjectName, assingmentName, isDone FROM AssingmentList WHERE startDate <= "+date+" AND endDate >= "+date+";";
 
             List<AssingmentInfo> list = new ArrayList();
@@ -128,6 +98,7 @@ public class SQLiteDBAdapter
                 }
             }
             cursor.close();
+            mDbHelper.close();
             return list;
         }
         catch (SQLException mSQLException)
@@ -140,7 +111,8 @@ public class SQLiteDBAdapter
     {
         try
         {
-            String sql = "SELECT subjectName, examName FROM ExamList WHERE startDate <= "+date+" AND endDate >= "+date+";";
+            mDb = mDbHelper.getReadableDatabase();
+            String sql = "SELECT subjectName, examName FROM ExamList WHERE date == "+date+";";
 
             List<ExamInfo> list = new ArrayList();
 
@@ -159,6 +131,7 @@ public class SQLiteDBAdapter
                 }
             }
             cursor.close();
+            mDbHelper.close();
             return list;
         }
         catch (SQLException mSQLException)
@@ -171,6 +144,7 @@ public class SQLiteDBAdapter
     {
         try
         {
+            mDb = mDbHelper.getReadableDatabase();
             String sql = "SELECT subjectName FROM SubjectList;";
 
             List<SubjectInfo> list = new ArrayList();
@@ -187,6 +161,7 @@ public class SQLiteDBAdapter
                 }
             }
             cursor.close();
+            mDbHelper.close();
             return list;
         }
         catch (SQLException mSQLException)
@@ -199,6 +174,7 @@ public class SQLiteDBAdapter
     {
         try
         {
+            mDb = mDbHelper.getReadableDatabase();
             String sql = "SELECT * FROM AlarmList;";
 
             List<AlarmInfo> list = new ArrayList();
@@ -221,6 +197,7 @@ public class SQLiteDBAdapter
                 }
             }
             cursor.close();
+            mDbHelper.close();
             return list;
         }
         catch (SQLException mSQLException)
