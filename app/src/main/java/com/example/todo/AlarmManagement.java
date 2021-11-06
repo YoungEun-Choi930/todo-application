@@ -10,9 +10,7 @@ public class AlarmManagement extends AppCompatActivity {
 
     public List<AlarmInfo> getAlarmList(){
         SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
-        adapter.open();
         List<AlarmInfo> list = adapter.loadAlarmList();
-        adapter.close();
         return list;
     }
 
@@ -20,17 +18,13 @@ public class AlarmManagement extends AppCompatActivity {
         String query = "INSERT INTO AlarmList VALUES('"+
                 subjectName+"','"+exam+"','"+assingment+"','"+video+"','"+real+"');";
         SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
-        adapter.open();
         boolean result = adapter.excuteQuery(query);
-        adapter.close();
         return result;
     }
     public boolean delAlarm(String subjectName) {
         String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
-        adapter.open();
         boolean result = adapter.excuteQuery(query);
-        adapter.close();
         return result;
     }
 }

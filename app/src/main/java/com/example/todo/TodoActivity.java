@@ -16,6 +16,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class TodoActivity extends AppCompatActivity {
 
@@ -63,20 +64,17 @@ public class TodoActivity extends AppCompatActivity {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 //날짜 선택되면 날짜정보 디비로 날려서 투두리스트 찾아오면 될 듯???
-                SimpleDateFormat dateformat = new SimpleDateFormat("yyyyMMdd");
-                List<List> todolist = getToDoList(dateformat.format(date));
+                String strdate = date.toString().replace("CalendarDay{","").replace("-","").replace("}","");
+                List<List> todolist = getToDoList(strdate);
                 System.out.println(todolist.get(0));
-                Log.e("DataAdapter", String.valueOf(todolist.get(0)));
             }
         });
     }
     private List<List> getToDoList(String date) {
         SQLiteDBAdapter adapter = new SQLiteDBAdapter(getApplicationContext());
-        adapter.open();
         List<LectureInfo> lecturelist = adapter.loadLectureList(date);
         List<AssingmentInfo> assingmentlist = adapter.loadAssingmentList(date);
         List<ExamInfo> examlist = adapter.loadExamList(date);
-        adapter.close();
 
         List<List> todolist = new ArrayList<>();
         todolist.add(lecturelist);
