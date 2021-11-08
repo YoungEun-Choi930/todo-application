@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class SubjectManagementActivity extends AppCompatActivity {
@@ -98,18 +100,29 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         if(result == false) return false;
 
-        int startdate = getstartDate(year, semester, startWeekNumber);
-        int enddate;
-        if(startdate == 0) return false;
 
+
+        Date startdate = getstartDate(year, semester, startWeekNumber);
+        int enddate = startWeekNumber+7-endWeekNumber;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String strstartdate;
+        String strenddate;
+
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startdate);
         //강의 추가
         for(int i = 1; i <= 16; i++)
         {
+            strstartdate = dateFormat.format(cal.getTime());
+            cal.add(Calendar.DATE, enddate);
+            strenddate = dateFormat.format(cal.getTime());
+
             for(int j = 1; j <= number; j++)
             {
-                enddate = startdate + startWeekNumber+7-endWeekNumber;
                 query = "INSERT INTO LectureList VALUES('" +
-                        subjectName+"','"+subjectName+" "+i+"주차"+j+"',"+startdate+","+enddate+",0);";
+                        subjectName+"','"+subjectName+" "+i+"주차"+j+"',"+strstartdate+","+strenddate+",0);";
                 result = adapter.excuteQuery(query);
                 System.out.println(query);
                 if(result == false) {
@@ -117,8 +130,8 @@ public class SubjectManagementActivity extends AppCompatActivity {
                     adapter.excuteQuery(query);
                     return false;
                 }
-                startdate += 7;
             }
+            cal.add(Calendar.DATE, 7-enddate);
         }
         SubjectInfo subjectInfo = new SubjectInfo();
         subjectInfo.setSubjectName(subjectName);
@@ -127,18 +140,19 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         return result;
     }
-    private int getstartDate(int year, int semester, int startWeekNumber) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd") ;
+    private Date getstartDate(int year, int semester, int startWeekNumber) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = Integer.toString(year);
         if(semester == 1)
             date += "0301";
         else if(semester == 2)
             date += "0901";
 
+        Calendar cal = Calendar.getInstance();
         try {
             java.util.Date nDate = dateFormat.parse(date);
 
-            Calendar cal = Calendar.getInstance();
+
             cal.setTime(nDate);
             int dayNum = cal.get(Calendar.DAY_OF_WEEK);
 
@@ -149,12 +163,13 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
             SimpleDateFormat resultFormat = new SimpleDateFormat("yyyyMMdd");
             String result = resultFormat.format(cal.getTime());
-            return Integer.parseInt(result);
+            Integer.parseInt(result);
 
 
         }catch(ParseException e){
-            return 0;
+            Log.e("AddSubject->AddLecure", "getstartDate >>"+ e.toString());
         }
+        return cal.getTime();
     }
     public boolean delSubject(String subjectName) {
         String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
