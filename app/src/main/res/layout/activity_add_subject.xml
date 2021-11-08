@@ -41,11 +41,13 @@
                 android:text="강의 개수"
                 android:layout_marginLeft="3dp"
                 android:textSize="18dp"/>
+
             <EditText
                 android:id="@+id/number_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:ems="10"
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout
@@ -121,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="time"
+                android:inputType="number"
                 android:textSize="15dp"
                 android:hint="숫자만 입력해 주세요. ex) 2400"/>
         </LinearLayout>
@@ -197,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="time"
+                android:inputType="number"
                 android:textSize="15dp"
                 android:hint="숫자만 입력해 주세요. ex)2400"/>
         </LinearLayout>
