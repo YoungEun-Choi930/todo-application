@@ -20,6 +20,7 @@ import java.util.List;
 
 public class AddSubjectActivity extends Activity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +49,11 @@ public class AddSubjectActivity extends Activity {
 
 
             boolean result = addSubject(name_sub,number_sub,1,starttime_sub,2,endtime_sub,2021,2);
-
-            System.out.print(result+"9999");
+            if(result){
+                Toast.makeText(this, "과목추가 완료", Toast.LENGTH_SHORT).show();
+            }else
+                Toast.makeText(this, "과목추가 실패", Toast.LENGTH_SHORT).show();
+            finish();
         });
         btn_no.setOnClickListener((view) -> { // 취소버튼 선택
             finish();
@@ -93,18 +97,20 @@ public class AddSubjectActivity extends Activity {
                 query = "INSERT INTO LectureList VALUES('" +
                         subjectName+"','"+subjectName+i+"주차"+j+"',"+startdate+","+startdate+enddate+",0);";
                 result = adapter.excuteQuery(query);
+                System.out.println(query);
                 if(result == false) {
                     query = "DELETE FROM SubjectList WHERE subjectName = '" + subjectName + "';";
                     adapter.excuteQuery(query);
                     return false;
                 }
+                startdate += 7;
             }
         }
 
         return result;
     }
     private int getstartDate(int year, int semester, int startWeekNumber) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd") ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd") ;
         String date = Integer.toString(year);
         if(semester == 1)
             date += "0301";
@@ -123,7 +129,11 @@ public class AddSubjectActivity extends Activity {
                 dayNum = cal.get(Calendar.DAY_OF_WEEK);
             }
 
-            return Integer.parseInt(cal.getTime().toString());
+            SimpleDateFormat resultFormat = new SimpleDateFormat("yyyyMMdd");
+            String result = resultFormat.format(cal.getTime());
+            return Integer.parseInt(result);
+
+
         }catch(ParseException e){
             return 0;
         }

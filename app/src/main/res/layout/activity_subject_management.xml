@@ -22,6 +22,11 @@
             app:title="과목관리"
             app:titleTextColor="@color/white"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recy_sub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
 
