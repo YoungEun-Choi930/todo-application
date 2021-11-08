@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Todo">
-        <activity android:name=".AlarmManagementActivity"></activity>
+        <activity android:name=".AddSubjectActivity" android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <activity android:name=".AlarmManagementActivity" />
         <activity android:name=".FriendsManagementActivity" />
         <activity android:name=".TodoActivity" />
         <activity android:name=".SubjectManagementActivity" />

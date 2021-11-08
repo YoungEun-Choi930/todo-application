@@ -2,9 +2,11 @@ package com.example.todo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -12,16 +14,20 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class TodoActivity extends AppCompatActivity {
-    SQLiteDBHelper sqlitehelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.todo_toolbar);
+        setSupportActionBar(myToolbar);
 
 
         MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
@@ -62,15 +68,17 @@ public class TodoActivity extends AppCompatActivity {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 //날짜 선택되면 날짜정보 디비로 날려서 투두리스트 찾아오면 될 듯???
-                List<List> todolist = getToDoList(date.toString().replace("-",""));
-
+                String strdate = date.toString().replace("CalendarDay{","").replace("-","").replace("}","");
+                List<List> todolist = getToDoList(strdate);
+                System.out.println(todolist.get(0));
             }
         });
     }
     private List<List> getToDoList(String date) {
-        List<LectureInfo> lecturelist = sqlitehelper.loadLectureList(date);
-        List<AssingmentInfo> assingmentlist = sqlitehelper.loadAssingmentList(date);
-        List<ExamInfo> examlist = sqlitehelper.loadExamList(date);
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        List<LectureInfo> lecturelist = adapter.loadLectureList(date);
+        List<AssingmentInfo> assingmentlist = adapter.loadAssingmentList(date);
+        List<ExamInfo> examlist = adapter.loadExamList(date);
 
         List<List> todolist = new ArrayList<>();
         todolist.add(lecturelist);
@@ -79,5 +87,4 @@ public class TodoActivity extends AppCompatActivity {
         return todolist;
     }
 
-    //어케하는거여?
 }

@@ -7,20 +7,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 public class AlarmManagement extends AppCompatActivity {
-    SQLiteDBHelper sqlitehelper;
-
 
     public List<AlarmInfo> getAlarmList(){
-        return sqlitehelper.loadAlarmList();
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        List<AlarmInfo> list = adapter.loadAlarmList();
+        return list;
     }
 
-    public void addAlarm(String subjectName, String exam, String assingment, String video, String real){
+    public boolean addAlarm(String subjectName, String exam, String assingment, String video, String real){
         String query = "INSERT INTO AlarmList VALUES('"+
                 subjectName+"','"+exam+"','"+assingment+"','"+video+"','"+real+"');";
-        boolean result = sqlitehelper.excuteQuery(query); //성공 또는 실패 값 들고올랬는데 아직 구현 안함
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        boolean result = adapter.excuteQuery(query);
+        return result;
     }
-    public void delAlarm(String subjectName) {
+    public boolean delAlarm(String subjectName) {
         String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
-        boolean result = sqlitehelper.excuteQuery(query);
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        boolean result = adapter.excuteQuery(query);
+        return result;
     }
 }
