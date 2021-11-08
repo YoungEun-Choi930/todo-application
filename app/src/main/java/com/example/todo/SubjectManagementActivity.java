@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 import java.text.ParseException;
@@ -27,6 +29,8 @@ public class SubjectManagementActivity extends AppCompatActivity {
     public static Context mContext;
     List<SubjectInfo> subjectlist;
     subjectAdapter subjectAdapter;
+    Button btn_del_sub;
+    int ck = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,16 @@ public class SubjectManagementActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         subjectAdapter.notifyDataSetChanged();
 
+        btn_del_sub= (Button)findViewById(R.id.btn_del_sub);
+        btn_del_sub.setOnClickListener(view -> { //삭제버튼 선택되면
+
+            for(int i=0;i<subjectAdapter.getcheckedList().size();i++){
+                subjectlist.remove(subjectAdapter.getcheckedList().get(i)); //체크된목록 과목목록에서 제거
+            }
+
+            subjectAdapter.notifyDataSetChanged();
+        });
+
 
 
     }
@@ -65,8 +79,22 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AddSubjectActivity.class);
                 startActivity(intent);
                 break;
-        }
+            case R.id.del_subject:
+                if(ck==0){
+                    btnCheck(1);
+                    ck=1;
+                    btn_del_sub.setVisibility(View.VISIBLE);
+                    break;
+                }
+                else if(ck==1){
+                   btnCheck(0);
+                   ck=0;
+                    btn_del_sub.setVisibility(View.GONE);
+                    break;
+                }
 
+        }
+        subjectAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
 
@@ -81,6 +109,13 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         }
     }
+
+    public void btnCheck(int n){
+        subjectAdapter.updateCheckBox(n);
+        subjectAdapter.notifyDataSetChanged();;
+
+    }
+
 
     public List<SubjectInfo> getSubjectList() {
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
