@@ -67,9 +67,20 @@ public class TodoActivity extends AppCompatActivity {
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                //날짜 선택되면 날짜정보 디비로 날려서 투두리스트 찾아오면 될 듯???
-                String strdate = date.toString().replace("CalendarDay{","").replace("-","").replace("}","");
-                List<List> todolist = getToDoList(strdate);
+                //CalendarDay -> String으로 변환
+                String stringdate = date.toString().replace("CalendarDay{","").replace("}","");
+                String[] strdate = stringdate.split("-");
+
+                String sdate = strdate[0];
+                if(strdate[1].length() == 1)
+                    sdate += "0";
+                sdate += strdate[1];
+
+                if(strdate[2].length() == 1)
+                    sdate += "0";
+                sdate += strdate[2];
+
+                List<List> todolist = getToDoList(sdate);
                 System.out.println(todolist.get(0));
             }
         });
