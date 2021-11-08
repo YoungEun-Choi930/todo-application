@@ -87,6 +87,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
         List<SubjectInfo> list = adapter.loadSubjectList();
         return list;
     }
+
     //+2021년(int) 2학기(int:1 or 2) 정보도 받아와야 할 듯
     //startWeekNumber 넘겨줄때 1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토 로 넘겨주세요
     public boolean addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime, int year, int semester) {
@@ -95,19 +96,20 @@ public class SubjectManagementActivity extends AppCompatActivity {
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         boolean result = adapter.excuteQuery(query);
 
-        if(result == false)
-            return false;
+        if(result == false) return false;
 
         int startdate = getstartDate(year, semester, startWeekNumber);
-        int enddate = startWeekNumber+7-endWeekNumber;
+        int enddate;
+        if(startdate == 0) return false;
 
         //강의 추가
-        for(int i = 0; i < 16; i++)
+        for(int i = 1; i <= 16; i++)
         {
-            for(int j = 0; j < number; j++)
+            for(int j = 1; j <= number; j++)
             {
+                enddate = startdate + startWeekNumber+7-endWeekNumber;
                 query = "INSERT INTO LectureList VALUES('" +
-                        subjectName+"','"+subjectName+i+"주차"+j+"',"+startdate+","+startdate+enddate+",0);";
+                        subjectName+"','"+subjectName+" "+i+"주차"+j+"',"+startdate+","+enddate+",0);";
                 result = adapter.excuteQuery(query);
                 System.out.println(query);
                 if(result == false) {
