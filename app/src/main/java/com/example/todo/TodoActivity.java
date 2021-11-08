@@ -29,6 +29,8 @@ public class TodoActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.todo_toolbar);
         setSupportActionBar(myToolbar);
 
+        Intent getintent = getIntent();
+
 
         MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
 
@@ -40,11 +42,13 @@ public class TodoActivity extends AppCompatActivity {
 
         btn_subject.setOnClickListener((view) -> { // 과목관리버튼 선택
             Intent intent = new Intent(getApplicationContext(), SubjectManagementActivity.class);
+            intent.putExtra("userID",getintent.getExtras().getString("userID"));
             startActivity(intent);
 
         });
         btn_friend.setOnClickListener((view) -> { // 친구관리버튼 선택
             Intent intent = new Intent(getApplicationContext(), FriendsManagementActivity.class);
+            intent.putExtra("userID",getintent.getExtras().getString("userID"));
             startActivity(intent);
 
         });
