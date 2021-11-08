@@ -6,10 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".TodoActivity">
 
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/todo_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:titleTextColor="@color/white"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +35,7 @@
                 android:layout_weight="1"
                 android:layout_marginHorizontal="3dp"
                 android:text="과목관리"
-                app:backgroundTint="#2196F3" />
+                app:backgroundTint="@color/purple_500" />
 
             <Button
                 android:id="@+id/btn_friend"
@@ -32,7 +44,8 @@
                 android:layout_weight="1"
                 android:layout_marginHorizontal="3dp"
                 android:text="친구관리"
-                app:backgroundTint="#2196F3" />
+                app:backgroundTint="@color/purple_500" />
+
             <Button
                 android:id="@+id/btn_alarm"
                 android:layout_width="wrap_content"
@@ -40,7 +53,7 @@
                 android:layout_weight="1"
                 android:layout_marginHorizontal="3dp"
                 android:text="알림 관리"
-                app:backgroundTint="#2196F3" />
+                app:backgroundTint="@color/purple_500" />
 
             <Button
                 android:id="@+id/btn_month"
@@ -49,7 +62,7 @@
                 android:layout_weight="1"
                 android:layout_marginHorizontal="3dp"
                 android:text="월별"
-                app:backgroundTint="#2196F3" />
+                app:backgroundTint="@color/purple_500" />
         </LinearLayout>
 
 
@@ -57,17 +70,9 @@
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            app:mcv_calendarMode="month"
             app:mcv_selectionColor="#00F"
             app:mcv_showOtherDates="all" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/todolistView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-        </androidx.recyclerview.widget.RecyclerView>
 
 
     </LinearLayout>
