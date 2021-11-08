@@ -14,7 +14,7 @@ import java.util.List;
 public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     public SQLiteDBHelper(Context context) {
-        super(context,"sqlite_file.db",null,3);
+        super(context,"sqlite_file.db",null,4);
     }
 
     @Override
@@ -24,12 +24,15 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                 "subjectName TEXT NOT NULL, number INTEGER, startWeekNumberINTEGER," +
                 "startTime INTEGER, endWeekNumber INTEGER, endTime INTEGER, PRIMARY KEY(subjectName));";
         String lecture = "CREATE TABLE IF NOT EXISTS LectureList (" +
-                "subjectName TEXT, lectureName TEXT, startDate INTEGER, endDate INTEGER, isDone INTEGER);";
+                "subjectName TEXT, lectureName TEXT, startDate INTEGER, endDate INTEGER, isDone INTEGER," +
+                "FOREIGN KEY(subjectName) REFERENCES SubjectList(subjectName));";
         String assingment = "CREATE TABLE IF NOT EXISTS AssingmentList ( " +
                 "subjectName TEXT NOT NULL, assingmentName TEXT NOT NULL, startDate INTEGER NOT NULL," +
-                "endDate INTEGER NOT NULL, isDone INTEGER);";
+                "endDate INTEGER NOT NULL, isDone INTEGER, " +
+                "FOREIGN KEY(subjectName) REFERENCES SubjectList(subjectName));";
         String exam = "CREATE TABLE IF NOT EXISTS ExamList (" +
-                 "subjectName TEXT NOT NULL, examName TEXT NOT NULL, date INTEGER NOT NULL);";
+                "subjectName TEXT NOT NULL, examName TEXT NOT NULL, date INTEGER NOT NULL," +
+                "FOREIGN KEY(subjectName) REFERENCES SubjectList(subjectName));";
         String alarm = "CREATE TABLE IF NOT EXISTS AlarmList (" +
                 "subjectName TEXT NOT NULL, examAlarmDate TEXT, AssingmentAlarmDate TEXT," +
                 "videoAlarmDate TEXT, realTimeAlarmDate TEXT, PRIMARY KEY(subjectName));";
