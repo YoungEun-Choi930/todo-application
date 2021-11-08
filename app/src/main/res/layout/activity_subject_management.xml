@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubjectManagementActivity">
 
+    tools:context=".SubjectManagementActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,15 +20,32 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:title="과목관리"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/white" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recy_sub"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recy_sub"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/btn_del_sub"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignBottom="@id/recy_sub"
+                android:layout_marginHorizontal="3dp"
+                android:text="삭    제"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
 
     </LinearLayout>
-
 
 
 </LinearLayout>
