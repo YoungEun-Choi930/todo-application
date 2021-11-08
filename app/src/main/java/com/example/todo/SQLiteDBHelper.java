@@ -68,4 +68,5 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         db.disableWriteAheadLogging();
     }
 
+
 }
