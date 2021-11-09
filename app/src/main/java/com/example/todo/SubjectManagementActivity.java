@@ -29,6 +29,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
     public static Context mContext;
     List<SubjectInfo> subjectlist;
     subjectAdapter subjectAdapter;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,9 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.subject_toolbar);
         setSupportActionBar(myToolbar);//툴바달기
+
+        Intent getintent = getIntent();
+        userID = getintent.getExtras().getString("userID");
 
         subjectlist = getSubjectList();
 
@@ -100,7 +104,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         if(result == false) return false;
 
-
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
 
         Date startdate = getstartDate(year, semester, startWeekNumber);
         int enddate = startWeekNumber+7-endWeekNumber;
@@ -108,6 +112,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String strstartdate;
         String strenddate;
+        String lectureName;
 
 
         Calendar cal = Calendar.getInstance();
@@ -121,10 +126,14 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
             for(int j = 1; j <= number; j++)
             {
+                lectureName = subjectName+" "+i+"주차"+j;
                 query = "INSERT INTO LectureList VALUES('" +
-                        subjectName+"','"+subjectName+" "+i+"주차"+j+"',"+strstartdate+","+strenddate+",0);";
+                        subjectName+"','"+lectureName+"',"+strstartdate+","+strenddate+",0);";
                 result = adapter.excuteQuery(query);
                 System.out.println(query);
+
+                firebaseDB.uploadMyLecture(subjectName, lectureName,strstartdate,strenddate);
+
                 if(result == false) {
                     query = "DELETE FROM SubjectList WHERE subjectName = '" + subjectName + "';";
                     adapter.excuteQuery(query);
@@ -171,10 +180,15 @@ public class SubjectManagementActivity extends AppCompatActivity {
         }
         return cal.getTime();
     }
-    public boolean delSubject(String subjectName) {
-        String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
-        boolean result = adapter.excuteQuery(query);
+    public boolean delSubject(List<String> subjectlist) {
+        boolean result = true;
+        for(String name: subjectlist) {
+            String query = "DELETE FROM SubjectList WHERE subjectName = '" + name + "';";
+            SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+            result = adapter.excuteQuery(query);
+            if(result == false)
+                break;
+        }
         return result;
     }
 }
