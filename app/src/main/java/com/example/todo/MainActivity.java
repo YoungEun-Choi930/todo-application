@@ -28,11 +28,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private SignInButton btn_login; // 구글 로그인 버튼
-    private FirebaseAuth auth; // 파이어 베이스 인증 객체
+    private FirebaseAuth auth=null; // 파이어 베이스 인증 객체
     private GoogleApiClient googleApiClient; // 구글 API 클라이언트 객체
     private static final int REQ_SIGN_GOOGLE = 100; //구글 로그인 결과 코드
 
-    //duddms메롱
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .build();
 
         auth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체 초기화
+        if (auth.getCurrentUser() != null) {
+            Intent intent = new Intent(getApplication(), TodoActivity.class);
+            startActivity(intent);
+            finish();
+        } // 로그인되어있으면 바로 다음화면으로 넘어가기
 
         btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {

@@ -15,6 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 
 import java.text.ParseException;
@@ -29,7 +32,8 @@ public class SubjectManagementActivity extends AppCompatActivity {
     public static Context mContext;
     List<SubjectInfo> subjectlist;
     subjectAdapter subjectAdapter;
-    private String userID;
+    Button btn_del_sub;
+    int ck = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +45,6 @@ public class SubjectManagementActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.subject_toolbar);
         setSupportActionBar(myToolbar);//툴바달기
 
-        Intent getintent = getIntent();
-        userID = getintent.getExtras().getString("userID");
-
         subjectlist = getSubjectList();
 
         RecyclerView recyclerView = findViewById(R.id.recy_sub);
@@ -52,6 +53,17 @@ public class SubjectManagementActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         subjectAdapter.notifyDataSetChanged();
+
+        btn_del_sub= (Button)findViewById(R.id.btn_del_sub);
+        btn_del_sub.setOnClickListener(view -> { //삭제버튼 선택되면
+
+            for(int i=0;i<subjectAdapter.getcheckedList().size();i++){
+                subjectlist.remove(subjectAdapter.getcheckedList().get(i)); //체크된목록 과목목록에서 제거
+                delSubject(subjectAdapter.getcheckedList().get(i).getSubjectName());
+            }
+            Toast.makeText(this, "과목 삭제 완료", Toast.LENGTH_SHORT).show();
+            subjectAdapter.notifyDataSetChanged();
+        });
 
 
 
@@ -71,8 +83,22 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AddSubjectActivity.class);
                 startActivity(intent);
                 break;
-        }
+            case R.id.del_subject:
+                if(ck==0){
+                    btnCheck(1);
+                    ck=1;
+                    btn_del_sub.setVisibility(View.VISIBLE);
+                    break;
+                }
+                else if(ck==1){
+                   btnCheck(0);
+                   ck=0;
+                    btn_del_sub.setVisibility(View.GONE);
+                    break;
+                }
 
+        }
+        subjectAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
 
@@ -87,6 +113,13 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         }
     }
+
+    public void btnCheck(int n){
+        subjectAdapter.updateCheckBox(n);
+        subjectAdapter.notifyDataSetChanged();;
+
+    }
+
 
     public List<SubjectInfo> getSubjectList() {
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
@@ -104,7 +137,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         if(result == false) return false;
 
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+
 
         Date startdate = getstartDate(year, semester, startWeekNumber);
         int enddate = startWeekNumber+7-endWeekNumber;
@@ -112,7 +145,6 @@ public class SubjectManagementActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String strstartdate;
         String strenddate;
-        String lectureName;
 
 
         Calendar cal = Calendar.getInstance();
@@ -126,14 +158,10 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
             for(int j = 1; j <= number; j++)
             {
-                lectureName = subjectName+" "+i+"주차"+j;
                 query = "INSERT INTO LectureList VALUES('" +
-                        subjectName+"','"+lectureName+"',"+strstartdate+","+strenddate+",0);";
+                        subjectName+"','"+subjectName+" "+i+"주차"+j+"',"+strstartdate+","+strenddate+",0);";
                 result = adapter.excuteQuery(query);
                 System.out.println(query);
-
-                firebaseDB.uploadMyLecture(subjectName, lectureName,strstartdate,strenddate);
-
                 if(result == false) {
                     query = "DELETE FROM SubjectList WHERE subjectName = '" + subjectName + "';";
                     adapter.excuteQuery(query);
@@ -180,15 +208,10 @@ public class SubjectManagementActivity extends AppCompatActivity {
         }
         return cal.getTime();
     }
-    public boolean delSubject(List<String> subjectlist) {
-        boolean result = true;
-        for(String name: subjectlist) {
-            String query = "DELETE FROM SubjectList WHERE subjectName = '" + name + "';";
-            SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
-            result = adapter.excuteQuery(query);
-            if(result == false)
-                break;
-        }
+    public boolean delSubject(String subjectName) {
+        String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        boolean result = adapter.excuteQuery(query);
         return result;
     }
 }
