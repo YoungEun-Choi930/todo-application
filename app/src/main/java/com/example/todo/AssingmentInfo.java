@@ -5,6 +5,12 @@ public class AssingmentInfo {
     private String assingmentName;
     private Boolean isDone;
 
+    public AssingmentInfo(String subjectName, String assingmentName, Boolean isDone) {
+        this.subjectName = subjectName;
+        this.assingmentName = assingmentName;
+        this.isDone = isDone;
+    }
+
     public String getSubjectName() {
         return subjectName;
     }

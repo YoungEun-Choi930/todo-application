@@ -63,11 +63,7 @@ public class SQLiteDBAdapter
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    LectureInfo info = new LectureInfo();
-
-                    info.setSubjectName(cursor.getString(0));
-                    info.setLectureName(cursor.getString(1));
-                    info.setIsDone(Boolean.valueOf(cursor.getString(2)));
+                    LectureInfo info = new LectureInfo(cursor.getString(0),cursor.getString(1),Boolean.valueOf(cursor.getString(2)));
 
                     list.add(info);
                 }
@@ -97,11 +93,7 @@ public class SQLiteDBAdapter
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    AssingmentInfo info = new AssingmentInfo();
-
-                    info.setSubjectName(cursor.getString(0));
-                    info.setAssingmentName(cursor.getString(1));
-                    info.setIsDone(Boolean.valueOf(cursor.getString(2)));
+                    AssingmentInfo info = new AssingmentInfo(cursor.getString(0),cursor.getString(1),Boolean.valueOf(cursor.getString(2)));
 
                     list.add(info);
                 }
@@ -131,10 +123,7 @@ public class SQLiteDBAdapter
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    ExamInfo info = new ExamInfo();
-
-                    info.setSubjectName(cursor.getString(0));
-                    info.setExamName(cursor.getString(1));
+                    ExamInfo info = new ExamInfo(cursor.getString(0),cursor.getString(1));
 
                     list.add(info);
                 }
@@ -212,6 +201,36 @@ public class SQLiteDBAdapter
         catch (SQLException mSQLException)
         {
             Log.e("DataAdapter", "getAlarmData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+    public List<String> loadFriendsList()
+    {
+        try
+        {
+            mDb = mDbHelper.getReadableDatabase();
+            String sql = "SELECT * FROM Friends;";
+
+            List<String> list = new ArrayList();
+
+            Cursor cursor = mDb.rawQuery(sql, null);
+            if (cursor!=null)
+            {
+                // 칼럼의 마지막까지
+                while( cursor.moveToNext() ) {
+
+                    String id = cursor.getString(0);
+
+                    list.add(id);
+                }
+            }
+            cursor.close();
+            mDbHelper.close();
+            return list;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e("DataAdapter", "getFriendsData >>"+ mSQLException.toString());
             throw mSQLException;
         }
     }

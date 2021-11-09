@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         if (task.isSuccessful()) {//로그인이 성공했으면
                             Intent intent = new Intent(getApplicationContext(), TodoActivity.class);
                             intent.putExtra("nickname", account.getDisplayName());
-                            intent.putExtra("userID", account.getEmail());
+
+                            String userID = account.getEmail();
+                            userID = userID.substring(0,userID.indexOf('@'));
+
+                            intent.putExtra("userID", userID);
                             intent.putExtra("photoUrl", String.valueOf(account.getPhotoUrl()));
                             startActivity(intent);
                         } else {
