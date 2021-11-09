@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import java.text.ParseException;
@@ -58,7 +59,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 subjectlist.remove(subjectAdapter.getcheckedList().get(i)); //체크된목록 과목목록에서 제거
                 delSubject(subjectAdapter.getcheckedList().get(i).getSubjectName());
             }
-
+            Toast.makeText(this, "과목 삭제 완료", Toast.LENGTH_SHORT).show();
             subjectAdapter.notifyDataSetChanged();
         });
 

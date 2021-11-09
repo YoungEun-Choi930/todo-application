@@ -27,15 +27,17 @@ public class AddSubjectActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_add_subject);
 
-        Button btn_no = (Button) findViewById(R.id.no_subject);
-        Button btn_yes = (Button) findViewById(R.id.yes_subject);
+        Button btn_no = (Button) findViewById(R.id.no_subject); //취소
+        Button btn_yes = (Button) findViewById(R.id.yes_subject); // 확인
 
-        EditText name_subject = (EditText) findViewById(R.id.name_subject);
-        EditText number_subject = (EditText) findViewById(R.id.number_subject);
-        RadioGroup startweek_subject = (RadioGroup)findViewById(R.id.startWeekNumber_sujbect);
-        EditText startTime_subject = (EditText) findViewById(R.id.startTime_subject);
-        RadioGroup endweek_subject = (RadioGroup)findViewById(R.id.endWeekNumber_sujbect) ;
-        EditText endTime_subject = (EditText) findViewById(R.id.endTime_subject);
+        EditText name_subject = (EditText) findViewById(R.id.name_subject);//과목명
+        EditText number_subject = (EditText) findViewById(R.id.number_subject);//강의개수
+        RadioGroup startweek_subject = (RadioGroup)findViewById(R.id.startWeekNumber_sujbect);//시작요일
+        EditText startTime_subject = (EditText) findViewById(R.id.startTime_subject);//시작시간
+        RadioGroup endweek_subject = (RadioGroup)findViewById(R.id.endWeekNumber_sujbect) ;//종료요일
+        EditText endTime_subject = (EditText) findViewById(R.id.endTime_subject);//종료시간
+        RadioGroup semester_subject = (RadioGroup) findViewById(R.id.semester);//학기
+        EditText year_subject = (EditText) findViewById(R.id.year_subject);//년도
 
 
       //  1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토
@@ -49,6 +51,9 @@ public class AddSubjectActivity extends Activity {
             RadioButton end = (RadioButton)findViewById(endid);
             String strEnd = end.getResources().getResourceName(endid);
 
+            int semesterid = semester_subject.getCheckedRadioButtonId();
+            RadioButton semester = (RadioButton)findViewById(semesterid);
+
 
 
             String name_sub = name_subject.getText().toString();
@@ -57,6 +62,10 @@ public class AddSubjectActivity extends Activity {
             String starttime_sub = startTime_subject.getText().toString();
             int endweeknumber_sub = Integer.parseInt(strEnd.substring(strEnd.length()-1));
             String endtime_sub = endTime_subject.getText().toString();
+            int year_sub =Integer.parseInt(year_subject.getText().toString());
+            int semester_sub = Integer.parseInt(semester.getText().toString());
+
+            System.out.println(year_sub+"년도"+semester_sub);
 
 
             boolean result = ((SubjectManagementActivity)SubjectManagementActivity.mContext).addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,2021,2);
