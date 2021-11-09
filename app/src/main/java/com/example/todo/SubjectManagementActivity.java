@@ -56,6 +56,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
             for(int i=0;i<subjectAdapter.getcheckedList().size();i++){
                 subjectlist.remove(subjectAdapter.getcheckedList().get(i)); //체크된목록 과목목록에서 제거
+                delSubject(subjectAdapter.getcheckedList().get(i).getSubjectName());
             }
 
             subjectAdapter.notifyDataSetChanged();

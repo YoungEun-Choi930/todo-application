@@ -32,23 +32,36 @@ public class AddSubjectActivity extends Activity {
 
         EditText name_subject = (EditText) findViewById(R.id.name_subject);
         EditText number_subject = (EditText) findViewById(R.id.number_subject);
-        RadioGroup startweek_subject = (RadioGroup)findViewById(R.id.week);
+        RadioGroup startweek_subject = (RadioGroup)findViewById(R.id.startWeekNumber_sujbect);
         EditText startTime_subject = (EditText) findViewById(R.id.startTime_subject);
-      //  RadioGroup endweek_subject
+        RadioGroup endweek_subject = (RadioGroup)findViewById(R.id.endWeekNumber_sujbect) ;
         EditText endTime_subject = (EditText) findViewById(R.id.endTime_subject);
 
 
+      //  1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토
+
         btn_yes.setOnClickListener((view) -> { // 확인버튼 선택
+            int startid = startweek_subject.getCheckedRadioButtonId(); //뭐 선택됐는지 가져옴
+            RadioButton start = (RadioButton)findViewById(startid);
+            String strStart = start.getResources().getResourceName(startid);
+
+            int endid = endweek_subject.getCheckedRadioButtonId();
+            RadioButton end = (RadioButton)findViewById(endid);
+            String strEnd = end.getResources().getResourceName(endid);
+
+
+
             String name_sub = name_subject.getText().toString();
             int number_sub = Integer.parseInt(number_subject.getText().toString());
-            //int weeknumber_sub = Integer.parseInt(number_subject.getText().toString());
+            int startweeknumber_sub = Integer.parseInt(strStart.substring(strStart.length()-1)); //아이디가져와서 마지막글자만 뽑음. 왜냠 그게 요일번호니까
             String starttime_sub = startTime_subject.getText().toString();
-            //int weeknumber_sub = Integer.parseInt(number_subject.getText().toString());
+            int endweeknumber_sub = Integer.parseInt(strEnd.substring(strEnd.length()-1));
             String endtime_sub = endTime_subject.getText().toString();
 
 
-            boolean result = ((SubjectManagementActivity)SubjectManagementActivity.mContext).addSubject(name_sub,number_sub,1,starttime_sub,2,endtime_sub,2021,2);
+            boolean result = ((SubjectManagementActivity)SubjectManagementActivity.mContext).addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,2021,2);
 
+            System.out.println("어디가안되는겨?");
             if(result){
                 Toast.makeText(this, "과목추가 완료", Toast.LENGTH_SHORT).show();
             }else

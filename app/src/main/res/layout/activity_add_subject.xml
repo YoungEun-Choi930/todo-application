@@ -69,34 +69,34 @@
 
 
                 <RadioButton
-                    android:id="@+id/start_mon"
+                    android:id="@+id/start_2"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:layout_weight="1"
                     android:text="월" />
                 <RadioButton
-                    android:id="@+id/start_tue"
+                    android:id="@+id/start_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="화" />
                 <RadioButton
-                    android:id="@+id/start_wed"
+                    android:id="@+id/start_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="수" />
                 <RadioButton
-                    android:id="@+id/start_thu"
+                    android:id="@+id/start_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="목" />
                 <RadioButton
-                    android:id="@+id/start_fri"
+                    android:id="@+id/start_6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -147,34 +147,34 @@
 
 
                 <RadioButton
-                    android:id="@+id/end_mon"
+                    android:id="@+id/end_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="월" />
                 <RadioButton
-                    android:id="@+id/end_tue"
+                    android:id="@+id/end_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="화" />
                 <RadioButton
-                    android:id="@+id/end_wed"
+                    android:id="@+id/end_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="수" />
                 <RadioButton
-                    android:id="@+id/end_thu"
+                    android:id="@+id/end_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="목" />
                 <RadioButton
-                    android:id="@+id/end_fri"
+                    android:id="@+id/end_6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
