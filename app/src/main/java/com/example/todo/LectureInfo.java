@@ -5,6 +5,12 @@ public class LectureInfo {
     private String lectureName;
     private Boolean isDone;
 
+    public LectureInfo(String subjectName, String lectureName, Boolean isDone) {
+        this.subjectName = subjectName;
+        this.lectureName = lectureName;
+        this.isDone = isDone;
+    }
+
     public String getSubjectName() {
         return subjectName;
     }
