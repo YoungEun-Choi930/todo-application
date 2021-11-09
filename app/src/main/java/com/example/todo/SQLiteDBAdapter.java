@@ -93,11 +93,7 @@ public class SQLiteDBAdapter
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    AssingmentInfo info = new AssingmentInfo();
-
-                    info.setSubjectName(cursor.getString(0));
-                    info.setAssingmentName(cursor.getString(1));
-                    info.setIsDone(Boolean.valueOf(cursor.getString(2)));
+                    AssingmentInfo info = new AssingmentInfo(cursor.getString(0),cursor.getString(1),Boolean.valueOf(cursor.getString(2)));
 
                     list.add(info);
                 }
@@ -127,10 +123,7 @@ public class SQLiteDBAdapter
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    ExamInfo info = new ExamInfo();
-
-                    info.setSubjectName(cursor.getString(0));
-                    info.setExamName(cursor.getString(1));
+                    ExamInfo info = new ExamInfo(cursor.getString(0),cursor.getString(1));
 
                     list.add(info);
                 }

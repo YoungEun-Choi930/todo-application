@@ -1,19 +1,23 @@
 package com.example.todo;
 
+import android.provider.ContactsContract;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.Query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FirebaseDBHelper {
     private FirebaseDatabase firebaseDatabase;
@@ -28,6 +32,8 @@ public class FirebaseDBHelper {
 
     public boolean confirmFriendExist(String friendID){
         databaseReference.child("USERS");
+
+
         return true;
 
     }
@@ -44,53 +50,178 @@ public class FirebaseDBHelper {
 //
 //    }
 //
-    public boolean uploadMyLecture(String subjectName, String lectureName, String startdate, String enddate){
-        HashMap<String, Object> info = new HashMap<>();
-        info.put("subjectName", subjectName);
-        info.put("startdate", Integer.parseInt(startdate));
-        info.put("enddate", Integer.parseInt(enddate));
-        info.put("isdone", false);
+    public void uploadMyLecture(String subjectName, String lectureName, String startdate, String enddate){
+        UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(enddate),false);
 
-        HashMap<String,Object> iinfo = new HashMap<>();
-        iinfo.put(lectureName, info);
+        HashMap<String,Object> info = new HashMap<>();
+        info.put(lectureName, list.toMap());
 
-        boolean result = uploadInfo(iinfo, "lecture");
-        return result;
+        uploadInfo(info, "lecture");
     }
 
-    public boolean uploadInfo(HashMap info,String table) {
-        final boolean[] result = new boolean[1];
-        databaseReference.child("USERS").child(userID).child(table).updateChildren(info)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        result[0] = true;
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Firebase", "uploadMyLecture >>"+ e.toString());
-                        result[0] = false;
-                    }
-                });
-//        databaseReference.removeEventListener();//???
-        return result[0];
+    public void uploadMyAssingment(String subjectName, String lectureName, String startdate, String enddate){
+        UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(enddate),false);
+
+        HashMap<String,Object> info = new HashMap<>();
+        info.put(lectureName, list.toMap());
+
+        uploadInfo(info, "assingment");
     }
 
-    public List<LectureInfo> loadFriendLectureList(String friendID, String date){
-        databaseReference.child("USERS").child(friendID).child("lecture").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(!task.isSuccessful())
-                    Log.e("Firebase","loadFriendLectureList >>"+ task.getException());
-                else{
-//                    HashMap<String, Object> list = new HashMap<>(task.getResult().getKey(),task.getResult().getValue());
+    public void uploadMyExam(String subjectName, String ExamName, String date){
+        UploadExamInfo list = new UploadExamInfo(subjectName,Integer.parseInt(date));
 
+        HashMap<String,Object> info = new HashMap<>();
+        info.put(ExamName, list.toMap());
+
+        uploadInfo(info, "exam");
+    }
+
+    public void uploadInfo(HashMap info,String table) {
+        databaseReference.child("USERS").child(userID).child(table).updateChildren(info);
+    }
+
+
+
+
+    public List<LectureInfo> loadFriendLectureList(String friendID, int date){
+
+        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
+
+        if(list.getResult().exists()) { //데이터가 존재하면
+            List<LectureInfo> result = new ArrayList<>();
+
+            for(DataSnapshot snapshot: list.getResult().getChildren()){
+                UploadInfo info = snapshot.getValue(UploadInfo.class);
+
+                if(info.startdate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
+                    continue;
+                if(info.enddate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
+                    continue;
+
+                String lectureName = snapshot.getKey();
+                String subjectName = info.subjectName;
+                boolean isDone = info.isDone;
+
+                LectureInfo lectureInfo = new LectureInfo(subjectName,lectureName,isDone);
+
+                result.add(lectureInfo);
+            }
+
+            return result;
+        }
+        else
+            return null;
+    }
+
+    public List<AssingmentInfo> loadFriendAssingmentList(String friendID, int date){
+
+        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
+
+        if(list.getResult().exists()) { //데이터가 존재하면
+            List<AssingmentInfo> result = new ArrayList<>();
+
+            for(DataSnapshot snapshot: list.getResult().getChildren()){
+                UploadInfo info = snapshot.getValue(UploadInfo.class);
+
+                if(info.startdate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
+                    continue;
+                if(info.enddate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
+                    continue;
+
+                String lectureName = snapshot.getKey();
+                String subjectName = info.subjectName;
+                boolean isDone = info.isDone;
+
+                AssingmentInfo assingmentInfo = new AssingmentInfo(subjectName,lectureName,isDone);
+
+                result.add(assingmentInfo);
+            }
+
+            return result;
+        }
+        else
+            return null;
+    }
+
+    public List<ExamInfo> loadFriendExamList(String friendID, int date){
+
+        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
+
+        if(list.getResult().exists()) { //데이터가 존재하면
+            List<ExamInfo> result = null;
+
+            for(DataSnapshot snapshot: list.getResult().getChildren()){
+                UploadExamInfo info = snapshot.getValue(UploadExamInfo.class);
+
+                if(info.date == date) { // 시험 날짜가 선택된 날짜랑 같으면 list에 추가
+
+                    String examName = snapshot.getKey();
+                    String subjectName = info.subjectName;
+
+                    ExamInfo examInfo = new ExamInfo(subjectName, examName);
+
+                    result.add(examInfo);
                 }
             }
-        });
-        return null;
+            return result;
+        }
+        else
+            return null;
+    }
 
+    public List<List> loadFriendToDoList(String friendID, int date) {
+        List<List> todo = new ArrayList();
+        List<LectureInfo> lecturelist = loadFriendLectureList(friendID, date);
+        List<AssingmentInfo> assingmentlist = loadFriendAssingmentList(friendID, date);
+        List<ExamInfo> examlist = loadFriendExamList(friendID, date);
+
+        todo.add(lecturelist);
+        todo.add(assingmentlist);
+        todo.add(examlist);
+
+        return todo;
+    }
+}
+
+class UploadInfo
+{
+    String subjectName;
+    int startdate;
+    int enddate;
+    boolean isDone;
+
+    public UploadInfo(String subjectName, int startdate, int enddate, boolean isDone) {
+        this.subjectName = subjectName;
+        this.startdate = startdate;
+        this.enddate = enddate;
+        this.isDone = isDone;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> info = new HashMap<>();
+        info.put("subjectName", subjectName);
+        info.put("startdate", startdate);
+        info.put("enddate", enddate);
+        info.put("isdone", isDone);
+        return info;
+    }
+}
+
+class UploadExamInfo
+{
+    String subjectName;
+    int date;
+
+    public UploadExamInfo(String subjectName, int date) {
+        this.subjectName = subjectName;
+        this.date = date;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> info = new HashMap<>();
+        info.put("subjectName", subjectName);
+        info.put("date", date);
+        return info;
     }
 }
