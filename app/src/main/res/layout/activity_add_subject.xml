@@ -33,6 +33,65 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="생성 년도"
+                android:layout_marginLeft="3dp"
+                android:textSize="18dp"
+                                    />
+
+            <EditText
+                android:id="@+id/year_subject"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="ex) 2021"
+                android:textSize="15dp"
+                android:inputType="number"
+                android:maxLength="4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="학기"
+                android:layout_marginLeft="3dp"
+                android:textSize="18dp"
+                                       />
+
+            <RadioGroup
+                android:id="@+id/semester"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+
+                <RadioButton
+                    android:id="@+id/semester1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1" />
+
+                <RadioButton
+                    android:id="@+id/semester2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2" />
+
+
+            </RadioGroup>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
@@ -40,14 +99,18 @@
                 android:layout_height="wrap_content"
                 android:text="강의 개수"
                 android:layout_marginLeft="3dp"
-                android:textSize="18dp"/>
+                android:textSize="18dp"
+               />
 
             <EditText
                 android:id="@+id/number_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:hint="한 주차에 생성되는 강의 개수"
+                android:textSize="15dp"
+                android:maxLength="1"/>
         </LinearLayout>
 
         <LinearLayout
@@ -69,34 +132,34 @@
 
 
                 <RadioButton
-                    android:id="@+id/start_mon"
+                    android:id="@+id/start_2"
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="월" />
                 <RadioButton
-                    android:id="@+id/start_tue"
+                    android:id="@+id/start_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="화" />
                 <RadioButton
-                    android:id="@+id/start_wed"
+                    android:id="@+id/start_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="수" />
                 <RadioButton
-                    android:id="@+id/start_thu"
+                    android:id="@+id/start_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="목" />
                 <RadioButton
-                    android:id="@+id/start_fri"
+                    android:id="@+id/start_6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -125,7 +188,8 @@
                 android:ems="10"
                 android:inputType="number"
                 android:textSize="15dp"
-                android:hint="숫자만 입력해 주세요. ex) 2400"/>
+                android:hint="24시 00분 => ex) 2400"
+                android:maxLength="4"/>
         </LinearLayout>
 
         <LinearLayout
@@ -147,34 +211,34 @@
 
 
                 <RadioButton
-                    android:id="@+id/end_mon"
+                    android:id="@+id/end_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="월" />
                 <RadioButton
-                    android:id="@+id/end_tue"
+                    android:id="@+id/end_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="화" />
                 <RadioButton
-                    android:id="@+id/end_wed"
+                    android:id="@+id/end_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="수" />
                 <RadioButton
-                    android:id="@+id/end_thu"
+                    android:id="@+id/end_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
                     android:text="목" />
                 <RadioButton
-                    android:id="@+id/end_fri"
+                    android:id="@+id/end_6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -201,7 +265,8 @@
                 android:ems="10"
                 android:inputType="number"
                 android:textSize="15dp"
-                android:hint="숫자만 입력해 주세요. ex)2400"/>
+                android:hint="24시 00분 => ex)2400"
+                android:maxLength="4"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
