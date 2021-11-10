@@ -50,31 +50,35 @@ public class FirebaseDBHelper {
 //
 //    }
 //
-    public void uploadMyLecture(String subjectName, String lectureName, String startdate, String startTime, String enddate, String endTime){
-        UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),false);
-
+    public void uploadMyLecture(String subjectName, HashMap lecturelist){
         HashMap<String,Object> info = new HashMap<>();
-        info.put(lectureName, list.toMap());
+        info.put(subjectName, lecturelist);
 
         uploadInfo(info, "lecture");
     }
 
     public void uploadMyAssingment(String subjectName, String assingmentName, String startdate, String startTime, String enddate, String endTime){
-        UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),false);
+        UploadInfo list = new UploadInfo(Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),false);
 
         HashMap<String,Object> info = new HashMap<>();
         info.put(assingmentName, list.toMap());
 
-        uploadInfo(info, "assingment");
+        HashMap<String, Object> iinfo = new HashMap<>();
+        iinfo.put(subjectName, info);
+
+        uploadInfo(iinfo, "assingment");
     }
 
     public void uploadMyExam(String subjectName, String examName, String date, String time){
-        UploadExamInfo list = new UploadExamInfo(subjectName,Integer.parseInt(date), Integer.parseInt(time));
+        UploadExamInfo list = new UploadExamInfo(Integer.parseInt(date), Integer.parseInt(time));
 
         HashMap<String,Object> info = new HashMap<>();
         info.put(examName, list.toMap());
 
-        uploadInfo(info, "exam");
+        HashMap<String, Object> iinfo = new HashMap<>();
+        iinfo.put(subjectName, info);
+
+        uploadInfo(iinfo, "exam");
     }
 
     public void uploadInfo(HashMap info,String table) {
@@ -83,108 +87,127 @@ public class FirebaseDBHelper {
 
 
 
+    //load 전체적으로 다 바꿔야함.
+//    public List<LectureInfo> loadFriendLectureList(String friendID, int date){
+//
+//        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
+//
+//        if(list.getResult().exists()) { //데이터가 존재하면
+//            List<LectureInfo> result = new ArrayList<>();
+//
+//            for(DataSnapshot snapshot: list.getResult().getChildren()){
+//                UploadInfo info = snapshot.getValue(UploadInfo.class);
+//
+//                if(info.startDate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
+//                    continue;
+//                if(info.endDate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
+//                    continue;
+//
+//                String lectureName = snapshot.getKey();
+//                String subjectName = info.subjectName;
+//                boolean isDone = info.isDone;
+//
+//                LectureInfo lectureInfo = new LectureInfo(subjectName,lectureName,isDone);
+//
+//                result.add(lectureInfo);
+//            }
+//
+//            return result;
+//        }
+//        else
+//            return null;
+//    }
+//
+//    public List<AssingmentInfo> loadFriendAssingmentList(String friendID, int date){
+//
+//        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
+//
+//        if(list.getResult().exists()) { //데이터가 존재하면
+//            List<AssingmentInfo> result = new ArrayList<>();
+//
+//            for(DataSnapshot snapshot: list.getResult().getChildren()){
+//                UploadInfo info = snapshot.getValue(UploadInfo.class);
+//
+//                if(info.startDate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
+//                    continue;
+//                if(info.endDate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
+//                    continue;
+//
+//                String lectureName = snapshot.getKey();
+//                String subjectName = info.subjectName;
+//                boolean isDone = info.isDone;
+//
+//                AssingmentInfo assingmentInfo = new AssingmentInfo(subjectName,lectureName,isDone);
+//
+//                result.add(assingmentInfo);
+//            }
+//
+//            return result;
+//        }
+//        else
+//            return null;
+//    }
+//
+//    public List<ExamInfo> loadFriendExamList(String friendID, int date){
+//
+//        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
+//
+//        if(list.getResult().exists()) { //데이터가 존재하면
+//            List<ExamInfo> result = null;
+//
+//            for(DataSnapshot snapshot: list.getResult().getChildren()){
+//                UploadExamInfo info = snapshot.getValue(UploadExamInfo.class);
+//
+//                if(info.date == date) { // 시험 날짜가 선택된 날짜랑 같으면 list에 추가
+//
+//                    String examName = snapshot.getKey();
+//                    String subjectName = info.subjectName;
+//
+//                    ExamInfo examInfo = new ExamInfo(subjectName, examName);
+//
+//                    result.add(examInfo);
+//                }
+//            }
+//            return result;
+//        }
+//        else
+//            return null;
+//    }
+//
+//    public List<List> loadFriendToDoList(String friendID, int date) {
+//        List<List> todo = new ArrayList();
+//        List<LectureInfo> lecturelist = loadFriendLectureList(friendID, date);
+//        List<AssingmentInfo> assingmentlist = loadFriendAssingmentList(friendID, date);
+//        List<ExamInfo> examlist = loadFriendExamList(friendID, date);
+//
+//        todo.add(lecturelist);
+//        todo.add(assingmentlist);
+//        todo.add(examlist);
+//
+//        return todo;
+//    }
 
-    public List<LectureInfo> loadFriendLectureList(String friendID, int date){
-
-        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
-
-        if(list.getResult().exists()) { //데이터가 존재하면
-            List<LectureInfo> result = new ArrayList<>();
-
-            for(DataSnapshot snapshot: list.getResult().getChildren()){
-                UploadInfo info = snapshot.getValue(UploadInfo.class);
-
-                if(info.startDate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
-                    continue;
-                if(info.endDate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
-                    continue;
-
-                String lectureName = snapshot.getKey();
-                String subjectName = info.subjectName;
-                boolean isDone = info.isDone;
-
-                LectureInfo lectureInfo = new LectureInfo(subjectName,lectureName,isDone);
-
-                result.add(lectureInfo);
-            }
-
-            return result;
-        }
-        else
-            return null;
+    public void delSubject(String subjectName) {
+        databaseReference.child("USERS").child(userID).child("lecture").child(subjectName).setValue(null);
+        databaseReference.child("USERS").child(userID).child("assingment").child(subjectName).setValue(null);
+        databaseReference.child("USERS").child(userID).child("exam").child(subjectName).setValue(null);
     }
 
-    public List<AssingmentInfo> loadFriendAssingmentList(String friendID, int date){
+    public void delMyAssingment(String assingmentName, String subjectName) {
+        databaseReference.child("USERS").child(userID).child("assingment").child(subjectName).child(assingmentName).setValue(null);
 
-        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
-
-        if(list.getResult().exists()) { //데이터가 존재하면
-            List<AssingmentInfo> result = new ArrayList<>();
-
-            for(DataSnapshot snapshot: list.getResult().getChildren()){
-                UploadInfo info = snapshot.getValue(UploadInfo.class);
-
-                if(info.startDate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
-                    continue;
-                if(info.endDate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
-                    continue;
-
-                String lectureName = snapshot.getKey();
-                String subjectName = info.subjectName;
-                boolean isDone = info.isDone;
-
-                AssingmentInfo assingmentInfo = new AssingmentInfo(subjectName,lectureName,isDone);
-
-                result.add(assingmentInfo);
-            }
-
-            return result;
-        }
-        else
-            return null;
     }
 
-    public List<ExamInfo> loadFriendExamList(String friendID, int date){
+    public void delMyExam(String examName, String subjectName) {
+        databaseReference.child("USERS").child(userID).child("exam").child(subjectName).child(examName).setValue(null);
 
-        Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
-
-        if(list.getResult().exists()) { //데이터가 존재하면
-            List<ExamInfo> result = null;
-
-            for(DataSnapshot snapshot: list.getResult().getChildren()){
-                UploadExamInfo info = snapshot.getValue(UploadExamInfo.class);
-
-                if(info.date == date) { // 시험 날짜가 선택된 날짜랑 같으면 list에 추가
-
-                    String examName = snapshot.getKey();
-                    String subjectName = info.subjectName;
-
-                    ExamInfo examInfo = new ExamInfo(subjectName, examName);
-
-                    result.add(examInfo);
-                }
-            }
-            return result;
-        }
-        else
-            return null;
     }
 
-    public List<List> loadFriendToDoList(String friendID, int date) {
-        List<List> todo = new ArrayList();
-        List<LectureInfo> lecturelist = loadFriendLectureList(friendID, date);
-        List<AssingmentInfo> assingmentlist = loadFriendAssingmentList(friendID, date);
-        List<ExamInfo> examlist = loadFriendExamList(friendID, date);
-
-        todo.add(lecturelist);
-        todo.add(assingmentlist);
-        todo.add(examlist);
-
-        return todo;
-    }
-
-    public void delMyLecture(String subjectName) {
-
+    // name: lectureName or assingmentName
+    // table: "Lecture" or "Assingment" 로 보내주세요
+    // value: 바꿔야하는 isDone 값. 만약 지금 1이면 0을 보내고, 0이면 1을 보내주어야 함.
+    public void changeMyIsDone(String name, String subjectName, String table, int value) {
+        databaseReference.child("USERS").child(userID).child(table.toLowerCase()).child(subjectName).child(name).child("isdone").setValue(value);
 
     }
 }
@@ -193,15 +216,13 @@ public class FirebaseDBHelper {
 
 class UploadInfo
 {
-    String subjectName;
     int startDate;
     int startTime;
     int endDate;
     int endTime;
     boolean isDone;
 
-    public UploadInfo(String subjectName, int startdate, int startTime, int enddate, int endTime, boolean isDone) {
-        this.subjectName = subjectName;
+    public UploadInfo(int startdate, int startTime, int enddate, int endTime, boolean isDone) {
         this.startDate = startdate;
         this.startTime = startTime;
         this.endDate = enddate;
@@ -211,7 +232,6 @@ class UploadInfo
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> info = new HashMap<>();
-        info.put("subjectName", subjectName);
         info.put("startdate", startDate);
         info.put("starttime", startTime);
         info.put("enddate", endDate);
@@ -223,19 +243,16 @@ class UploadInfo
 
 class UploadExamInfo
 {
-    String subjectName;
     int date;
     int time;
 
-    public UploadExamInfo(String subjectName, int date, int time) {
-        this.subjectName = subjectName;
+    public UploadExamInfo(int date, int time) {
         this.date = date;
         this.time = time;
     }
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> info = new HashMap<>();
-        info.put("subjectName", subjectName);
         info.put("date", date);
         info.put("time", time);
         return info;

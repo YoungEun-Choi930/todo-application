@@ -119,14 +119,14 @@ public class TodoActivity extends AppCompatActivity {
         return result;
     }
 
-    private boolean delAssingment(String assingmentName) {
+    private boolean delAssingment(String assingmentName, String subjectName) {
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         String query = "DELETE FROM AssingmentList WHERE assingmentName = '"+assingmentName+"';";
 
         boolean result = adapter.excuteQuery(query);
 
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
-        //firebaseDB.delMyAssigment(String assingmentName);
+        firebaseDB.delMyAssingment(assingmentName, subjectName);
 
         return result;
     }
@@ -143,28 +143,29 @@ public class TodoActivity extends AppCompatActivity {
         return result;
     }
 
-    private boolean delExam(String examName) {
+    private boolean delExam(String examName, String subjectName) {
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         String query = "DELETE FROM ExamList WHERE examName = '"+examName+"';";
 
         boolean result = adapter.excuteQuery(query);
 
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
-        //firebaseDB.delMyExam(String examName);
+        firebaseDB.delMyExam(examName, subjectName);
 
         return result;
     }
 
     // name: lectureName or assingmentName
+    // subjectName: 말그대로 해당 lecture 또는 assingment의 과목이름.
     // table: "Lecture" or "Assingment" 로 보내주세요
     // value: 바꿔야하는 isDone 값. 만약 지금 1이면 0을 보내고, 0이면 1을 보내주어야 함.
-    private boolean changeIsDone(String name,String table, int value) {
+    private boolean changeIsDone(String name, String subjectName, String table, int value) {
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         String query = "UPDATE "+table+"List SET isDone = "+value+" WHERE "+table.toLowerCase()+"Name = '"+name+"';";
         boolean result = adapter.excuteQuery(query);
 
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
-        //firebaseDB.changMyIsDone(String name, String table, int value);
+        firebaseDB.changeMyIsDone(name, subjectName, table, value);
 
         return result;
     }

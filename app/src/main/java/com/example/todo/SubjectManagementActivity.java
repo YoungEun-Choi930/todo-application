@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class SubjectManagementActivity extends AppCompatActivity {
@@ -153,27 +154,38 @@ public class SubjectManagementActivity extends AppCompatActivity {
         String strenddate;
 
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        HashMap<String, Object> lecturelist = new HashMap<>();
+
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(startdate);
         String lectureName;
+
         //강의 추가
         for(int i = 1; i <= 16; i++)
         {
-            strstartdate = dateFormat.format(cal.getTime());    //202109051200 과 같이 들어감.
+            strstartdate = dateFormat.format(cal.getTime());
             cal.add(Calendar.DATE, enddate);
             strenddate = dateFormat.format(cal.getTime());
 
             for(int j = 1; j <= number; j++)
             {
+                //sqlite
                 lectureName = subjectName+" "+i+"주차"+j;
                 query = "INSERT INTO LectureList VALUES('" +
                         subjectName+"','"+lectureName+"',"+strstartdate+","+startTime+","+strenddate+","+endTime+",0);";
                 result = adapter.excuteQuery(query);
                 System.out.println(query);
 
-                firebaseDB.uploadMyLecture(subjectName, lectureName, strstartdate, startTime, strenddate, endTime);
+                //firebase
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("startdate", Integer.parseInt(strstartdate));
+                map.put("starttime", Integer.parseInt(startTime));
+                map.put("enddate", Integer.parseInt(strenddate));
+                map.put("endtime", Integer.parseInt(endTime));
+                map.put("isdone", 0);
 
+                lecturelist.put(lectureName, map);
 
                 if(result == false) {
                     query = "DELETE FROM SubjectList WHERE subjectName = '" + subjectName + "';";
@@ -181,6 +193,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
                     return false;
                 }
             }
+            firebaseDB.uploadMyLecture(subjectName, lecturelist);
             cal.add(Calendar.DATE, 7-enddate);
         }
         SubjectInfo subjectInfo = new SubjectInfo();
@@ -228,5 +241,9 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         query = "DELETE FROM LectureList WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
+
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        firebaseDB.delSubject(subjectName);
+
     }
 }
