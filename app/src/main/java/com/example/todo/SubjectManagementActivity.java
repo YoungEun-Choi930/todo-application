@@ -144,7 +144,9 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
 
         Date startdate = getstartDate(year, semester, startWeekNumber);
-        int enddate = startWeekNumber+7-endWeekNumber;
+        int enddate = endWeekNumber - startWeekNumber;
+        if(enddate <= 0)
+            enddate += 7;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String strstartdate;
@@ -158,7 +160,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
         //강의 추가
         for(int i = 1; i <= 16; i++)
         {
-            strstartdate = dateFormat.format(cal.getTime());
+            strstartdate = dateFormat.format(cal.getTime());    //202109051200 과 같이 들어감.
             cal.add(Calendar.DATE, enddate);
             strenddate = dateFormat.format(cal.getTime());
 
@@ -166,11 +168,11 @@ public class SubjectManagementActivity extends AppCompatActivity {
             {
                 lectureName = subjectName+" "+i+"주차"+j;
                 query = "INSERT INTO LectureList VALUES('" +
-                        subjectName+"','"+lectureName+"',"+strstartdate+","+strenddate+",0);";
+                        subjectName+"','"+lectureName+"',"+strstartdate+","+startTime+","+strenddate+","+endTime+",0);";
                 result = adapter.excuteQuery(query);
                 System.out.println(query);
 
-                firebaseDB.uploadMyLecture(subjectName, lectureName, strstartdate,strenddate);
+                firebaseDB.uploadMyLecture(subjectName, lectureName, strstartdate, startTime, strenddate, endTime);
 
 
                 if(result == false) {
