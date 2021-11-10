@@ -50,8 +50,8 @@ public class FirebaseDBHelper {
 //
 //    }
 //
-    public void uploadMyLecture(String subjectName, String lectureName, String startdate, String enddate){
-        UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(enddate),false);
+    public void uploadMyLecture(String subjectName, String lectureName, String startdate, String startTime, String enddate, String endTime){
+        UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),false);
 
         HashMap<String,Object> info = new HashMap<>();
         info.put(lectureName, list.toMap());
@@ -59,8 +59,8 @@ public class FirebaseDBHelper {
         uploadInfo(info, "lecture");
     }
 
-    public void uploadMyAssingment(String subjectName, String lectureName, String startdate, String enddate){
-        UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(enddate),false);
+    public void uploadMyAssingment(String subjectName, String lectureName, String startdate, String startTime, String enddate, String endTime){
+        UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),false);
 
         HashMap<String,Object> info = new HashMap<>();
         info.put(lectureName, list.toMap());
@@ -68,8 +68,8 @@ public class FirebaseDBHelper {
         uploadInfo(info, "assingment");
     }
 
-    public void uploadMyExam(String subjectName, String ExamName, String date){
-        UploadExamInfo list = new UploadExamInfo(subjectName,Integer.parseInt(date));
+    public void uploadMyExam(String subjectName, String ExamName, String date, String time){
+        UploadExamInfo list = new UploadExamInfo(subjectName,Integer.parseInt(date), Integer.parseInt(time));
 
         HashMap<String,Object> info = new HashMap<>();
         info.put(ExamName, list.toMap());
@@ -194,13 +194,17 @@ class UploadInfo
 {
     String subjectName;
     int startdate;
+    int startTime;
     int enddate;
+    int endTime;
     boolean isDone;
 
-    public UploadInfo(String subjectName, int startdate, int enddate, boolean isDone) {
+    public UploadInfo(String subjectName, int startdate, int startTime, int enddate, int endTime, boolean isDone) {
         this.subjectName = subjectName;
         this.startdate = startdate;
+        this.startTime = startTime;
         this.enddate = enddate;
+        this.endTime = endTime;
         this.isDone = isDone;
     }
 
@@ -208,7 +212,9 @@ class UploadInfo
         HashMap<String, Object> info = new HashMap<>();
         info.put("subjectName", subjectName);
         info.put("startdate", startdate);
+        info.put("starttime", startTime);
         info.put("enddate", enddate);
+        info.put("endtime", endTime);
         info.put("isdone", isDone);
         return info;
     }
@@ -218,16 +224,19 @@ class UploadExamInfo
 {
     String subjectName;
     int date;
+    int time;
 
-    public UploadExamInfo(String subjectName, int date) {
+    public UploadExamInfo(String subjectName, int date, int time) {
         this.subjectName = subjectName;
         this.date = date;
+        this.time = time;
     }
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> info = new HashMap<>();
         info.put("subjectName", subjectName);
         info.put("date", date);
+        info.put("time", time);
         return info;
     }
 }
