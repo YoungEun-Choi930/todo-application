@@ -18,8 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.Locale;
 
 public class TodoActivity extends AppCompatActivity {
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class TodoActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         Intent getintent = getIntent();
+        userID = getintent.getExtras().getString("userID");
 
 
         MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
@@ -42,13 +45,13 @@ public class TodoActivity extends AppCompatActivity {
 
         btn_subject.setOnClickListener((view) -> { // 과목관리버튼 선택
             Intent intent = new Intent(getApplicationContext(), SubjectManagementActivity.class);
-            intent.putExtra("userID",getintent.getExtras().getString("userID"));
+            intent.putExtra("userID",userID);
             startActivity(intent);
 
         });
         btn_friend.setOnClickListener((view) -> { // 친구관리버튼 선택
             Intent intent = new Intent(getApplicationContext(), FriendsManagementActivity.class);
-            intent.putExtra("userID",getintent.getExtras().getString("userID"));
+            intent.putExtra("userID",userID);
             startActivity(intent);
 
         });
@@ -102,6 +105,68 @@ public class TodoActivity extends AppCompatActivity {
         todolist.add(assingmentlist);
         todolist.add(examlist);
         return todolist;
+    }
+
+    private boolean addAssingment(String subjectName, String assingmentName, String startDate, String startTime, String endDate, String endTime) {
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        String query = "INSERT INTO AssingmentList VALUES('" +
+                subjectName+"','"+assingmentName+"',"+startDate+","+startTime+","+endDate+","+endTime+",0);";
+        boolean result = adapter.excuteQuery(query);
+
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        firebaseDB.uploadMyAssingment(subjectName,assingmentName, startDate, startTime, endDate, endTime);
+
+        return result;
+    }
+
+    private boolean delAssingment(String assingmentName) {
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        String query = "DELETE FROM AssingmentList WHERE assingmentName = '"+assingmentName+"';";
+
+        boolean result = adapter.excuteQuery(query);
+
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        //firebaseDB.delMyAssigment(String assingmentName);
+
+        return result;
+    }
+
+    private boolean addExam(String subjectName, String examName, String date, String time) {
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        String query = "INSERT INTO ExamList VALUES('" +
+                subjectName+"','"+examName+"',"+date+","+time+");";
+        boolean result = adapter.excuteQuery(query);
+
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        firebaseDB.uploadMyExam(subjectName,examName, date, time);
+
+        return result;
+    }
+
+    private boolean delExam(String examName) {
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        String query = "DELETE FROM ExamList WHERE examName = '"+examName+"';";
+
+        boolean result = adapter.excuteQuery(query);
+
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        //firebaseDB.delMyExam(String examName);
+
+        return result;
+    }
+
+    // name: lectureName or assingmentName
+    // table: "Lecture" or "Assingment" 로 보내주세요
+    // value: 바꿔야하는 isDone 값. 만약 지금 1이면 0을 보내고, 0이면 1을 보내주어야 함.
+    private boolean changeIsDone(String name,String table, int value) {
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        String query = "UPDATE "+table+"List SET isDone = "+value+" WHERE "+table.toLowerCase()+"Name = '"+name+"';";
+        boolean result = adapter.excuteQuery(query);
+
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        //firebaseDB.changMyIsDone(String name, String table, int value);
+
+        return result;
     }
 
 }

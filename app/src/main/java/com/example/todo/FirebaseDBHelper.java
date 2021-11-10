@@ -59,20 +59,20 @@ public class FirebaseDBHelper {
         uploadInfo(info, "lecture");
     }
 
-    public void uploadMyAssingment(String subjectName, String lectureName, String startdate, String startTime, String enddate, String endTime){
+    public void uploadMyAssingment(String subjectName, String assingmentName, String startdate, String startTime, String enddate, String endTime){
         UploadInfo list = new UploadInfo(subjectName,Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),false);
 
         HashMap<String,Object> info = new HashMap<>();
-        info.put(lectureName, list.toMap());
+        info.put(assingmentName, list.toMap());
 
         uploadInfo(info, "assingment");
     }
 
-    public void uploadMyExam(String subjectName, String ExamName, String date, String time){
+    public void uploadMyExam(String subjectName, String examName, String date, String time){
         UploadExamInfo list = new UploadExamInfo(subjectName,Integer.parseInt(date), Integer.parseInt(time));
 
         HashMap<String,Object> info = new HashMap<>();
-        info.put(ExamName, list.toMap());
+        info.put(examName, list.toMap());
 
         uploadInfo(info, "exam");
     }
@@ -94,9 +94,9 @@ public class FirebaseDBHelper {
             for(DataSnapshot snapshot: list.getResult().getChildren()){
                 UploadInfo info = snapshot.getValue(UploadInfo.class);
 
-                if(info.startdate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
+                if(info.startDate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
                     continue;
-                if(info.enddate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
+                if(info.endDate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
                     continue;
 
                 String lectureName = snapshot.getKey();
@@ -124,9 +124,9 @@ public class FirebaseDBHelper {
             for(DataSnapshot snapshot: list.getResult().getChildren()){
                 UploadInfo info = snapshot.getValue(UploadInfo.class);
 
-                if(info.startdate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
+                if(info.startDate > date) //시작날짜가 선택날짜보다 뒤면 건너뛴다.
                     continue;
-                if(info.enddate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
+                if(info.endDate < date) //종료 날짜가 선택날짜보다 앞이면 건너뛴다.
                     continue;
 
                 String lectureName = snapshot.getKey();
@@ -185,6 +185,7 @@ public class FirebaseDBHelper {
 
     public void delMyLecture(String subjectName) {
 
+
     }
 }
 
@@ -193,17 +194,17 @@ public class FirebaseDBHelper {
 class UploadInfo
 {
     String subjectName;
-    int startdate;
+    int startDate;
     int startTime;
-    int enddate;
+    int endDate;
     int endTime;
     boolean isDone;
 
     public UploadInfo(String subjectName, int startdate, int startTime, int enddate, int endTime, boolean isDone) {
         this.subjectName = subjectName;
-        this.startdate = startdate;
+        this.startDate = startdate;
         this.startTime = startTime;
-        this.enddate = enddate;
+        this.endDate = enddate;
         this.endTime = endTime;
         this.isDone = isDone;
     }
@@ -211,9 +212,9 @@ class UploadInfo
     public Map<String, Object> toMap() {
         HashMap<String, Object> info = new HashMap<>();
         info.put("subjectName", subjectName);
-        info.put("startdate", startdate);
+        info.put("startdate", startDate);
         info.put("starttime", startTime);
-        info.put("enddate", enddate);
+        info.put("enddate", endDate);
         info.put("endtime", endTime);
         info.put("isdone", isDone);
         return info;

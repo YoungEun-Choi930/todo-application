@@ -30,11 +30,11 @@ import java.util.List;
 public class SubjectManagementActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 0;
     public static Context mContext;
-    List<SubjectInfo> subjectlist;
+    private List<SubjectInfo> subjectlist;
     subjectAdapter subjectAdapter;
     Button btn_del_sub;
     int ck = 0;
-    String userID;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
     }
 
 
-    public List<SubjectInfo> getSubjectList() {
+    private List<SubjectInfo> getSubjectList() {
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         List<SubjectInfo> list = adapter.loadSubjectList();
         return list;
@@ -221,7 +221,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
         }
         return cal.getTime();
     }
-    public void delSubject(String subjectName) {
+    private void delSubject(String subjectName) {
         String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         adapter.excuteQuery(query);
