@@ -34,11 +34,15 @@ public class SubjectManagementActivity extends AppCompatActivity {
     subjectAdapter subjectAdapter;
     Button btn_del_sub;
     int ck = 0;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext=this;
+
+        Intent getintent = getIntent();
+        this.userID = getintent.getExtras().getString("userID");
 
         setContentView(R.layout.activity_subject_management);
 
@@ -146,9 +150,11 @@ public class SubjectManagementActivity extends AppCompatActivity {
         String strstartdate;
         String strenddate;
 
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(startdate);
+        String lectureName;
         //강의 추가
         for(int i = 1; i <= 16; i++)
         {
@@ -158,10 +164,15 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
             for(int j = 1; j <= number; j++)
             {
+                lectureName = subjectName+" "+i+"주차"+j;
                 query = "INSERT INTO LectureList VALUES('" +
-                        subjectName+"','"+subjectName+" "+i+"주차"+j+"',"+strstartdate+","+strenddate+",0);";
+                        subjectName+"','"+lectureName+"',"+strstartdate+","+strenddate+",0);";
                 result = adapter.excuteQuery(query);
                 System.out.println(query);
+
+                firebaseDB.uploadMyLecture(subjectName, lectureName, strstartdate,strenddate);
+
+
                 if(result == false) {
                     query = "DELETE FROM SubjectList WHERE subjectName = '" + subjectName + "';";
                     adapter.excuteQuery(query);

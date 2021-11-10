@@ -182,7 +182,13 @@ public class FirebaseDBHelper {
 
         return todo;
     }
+
+    public void delMyLecture(String subjectName) {
+
+    }
 }
+
+
 
 class UploadInfo
 {
