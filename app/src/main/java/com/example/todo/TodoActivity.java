@@ -85,7 +85,9 @@ public class TodoActivity extends AppCompatActivity {
                 sdate += strdate[2];
 
                 List<List> todolist = getToDoList(sdate);
-                System.out.println(todolist.get(0));
+                List<LectureInfo> lectureInfos = todolist.get(0);
+                for(LectureInfo info: lectureInfos)
+                    System.out.println(info.getSubjectName());
             }
         });
     }
