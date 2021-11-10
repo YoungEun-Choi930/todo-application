@@ -14,25 +14,22 @@ import java.util.List;
 public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     public SQLiteDBHelper(Context context) {
-        super(context,"sqlite_file.db",null,5);
+        super(context,"sqlite_file.db",null,7);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) { //sqlite에서는 foreign key를 추가할 수 없다.ㅠㅠ
 
         String subject = "CREATE TABLE IF NOT EXISTS SubjectList (" +
                 "subjectName TEXT NOT NULL, number INTEGER, startWeekNumberINTEGER," +
                 "startTime INTEGER, endWeekNumber INTEGER, endTime INTEGER, PRIMARY KEY(subjectName));";
         String lecture = "CREATE TABLE IF NOT EXISTS LectureList (" +
-                "subjectName TEXT, lectureName TEXT, startDate INTEGER, startTime INTEGER, endDate INTEGER, endTime INTEGER, isDone INTEGER," +
-                "FOREIGN KEY(subjectName) REFERENCES SubjectList(subjectName));";
+                "subjectName TEXT, lectureName TEXT, startDate INTEGER, startTime INTEGER, endDate INTEGER, endTime INTEGER, isDone INTEGER);";
         String assingment = "CREATE TABLE IF NOT EXISTS AssingmentList ( " +
                 "subjectName TEXT NOT NULL, assingmentName TEXT NOT NULL, startDate INTEGER NOT NULL, startTIme INTEGER," +
-                "endDate INTEGER NOT NULL, endTime INTEGER, isDone INTEGER, " +
-                "FOREIGN KEY(subjectName) REFERENCES SubjectList(subjectName));";
+                "endDate INTEGER NOT NULL, endTime INTEGER, isDone INTEGER);";
         String exam = "CREATE TABLE IF NOT EXISTS ExamList (" +
-                "subjectName TEXT NOT NULL, examName TEXT NOT NULL, date INTEGER NOT NULL, time INTEGER," +
-                "FOREIGN KEY(subjectName) REFERENCES SubjectList(subjectName));";
+                "subjectName TEXT NOT NULL, examName TEXT NOT NULL, date INTEGER NOT NULL, time INTEGER);";
         String alarm = "CREATE TABLE IF NOT EXISTS AlarmList (" +
                 "subjectName TEXT NOT NULL, examAlarmDate TEXT, AssingmentAlarmDate TEXT," +
                 "videoAlarmTime TEXT, realTimeAlarmDate TEXT, PRIMARY KEY(subjectName));";
@@ -44,6 +41,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(exam);
         db.execSQL(alarm);
         db.execSQL(friend);
+
     }
 
     @Override

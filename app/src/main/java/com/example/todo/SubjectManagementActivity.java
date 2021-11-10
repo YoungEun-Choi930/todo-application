@@ -221,10 +221,12 @@ public class SubjectManagementActivity extends AppCompatActivity {
         }
         return cal.getTime();
     }
-    public boolean delSubject(String subjectName) {
+    public void delSubject(String subjectName) {
         String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
-        boolean result = adapter.excuteQuery(query);
-        return result;
+        adapter.excuteQuery(query);
+
+        query = "DELETE FROM LectureList WHERE subjectName = '"+subjectName+"';";
+        adapter.excuteQuery(query);
     }
 }
