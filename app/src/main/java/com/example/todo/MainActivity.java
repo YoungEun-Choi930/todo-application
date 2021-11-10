@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         auth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체 초기화
         if (auth.getCurrentUser() != null) {
             Intent intent = new Intent(getApplication(), TodoActivity.class);
+            String userID = auth.getCurrentUser().getEmail();
+            userID = userID.substring(0,userID.indexOf('@'));
+
+            intent.putExtra("userID", userID);
             startActivity(intent);
             finish();
         } // 로그인되어있으면 바로 다음화면으로 넘어가기
