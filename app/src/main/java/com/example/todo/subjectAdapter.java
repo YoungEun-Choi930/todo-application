@@ -37,12 +37,12 @@ public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemVie
         holder.tv_name_sub.setText(subjectInfo.getSubjectName());
 
         holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(subjectInfo.checked);
+        holder.checkBox.setChecked(subjectInfo.getChecked());
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                subjectInfo.checked = isChecked;
+                subjectInfo.setChecked(isChecked);
                 checkedList.add(subjectInfo);
             }
         });
