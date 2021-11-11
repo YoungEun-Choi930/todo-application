@@ -31,25 +31,54 @@ public class FirebaseDBHelper {
     }
 
     public boolean confirmFriendExist(String friendID){
-        databaseReference.child("USERS");
-
-
-        return true;
+        Task<DataSnapshot> friend = databaseReference.child("USERS").child(friendID).get();
+        if(friend.getResult().exists()) //존재하면
+            return true;
+        else
+            return false;
 
     }
-//
-//    public List<String> loadFriendsRequestList(String myID){
-//
-//    }
-//
-//    public List<String> loadFriendsList(String myID) {
-//
-//    }
-//
-//    public boolean requestFriend(String myID, String friendID) {
-//
-//    }
-//
+
+    public List<String> loadFriendsRequestList(){       //친구신청 목록 불러오기
+        Task<DataSnapshot> list = databaseReference.child("USERS").child(userID).child("friend").get();
+
+        if(list.getResult().exists()) { //데이터가 존재하면
+            List<String> result = new ArrayList<>();
+            for(DataSnapshot friend: list.getResult().getChildren()) {
+                if((int) friend.getValue() == 0)   //친구신청 상태면 result에 넣는다.
+                    result.add(friend.getKey());
+            }
+            return result;
+        }
+        else
+            return null;
+    }
+
+    public List<String> loadFriendsList() {     //서로친구 목록 불러오기
+        Task<DataSnapshot> list = databaseReference.child("USERS").child(userID).child("friend").get();
+
+        if(list.getResult().exists()) { //데이터가 존재하면
+            List<String> result = new ArrayList<>();
+            for(DataSnapshot friend: list.getResult().getChildren()) {
+                if((int) friend.getValue() == 1)   //서로친구 상태면 result에 넣는다.
+                    result.add(friend.getKey());
+            }
+            return result;
+        }
+        else
+            return null;
+    }
+
+    public void requestFriend(String friendID) { //친구신청
+        databaseReference.child("USERS").child(friendID).child("friend").child(userID).setValue(0);
+    }
+
+    public void acceptFriend(String friendID) { //친구신청수락
+        databaseReference.child("USERS").child(userID).child("friend").child(friendID).setValue(1);
+    }
+
+
+
     public List<LectureInfo> loadFriendLectureList(String friendID, int date){
 
         Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
