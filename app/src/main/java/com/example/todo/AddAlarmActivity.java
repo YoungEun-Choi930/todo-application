@@ -89,50 +89,50 @@ public class AddAlarmActivity extends AppCompatActivity {
         RadioGroup lecture = (RadioGroup) findViewById(R.id.lecture);
         sp_lecture = (Spinner) findViewById(R.id.spinner_lecture);
         lecture.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                                              @Override
-                                               public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                                                   int id = lecture.getCheckedRadioButtonId(); //선택되어있는 라디오버튼 가져옴
-                                                   RadioButton start = (RadioButton) findViewById(id);
-                                                   lecturetype = start.getResources().getResourceName(id);
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                int id = lecture.getCheckedRadioButtonId(); //선택되어있는 라디오버튼 가져옴
+                RadioButton start = (RadioButton) findViewById(id);
+                lecturetype = start.getResources().getResourceName(id);
 
 
-                                                   String[] split = lecturetype.split("/");
-                                                   lecturetype = split[1];
-                                                   System.out.println(lecturetype+"강의유형뭐임?");
+                String[] split = lecturetype.split("/");
+                lecturetype = split[1];
+                System.out.println(lecturetype+"강의유형뭐임?");
 
 
-                                                   if (lecturetype.equals("realtime")) {//그게 실시간(대면)이면
-                                                       sp_lecture.setAdapter(timeAdapter);
-                                                       System.out.println("어디니?");
-                                                       sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                           @Override
-                                                           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                               ((TextView) view).setText(timeList[i]);
-                                                               selected_lecture = timeList[i];
-                                                           }
+                if (lecturetype.equals("realtime")) {//그게 실시간(대면)이면
+                    sp_lecture.setAdapter(timeAdapter);
+                    System.out.println("어디니?");
+                    sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            ((TextView) view).setText(timeList[i]);
+                            selected_lecture = timeList[i];
+                        }
 
-                                                           @Override
-                                                           public void onNothingSelected(AdapterView<?> adapterView) {
-                                                           }
-                                                       });
-                                                       //result = ((AlarmManagementActivity)AlarmManagementActivity.mContext).addAlarm(selected_sub,selected_exam,selected_assignment,"",selected_lecture);
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                    //result = ((AlarmManagementActivity)AlarmManagementActivity.mContext).addAlarm(selected_sub,selected_exam,selected_assignment,"",selected_lecture);
 
-                                                   } else {
-                                                       sp_lecture.setAdapter(dayAdapter);
-                                                       sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                           @Override
-                                                           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                               ((TextView) view).setText(dayList[i]);
-                                                               selected_lecture = dayList[i];
-                                                           }
-                                                           @Override
-                                                           public void onNothingSelected(AdapterView<?> adapterView) {
-                                                           }
-                                                       });
-                                                       // result = ((AlarmManagementActivity)AlarmManagementActivity.mContext).addAlarm(selected_sub,selected_exam,selected_assignment,selected_lecture,"");
-                                                   }
-                                               }
-                                           });
+                } else {
+                    sp_lecture.setAdapter(dayAdapter);
+                    sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            ((TextView) view).setText(dayList[i]);
+                            selected_lecture = dayList[i];
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                    // result = ((AlarmManagementActivity)AlarmManagementActivity.mContext).addAlarm(selected_sub,selected_exam,selected_assignment,selected_lecture,"");
+                }
+            }
+        });
 
 
                 btn_yes.setOnClickListener((view) -> { //확인버튼 누르면
