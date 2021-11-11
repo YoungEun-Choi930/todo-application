@@ -19,7 +19,7 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity android:name=".AlarmManagementActivity" />
         <activity android:name=".FriendsManagementActivity" />
-        <activity android:name=".TodoActivity" />
+        <activity android:name=".TodoManagementActivity" />
         <activity android:name=".SubjectManagementActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -1,13 +1,13 @@
 package com.example.todo;
 
-public class AssingmentInfo {
+public class Assignment {
     private String subjectName;
-    private String assingmentName;
+    private String assignmentName;
     private Boolean isDone;
 
-    public AssingmentInfo(String subjectName, String assingmentName, Boolean isDone) {
+    public Assignment(String subjectName, String assignmentName, Boolean isDone) {
         this.subjectName = subjectName;
-        this.assingmentName = assingmentName;
+        this.assignmentName = assignmentName;
         this.isDone = isDone;
     }
 
@@ -19,12 +19,12 @@ public class AssingmentInfo {
         this.subjectName = subjectName;
     }
 
-    public String getAssingmentName() {
-        return assingmentName;
+    public String getAssignmentName() {
+        return assignmentName;
     }
 
-    public void setAssingmentName(String assingmentName) {
-        this.assingmentName = assingmentName;
+    public void setAssignmentName(String assignmentName) {
+        this.assignmentName = assignmentName;
     }
 
     public Boolean getIsDone() {

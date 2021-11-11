@@ -135,7 +135,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
 
     public List<SubjectInfo> getSubjectList() {
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         List<SubjectInfo> list = adapter.loadSubjectList();
         return list;
     }
@@ -145,7 +145,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
     public boolean addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime, int year, int semester) {
         String query = "INSERT INTO SubjectList VALUES('"+
                 subjectName+"',"+number+","+startWeekNumber+","+startTime+","+endWeekNumber+","+endTime+");";
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         boolean result = adapter.excuteQuery(query);
 
         if(result == false) return false;
@@ -244,10 +244,19 @@ public class SubjectManagementActivity extends AppCompatActivity {
     }
     private void delSubject(String subjectName) {
         String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         adapter.excuteQuery(query);
 
         query = "DELETE FROM LectureList WHERE subjectName = '"+subjectName+"';";
+        adapter.excuteQuery(query);
+
+        query = "DELETE FROM AssignmnetList WHERE subjectName = '"+subjectName+"';";
+        adapter.excuteQuery(query);
+
+        query = "DELETE FROM ExamList WHERE subjectName = '"+subjectName+"';";
+        adapter.excuteQuery(query);
+
+        query = "DELETE FROM Alarm WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
 
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);

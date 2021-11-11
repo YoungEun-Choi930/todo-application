@@ -123,23 +123,23 @@ public class AlarmManagementActivity extends AppCompatActivity {
     }
 
     public List<AlarmInfo> getAlarmList(){
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         List<AlarmInfo> list = adapter.loadAlarmList();
         return list;
     }
-    public boolean addAlarm(String subjectName, String exam, String assingment, String video, String real){
+    public boolean addAlarm(String subjectName, String exam, String assignment, String video, String real){
         String query = "INSERT INTO AlarmList VALUES('"+
-                subjectName+"','"+exam+"','"+assingment+"','"+video+"','"+real+"');";
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+                subjectName+"','"+exam+"','"+assignment+"','"+video+"','"+real+"');";
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         boolean result = adapter.excuteQuery(query);
-        AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assingment,video,real);
+        AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video,real);
         alarmInfoList.add(alarmInfo);
         alarmAdapter.notifyDataSetChanged();
         return result;
     }
     public boolean delAlarm(String subjectName) {
         String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         boolean result = adapter.excuteQuery(query);
         return result;
     }
