@@ -121,6 +121,11 @@ public class AlarmManagementActivity extends AppCompatActivity {
         alarmAdapter.updateCheckBox(i);
         alarmAdapter.notifyDataSetChanged();;
     }
+    public List<SubjectInfo> getSubjectList() {
+        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        List<SubjectInfo> list = adapter.loadSubjectList();
+        return list;
+    }
 
     public List<AlarmInfo> getAlarmList(){
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
@@ -143,4 +148,5 @@ public class AlarmManagementActivity extends AppCompatActivity {
         boolean result = adapter.excuteQuery(query);
         return result;
     }
+
 }
