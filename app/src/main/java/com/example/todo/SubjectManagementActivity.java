@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +60,11 @@ public class SubjectManagementActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         subjectAdapter.notifyDataSetChanged();
 
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+
         btn_del_sub= (Button)findViewById(R.id.btn_del_sub);
         btn_del_sub.setOnClickListener(view -> { //삭제버튼 선택되면
 
@@ -67,10 +73,11 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 delSubject(subjectAdapter.getcheckedList().get(i).getSubjectName());
             }
             Toast.makeText(this, "과목 삭제 완료", Toast.LENGTH_SHORT).show();
+            btn_del_sub.setVisibility(View.GONE);
+            btnCheck(0);
+            ck=0;
             subjectAdapter.notifyDataSetChanged();
         });
-
-
 
     }
 
@@ -87,6 +94,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
             case R.id.add_subject: // 과목추가버튼 누른 경우
                 Intent intent = new Intent(getApplicationContext(), AddSubjectActivity.class);
                 startActivity(intent);
+
                 break;
             case R.id.del_subject:
                 if(ck==0){
@@ -126,7 +134,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
     }
 
 
-    private List<SubjectInfo> getSubjectList() {
+    public List<SubjectInfo> getSubjectList() {
         SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
         List<SubjectInfo> list = adapter.loadSubjectList();
         return list;
