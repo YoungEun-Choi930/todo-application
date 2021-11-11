@@ -1,18 +1,9 @@
 package com.example.todo;
 
-import android.provider.ContactsContract;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,7 +70,7 @@ public class FirebaseDBHelper {
 
 
 
-    public List<LectureInfo> loadFriendLectureList(String friendID, int date){
+    private List<LectureInfo> loadFriendLectureList(String friendID, int date){
 
         Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
 
@@ -112,7 +103,7 @@ public class FirebaseDBHelper {
             return null;
     }
 
-    public List<AssingmentInfo> loadFriendAssingmentList(String friendID, int date){
+    private List<AssingmentInfo> loadFriendAssingmentList(String friendID, int date){
 
         Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("lecture").get();
 
@@ -145,7 +136,7 @@ public class FirebaseDBHelper {
             return null;
     }
 
-    public List<ExamInfo> loadFriendExamList(String friendID, int date){
+    private List<ExamInfo> loadFriendExamList(String friendID, int date){
 
         Task<DataSnapshot> list = databaseReference.child("USERS").child(friendID).child("exam").get();
 
@@ -218,7 +209,7 @@ public class FirebaseDBHelper {
         uploadInfo(iinfo, "exam");
     }
 
-    public void uploadInfo(HashMap info,String table) {
+    private void uploadInfo(HashMap info,String table) {
         databaseReference.child("USERS").child(userID).child(table).updateChildren(info);
     }
 
