@@ -201,9 +201,12 @@ public class SubjectManagementActivity extends AppCompatActivity {
                     return false;
                 }
             }
-            firebaseDB.uploadMyLecture(subjectName, lecturelist);
+
             cal.add(Calendar.DATE, 7-enddate);
         }
+
+        firebaseDB.uploadMyLecture(subjectName, lecturelist);
+
         SubjectInfo subjectInfo = new SubjectInfo();
         subjectInfo.setSubjectName(subjectName);
         subjectlist.add(subjectInfo);
@@ -250,13 +253,13 @@ public class SubjectManagementActivity extends AppCompatActivity {
         query = "DELETE FROM LectureList WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
 
-        query = "DELETE FROM AssignmnetList WHERE subjectName = '"+subjectName+"';";
+        query = "DELETE FROM AssignmentList WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
 
         query = "DELETE FROM ExamList WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
 
-        query = "DELETE FROM Alarm WHERE subjectName = '"+subjectName+"';";
+        query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
 
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
