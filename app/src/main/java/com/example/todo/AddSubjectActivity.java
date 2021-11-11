@@ -68,9 +68,8 @@ public class AddSubjectActivity extends Activity {
             System.out.println(year_sub+"년도"+semester_sub);
 
 
-            boolean result = ((SubjectManagementActivity)SubjectManagementActivity.mContext).addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,2021,2);
+            boolean result = ((SubjectManagementActivity)SubjectManagementActivity.mContext).addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,year_sub,semester_sub);
 
-            System.out.println("어디가안되는겨?");
             if(result){
                 Toast.makeText(this, "과목추가 완료", Toast.LENGTH_SHORT).show();
             }else
@@ -83,6 +82,7 @@ public class AddSubjectActivity extends Activity {
         });
 
     }
+
 
 
     @Override

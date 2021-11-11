@@ -183,13 +183,7 @@ public class SQLiteDBAdapter
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    AlarmInfo info = new AlarmInfo();
-
-                    info.setSubjectName(cursor.getString(0));
-                    info.setExamAlarmDate(cursor.getString(1));
-                    info.setAssingmentAlarmDate(cursor.getString(2));
-                    info.setVideoLectureAlarmDate(cursor.getString(3));
-                    info.setRealTimeLectureAlarmDate(cursor.getString(4));
+                    AlarmInfo info = new AlarmInfo(false,cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
 
                     list.add(info);
                 }

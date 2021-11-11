@@ -1,6 +1,5 @@
 package com.example.todo;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +9,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
-public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemViewHolder> {
-    ArrayList<SubjectInfo> mySubjectList;
-    ArrayList<SubjectInfo> checkedList = new ArrayList();
+public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHolder> {
+    ArrayList<AlarmInfo> myAlarmList;
+    ArrayList<AlarmInfo> checkedList = new ArrayList();
     private int ck = 0;
 
-    public subjectAdapter(ArrayList<SubjectInfo> list){
-        this.mySubjectList=list;
+    public alarmAdapter(ArrayList<AlarmInfo> list){
+        this.myAlarmList=list;
     }
 
 
@@ -31,19 +31,19 @@ public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemVie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull subjectAdapter.ItemViewHolder holder, int position) {
-        SubjectInfo subjectInfo=mySubjectList.get(position);
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+        AlarmInfo alarmInfo=myAlarmList.get(position);
 
-        holder.tv_name_sub.setText(subjectInfo.getSubjectName());
+        holder.tv_name_sub.setText(alarmInfo.getSubjectName());
 
         holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(subjectInfo.checked);
+        holder.checkBox.setChecked(alarmInfo.checked);
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                subjectInfo.checked = isChecked;
-                checkedList.add(subjectInfo);
+                alarmInfo.checked = isChecked;
+                checkedList.add(alarmInfo);
             }
         });
 
@@ -56,7 +56,7 @@ public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemVie
 
     @Override
     public int getItemCount() {
-        return mySubjectList.size();
+        return myAlarmList.size();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder{
@@ -75,8 +75,10 @@ public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemVie
         ck = n;
     }
 
-    public ArrayList<SubjectInfo> getcheckedList() {
+    public ArrayList<AlarmInfo> getcheckedList() {
         return checkedList;
     }
 
 }
+
+
