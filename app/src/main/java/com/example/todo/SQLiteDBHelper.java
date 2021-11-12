@@ -50,8 +50,7 @@ public class SQLiteDBHelper
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    SubjectInfo info = new SubjectInfo();
-                    info.setSubjectName(cursor.getString(0));
+                    SubjectInfo info = new SubjectInfo(cursor.getString(0));
                     list.add(info);
                 }
             }
