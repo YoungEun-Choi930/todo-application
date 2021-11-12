@@ -132,6 +132,12 @@ public class FriendsManagementActivity extends AppCompatActivity {
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         List<String> list = firebaseDB.loadFriendsList();
 
+        System.out.println("4");
+        for(String name: list) {
+            System.out.println("22222222");
+            System.out.println(name);
+        }
+
         return list;
     }
     public List<String> getFriendsRequestList(){    //친구신청 목록 불러오기

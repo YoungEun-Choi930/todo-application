@@ -16,7 +16,7 @@ public class SQLiteDBHelper
 
     public SQLiteDBHelper()
     {
-        mDbHelper = SQLiteDB.getInstance(MainActivity.ApplicationContext);
+        mDbHelper = SQLiteDB.getInstance();
     }
 
     public Boolean excuteQuery(String sql)
