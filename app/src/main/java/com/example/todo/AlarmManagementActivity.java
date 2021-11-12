@@ -122,20 +122,20 @@ public class AlarmManagementActivity extends AppCompatActivity {
         alarmAdapter.notifyDataSetChanged();;
     }
     public List<SubjectInfo> getSubjectList() {
-        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper();
         List<SubjectInfo> list = adapter.loadSubjectList();
         return list;
     }
 
     public List<AlarmInfo> getAlarmList(){
-        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper();
         List<AlarmInfo> list = adapter.loadAlarmList();
         return list;
     }
     public boolean addAlarm(String subjectName, String exam, String assignment, String video, String real){
         String query = "INSERT INTO AlarmList VALUES('"+
                 subjectName+"','"+exam+"','"+assignment+"','"+video+"','"+real+"');";
-        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
         AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video,real);
         alarmInfoList.add(alarmInfo);
@@ -144,7 +144,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
     }
     public boolean delAlarm(String subjectName) {
         String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
-        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
         return result;
     }

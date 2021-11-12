@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth auth=null; // 파이어 베이스 인증 객체
     private GoogleApiClient googleApiClient; // 구글 API 클라이언트 객체
     private static final int REQ_SIGN_GOOGLE = 100; //구글 로그인 결과 코드
+    public static String USERID;
+    public static Context ApplicationContext;
 
 
     @Override
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ApplicationContext = getApplicationContext();
         login();
 
 
@@ -53,10 +57,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         auth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체 초기화
         if (auth.getCurrentUser() != null) {
             Intent intent = new Intent(getApplication(), TodoManagementActivity.class);
+
             String userID = auth.getCurrentUser().getEmail();
             userID = userID.substring(0,userID.indexOf('@'));
 
-            intent.putExtra("userID", userID);
+            USERID = userID;
+
             startActivity(intent);
             finish();
         } // 로그인되어있으면 바로 다음화면으로 넘어가기
@@ -93,13 +99,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {//로그인이 성공했으면
                             Intent intent = new Intent(getApplicationContext(), TodoManagementActivity.class);
-                            intent.putExtra("nickname", account.getDisplayName());
-
                             String userID = account.getEmail();
                             userID = userID.substring(0,userID.indexOf('@'));
 
-                            intent.putExtra("userID", userID);
-                            intent.putExtra("photoUrl", String.valueOf(account.getPhotoUrl()));
+                            USERID = userID;
+
+//                            intent.putExtra("nickname", account.getDisplayName());
+//                            intent.putExtra("userID", userID);
+//                            intent.putExtra("photoUrl", String.valueOf(account.getPhotoUrl()));
                             startActivity(intent);
                         } else {
                             Toast.makeText(MainActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();

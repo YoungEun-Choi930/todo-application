@@ -41,7 +41,7 @@ public class AddAlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_alarm);
 
-        subjectList = ((AlarmManagementActivity) AlarmManagementActivity.mContext).getSubjectList();
+        subjectList = SubjectManagementActivity.getSubjectList();
         System.out.println(subjectList.size()+"리스트에몇개들었니?");
 
         Button btn_no = (Button) findViewById(R.id.no_subject); //취소
