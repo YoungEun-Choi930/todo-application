@@ -199,7 +199,8 @@ public class SubjectManagementActivity extends AppCompatActivity {
         }
 
         firebaseDB.uploadMyLecture(subjectName, lecturelist);
-        subjectlist = getSubjectList();
+
+        subjectlist.add(new SubjectInfo(subjectName));
         subjectAdapter.notifyDataSetChanged();
 
         return result;

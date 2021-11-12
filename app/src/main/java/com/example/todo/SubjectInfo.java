@@ -4,6 +4,10 @@ public class SubjectInfo {
     private String subjectName;
     private boolean checked = false;
 
+    public SubjectInfo(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
     public String getSubjectName() {
         return subjectName;
     }
@@ -14,10 +18,6 @@ public class SubjectInfo {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
     }
 
 }
