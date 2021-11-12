@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.widget.Button;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class AddSubjectActivity extends Activity {
@@ -68,7 +71,7 @@ public class AddSubjectActivity extends Activity {
             System.out.println(year_sub+"년도"+semester_sub);
 
 
-            boolean result = ((SubjectManagementActivity)SubjectManagementActivity.mContext).addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,year_sub,semester_sub);
+            boolean result = SubjectManagementActivity.addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,year_sub,semester_sub);
 
             if(result){
                 Toast.makeText(this, "과목추가 완료", Toast.LENGTH_SHORT).show();

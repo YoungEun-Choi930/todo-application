@@ -1,12 +1,18 @@
 package com.example.todo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,60 +22,61 @@ public class FirebaseDBHelper {
     private DatabaseReference databaseReference;
     private String userID;
 
-    public FirebaseDBHelper(String ID) {
+    private List<String> myfriendslist;
+    private List<String> myfriendsrequestlist;
+
+    public FirebaseDBHelper() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("USERS");
-        userID = ID;
+        userID = MainActivity.USERID;
     }
+
+    public void login(){
+        databaseReference.child(userID).child("lecture").setValue("lecture");
+        databaseReference.child(userID).child("assingment").setValue("assingment");
+        databaseReference.child(userID).child("exam").setValue("exam");
+        databaseReference.child(userID).child("friend").setValue("friend");
+    }
+
 
     public boolean confirmFriendExist(String friendID){
         final boolean[] result = new boolean[1];
-        databaseReference.child(friendID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.getResult().exists()) //존재하면
-                    result[0] = true;
-                else
-                    result[0] = false;
-            }
-        });
+        Task<DataSnapshot> task = databaseReference.child(friendID).get();
+        if(task.getResult().exists()) //존재하면
+            result[0] = true;
+        else
+            result[0] = false;
 
         return result[0];
     }
 
     public List<String> loadFriendsRequestList(){       //친구신청 목록 불러오기
         List<String> result = new ArrayList<>();
-        databaseReference.child(userID).child("friend").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.getResult().exists()) { //데이터가 존재하면
-                    for(DataSnapshot friend: task.getResult().getChildren()) {
-                        if((int) friend.getValue() == 0) {  //친구신청 상태면 result에 넣는다.
-                            result.add(friend.getKey());
-                            System.out.println(friend.getKey());
-                        }
-                    }
+        Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
+        if(task.getResult().getValue().equals("friend"))
+            return result;
+        if(task.getResult().exists()) { //데이터가 존재하면
+            for(DataSnapshot friend: task.getResult().getChildren()) {
+                if((int) friend.getValue() == 0) {  //친구신청 상태면 result에 넣는다.
+                    result.add(friend.getKey());
+                    System.out.println(friend.getKey());
                 }
             }
-        });
+        }
         return result;
     }
 
     public List<String> loadFriendsList() {     //서로친구 목록 불러오기
         List<String> result = new ArrayList<>();
-        databaseReference.child(userID).child("friend").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.getResult().exists()) { //데이터가 존재하면
-                    for (DataSnapshot friend : task.getResult().getChildren()) { //친구 목록을 돌면서
-                        if ((int) friend.getValue() == 1) {   //서로친구 상태면 result에 넣는다.
-                            result.add(friend.getKey());
-                            System.out.println(friend.getKey());
-                        }
-                    }
+        Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
+        if(task.getResult().exists()) { //데이터가 존재하면
+            for(DataSnapshot friend: task.getResult().getChildren()) {
+                if((int) friend.getValue() == 1) {  //친구신청 상태면 result에 넣는다.
+                    result.add(friend.getKey());
+                    System.out.println(friend.getKey());
                 }
             }
-        });
+        }
         return result;
 
     }
@@ -92,94 +99,82 @@ public class FirebaseDBHelper {
 
     private List<LectureInfo> loadFriendLectureList(String friendID, int date){
         List<LectureInfo> result = new ArrayList<>();
-        databaseReference.child(friendID).child("lecture").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.getResult().exists()) { //데이터가 존재하면
+        Task<DataSnapshot> task = databaseReference.child(friendID).child("lecture").get();
+        if(task.getResult().exists()) { //데이터가 존재하면
 
-                    for (DataSnapshot subjectlist : task.getResult().getChildren()) { //과목목록
+            for (DataSnapshot subjectlist : task.getResult().getChildren()) { //과목목록
 
-                        for (DataSnapshot lecturelist : subjectlist.getChildren()) { //강의목록
-                            UploadInfo lecture = lecturelist.getValue(UploadInfo.class);
+                for (DataSnapshot lecturelist : subjectlist.getChildren()) { //강의목록
+                    UploadInfo lecture = lecturelist.getValue(UploadInfo.class);
 
-                            if (lecture.startDate > date)        //date에 해당하지 않는 것은 넘어감.
-                                continue;
-                            if (lecture.endDate < date)
-                                continue;
+                    if (lecture.startDate > date)        //date에 해당하지 않는 것은 넘어감.
+                        continue;
+                    if (lecture.endDate < date)
+                        continue;
 
-                            String lectureName = lecturelist.getKey();
-                            String subjectName = subjectlist.getKey();
-                            boolean isDone = lecture.isDone;
+                    String lectureName = lecturelist.getKey();
+                    String subjectName = subjectlist.getKey();
+                    boolean isDone = lecture.isDone;
 
-                            LectureInfo lectureInfo = new LectureInfo(subjectName, lectureName, isDone);
-                            result.add(lectureInfo);
-                        }
-
-                    }
+                    LectureInfo lectureInfo = new LectureInfo(subjectName, lectureName, isDone);
+                    result.add(lectureInfo);
                 }
+
             }
-        });
+        }
         return result;
     }
 
     private List<Assignment> loadFriendAssignmentList(String friendID, int date){
         List<Assignment> result = new ArrayList<>();
-        databaseReference.child(friendID).child("lecture").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.getResult().exists()) { //데이터가 존재하면
+        Task<DataSnapshot> task = databaseReference.child(friendID).child("lecture").get();
+        if(task.getResult().exists()) { //데이터가 존재하면
 
-                    for(DataSnapshot subjectlist: task.getResult().getChildren()){
+            for(DataSnapshot subjectlist: task.getResult().getChildren()){
 
-                        for(DataSnapshot assignmentlist: subjectlist.getChildren()) {
-                            UploadInfo lecture = assignmentlist.getValue(UploadInfo.class);
+                for(DataSnapshot assignmentlist: subjectlist.getChildren()) {
+                    UploadInfo lecture = assignmentlist.getValue(UploadInfo.class);
 
-                            if(lecture.startDate > date)        //date에 해당하지 않는 것은 넘어감.
-                                continue;
-                            if(lecture.endDate < date)
-                                continue;
+                    if(lecture.startDate > date)        //date에 해당하지 않는 것은 넘어감.
+                        continue;
+                    if(lecture.endDate < date)
+                        continue;
 
-                            String lectureName = assignmentlist.getKey();
-                            String subjectName = subjectlist.getKey();
-                            boolean isDone = lecture.isDone;
+                    String lectureName = assignmentlist.getKey();
+                    String subjectName = subjectlist.getKey();
+                    boolean isDone = lecture.isDone;
 
-                            Assignment assignmentInfo = new Assignment(subjectName,lectureName,isDone);
-                            result.add(assignmentInfo);
-                        }
-
-                    }
-
+                    Assignment assignmentInfo = new Assignment(subjectName,lectureName,isDone);
+                    result.add(assignmentInfo);
                 }
+
             }
-        });
+
+        }
         return result;
     }
 
     private List<ExamInfo> loadFriendExamList(String friendID, int date){
         List<ExamInfo> result = new ArrayList<>();
-        databaseReference.child(friendID).child("exam").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.getResult().exists()) { //데이터가 존재하면
+        Task<DataSnapshot> task = databaseReference.child(friendID).child("exam").get();
+        if(task.getResult().exists()) { //데이터가 존재하면
 
-                    for(DataSnapshot subjectlist: task.getResult().getChildren()){
+            for(DataSnapshot subjectlist: task.getResult().getChildren()){
 
-                        for(DataSnapshot examlist: subjectlist.getChildren()) {
-                            UploadExamInfo lecture = examlist.getValue(UploadExamInfo.class);
+                for(DataSnapshot examlist: subjectlist.getChildren()) {
+                    UploadExamInfo lecture = examlist.getValue(UploadExamInfo.class);
 
-                            if(lecture.date == date)        //date에 해당하면 list에 넣음.
-                            {
-                                String lectureName = examlist.getKey();
-                                String subjectName = subjectlist.getKey();
+                    if(lecture.date == date)        //date에 해당하면 list에 넣음.
+                    {
+                        String lectureName = examlist.getKey();
+                        String subjectName = subjectlist.getKey();
 
-                                ExamInfo examInfo = new ExamInfo(subjectName,lectureName);
-                                result.add(examInfo);
-                            }
-                        }
+                        ExamInfo examInfo = new ExamInfo(subjectName,lectureName);
+                        result.add(examInfo);
                     }
                 }
             }
-        });
+        }
         return result;
     }
 

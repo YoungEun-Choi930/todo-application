@@ -31,20 +31,14 @@ import java.util.List;
 
 public class SubjectManagementActivity extends AppCompatActivity {
   //  private static final int REQUEST_CODE = 0;
-    public static Context mContext;
-    private List<SubjectInfo> subjectlist;
-    subjectAdapter subjectAdapter;
+    public static List<SubjectInfo> subjectlist;
+    public static subjectAdapter subjectAdapter;
     Button btn_del_sub;
     int ck = 0;
-    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext=this;
-
-        Intent getintent = getIntent();
-        this.userID = getintent.getExtras().getString("userID");
 
         setContentView(R.layout.activity_subject_management);
 
@@ -134,18 +128,17 @@ public class SubjectManagementActivity extends AppCompatActivity {
     }
 
 
-    public List<SubjectInfo> getSubjectList() {
-        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
+    public static List<SubjectInfo> getSubjectList() {
+        SQLiteDBHelper adapter = new SQLiteDBHelper();
         List<SubjectInfo> list = adapter.loadSubjectList();
         return list;
     }
-
     //+2021년(int) 2학기(int:1 or 2) 정보도 받아와야 할 듯
     //startWeekNumber 넘겨줄때 1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토 로 넘겨주세요
-    public boolean addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime, int year, int semester) {
+    public static boolean addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime, int year, int semester) {
         String query = "INSERT INTO SubjectList VALUES('"+
                 subjectName+"',"+number+","+startWeekNumber+","+startTime+","+endWeekNumber+","+endTime+");";
-        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
 
         if(result == false) return false;
@@ -161,7 +154,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
         String strstartdate;
         String strenddate;
 
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         HashMap<String, Object> lecturelist = new HashMap<>();
 
 
@@ -206,15 +199,12 @@ public class SubjectManagementActivity extends AppCompatActivity {
         }
 
         firebaseDB.uploadMyLecture(subjectName, lecturelist);
-
-        SubjectInfo subjectInfo = new SubjectInfo();
-        subjectInfo.setSubjectName(subjectName);
-        subjectlist.add(subjectInfo);
+        subjectlist = getSubjectList();
         subjectAdapter.notifyDataSetChanged();
 
         return result;
     }
-    private Date getstartDate(int year, int semester, int startWeekNumber) {
+    private static Date getstartDate(int year, int semester, int startWeekNumber) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = Integer.toString(year);
         if(semester == 1)
@@ -245,9 +235,10 @@ public class SubjectManagementActivity extends AppCompatActivity {
         }
         return cal.getTime();
     }
+
     private void delSubject(String subjectName) {
         String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
-        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper();
         adapter.excuteQuery(query);
 
         query = "DELETE FROM LectureList WHERE subjectName = '"+subjectName+"';";
@@ -262,7 +253,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
         query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
 
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delSubject(subjectName);
 
     }

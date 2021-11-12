@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TodoManagementActivity extends AppCompatActivity {
-    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +25,6 @@ public class TodoManagementActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.todo_toolbar);
         setSupportActionBar(myToolbar);
-
-        Intent getintent = getIntent();
-        userID = getintent.getExtras().getString("userID");
-
 
         MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
 
@@ -41,13 +36,11 @@ public class TodoManagementActivity extends AppCompatActivity {
 
         btn_subject.setOnClickListener((view) -> { // 과목관리버튼 선택
             Intent intent = new Intent(getApplicationContext(), SubjectManagementActivity.class);
-            intent.putExtra("userID",userID);
             startActivity(intent);
 
         });
         btn_friend.setOnClickListener((view) -> { // 친구관리버튼 선택
             Intent intent = new Intent(getApplicationContext(), FriendsManagementActivity.class);
-            intent.putExtra("userID",userID);
             startActivity(intent);
 
         });
@@ -91,7 +84,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         });
     }
     private List<List> getToDoList(String date) {
-        SQLiteDBHelper helper = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper helper = new SQLiteDBHelper();
         List<LectureInfo> lecturelist = helper.loadLectureList(date);
         List<Assignment> assignmentList = helper.loadAssignmentList(date);
         List<ExamInfo> examlist = helper.loadExamList(date);
@@ -104,48 +97,48 @@ public class TodoManagementActivity extends AppCompatActivity {
     }
 
     private boolean addAssignment(String subjectName, String assignmentName, String startDate, String startTime, String endDate, String endTime) {
-        SQLiteDBHelper helper = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO AssignmentList VALUES('" +
                 subjectName+"','"+assignmentName+"',"+startDate+","+startTime+","+endDate+","+endTime+",0);";
         boolean result = helper.excuteQuery(query);
 
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.uploadMyAssignment(subjectName,assignmentName, startDate, startTime, endDate, endTime);
 
         return result;
     }
 
     private boolean delAssignment(String assignmentName, String subjectName) {
-        SQLiteDBHelper helper = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "DELETE FROM AssignmentList WHERE assignmentName = '"+assignmentName+"';";
 
         boolean result = helper.excuteQuery(query);
 
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delMyAssignment(assignmentName, subjectName);
 
         return result;
     }
 
     private boolean addExam(String subjectName, String examName, String date, String time) {
-        SQLiteDBHelper helper = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO ExamList VALUES('" +
                 subjectName+"','"+examName+"',"+date+","+time+");";
         boolean result = helper.excuteQuery(query);
 
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.uploadMyExam(subjectName,examName, date, time);
 
         return result;
     }
 
     private boolean delExam(String examName, String subjectName) {
-        SQLiteDBHelper helper = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "DELETE FROM ExamList WHERE examName = '"+examName+"';";
 
         boolean result = helper.excuteQuery(query);
 
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delMyExam(examName, subjectName);
 
         return result;
@@ -156,11 +149,11 @@ public class TodoManagementActivity extends AppCompatActivity {
     // table: "Lecture" or "Assignment" 로 보내주세요
     // value: 바꿔야하는 isDone 값. 만약 지금 1이면 0을 보내고, 0이면 1을 보내주어야 함.
     private boolean changeIsDone(String name, String subjectName, String table, int value) {
-        SQLiteDBHelper helper = new SQLiteDBHelper(getApplicationContext());
+        SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "UPDATE "+table+"List SET isDone = "+value+" WHERE "+table.toLowerCase()+"Name = '"+name+"';";
         boolean result = helper.excuteQuery(query);
 
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.changeMyIsDone(name, subjectName, table, value);
 
         return result;

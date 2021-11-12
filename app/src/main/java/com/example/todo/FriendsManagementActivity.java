@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsManagementActivity extends AppCompatActivity {
-    private String userID;
     List friendsList;
     Button btn_del_friend;
     friendAdapter friendAdapter;
@@ -34,9 +33,6 @@ public class FriendsManagementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_management);
-
-        Intent getintent = getIntent();
-        userID = getintent.getExtras().getString("userID");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.friend_toolbar);
         setSupportActionBar(myToolbar);//툴바달기
@@ -133,20 +129,20 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friendAdapter.notifyDataSetChanged();;
     }
     public List<String> getFriendsList(){   //친구목록 불러오기
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         List<String> list = firebaseDB.loadFriendsList();
 
         return list;
     }
     public List<String> getFriendsRequestList(){    //친구신청 목록 불러오기
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         List<String> list = firebaseDB.loadFriendsRequestList();
 
         return list;
     }
 
     public boolean requestFriend(String friendID) { //친구 ID를 받아서 존재하면 친구신청, return ture, 존재하지 않으면 return false
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         if(firebaseDB.confirmFriendExist(friendID)) {
             firebaseDB.requestFriend(friendID);
             return true;
@@ -156,17 +152,17 @@ public class FriendsManagementActivity extends AppCompatActivity {
     }
 
     public void acceptFriend(String friendID) { //친구 신청 수락하기
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.acceptFriend(friendID);
     }
 
     public void delFriend(String friendID) { //친구 삭제
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delFriend(friendID);
     }
 
     public List<List> getFriendToDoList(String friendID, int date) {    //친구 일정 조회
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         return firebaseDB.loadFriendToDoList(friendID, date);
     }
 
