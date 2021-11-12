@@ -9,13 +9,13 @@ public class SQLiteDB extends SQLiteOpenHelper {
     //Singleton 패턴
     private static SQLiteDB db;
 
-    private SQLiteDB(Context context) {
-        super(context,"sqlite_file.db",null,8);
+    private SQLiteDB() {
+        super(MainActivity.ApplicationContext,"sqlite_file.db",null,8);
     }
 
-    public static SQLiteDB getInstance(Context context){
+    public static SQLiteDB getInstance(){
         if(db == null)
-            db = new SQLiteDB(context);
+            db = new SQLiteDB();
         return db;
     }
 

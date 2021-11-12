@@ -24,6 +24,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private SignInButton btn_login; // 구글 로그인 버튼
     private FirebaseAuth auth=null; // 파이어 베이스 인증 객체
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ApplicationContext = getApplicationContext();
+
         login();
 
 
@@ -62,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             userID = userID.substring(0,userID.indexOf('@'));
 
             USERID = userID;
+
+            FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
+            firebaseDB.login();
 
             startActivity(intent);
             finish();

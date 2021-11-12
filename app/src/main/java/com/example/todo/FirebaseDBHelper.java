@@ -32,10 +32,10 @@ public class FirebaseDBHelper {
     }
 
     public void login(){
-        databaseReference.child(userID).child("lecture").setValue("lecture");
-        databaseReference.child(userID).child("assingment").setValue("assingment");
-        databaseReference.child(userID).child("exam").setValue("exam");
-        databaseReference.child(userID).child("friend").setValue("friend");
+//        databaseReference.child(userID).child("lecture").setValue("lecture");
+//        databaseReference.child(userID).child("assingment").setValue("assingment");
+//        databaseReference.child(userID).child("exam").setValue("exam");
+        databaseReference.child(userID).child("friend").child(userID).setValue(1);
     }
 
 
@@ -66,17 +66,36 @@ public class FirebaseDBHelper {
         return result;
     }
 
+
     public List<String> loadFriendsList() {     //서로친구 목록 불러오기
         List<String> result = new ArrayList<>();
         Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
-        if(task.getResult().exists()) { //데이터가 존재하면
-            for(DataSnapshot friend: task.getResult().getChildren()) {
-                if((int) friend.getValue() == 1) {  //친구신청 상태면 result에 넣는다.
-                    result.add(friend.getKey());
-                    System.out.println(friend.getKey());
+
+        OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()) {
+                    for(DataSnapshot friend: task.getResult().getChildren()) {
+                        System.out.println(friend.getKey());
+                        System.out.println(friend.getValue());
+                        if (friend.getValue() == (Object)1) {  //친구신청 상태면 result에 넣는다.
+//                            if (friend.getKey().equals(userID)) continue;
+                            result.add(friend.getKey());
+                            System.out.println(friend.getKey());
+                        }
+                    }
+                }
+                else{
+                    System.out.println("11111111111");
                 }
             }
-        }
+        };
+
+        task.addOnCompleteListener(friendlistener);
+
+
+
+        System.out.println("영은3");
         return result;
 
     }
