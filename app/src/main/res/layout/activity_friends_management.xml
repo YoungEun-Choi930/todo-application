@@ -7,76 +7,72 @@
     android:orientation="horizontal"
     tools:context=".FriendsManagementActivity" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/a"
+            android:id="@+id/friend_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:title="친구관리" />
+            app:title="친구관리"
+            app:titleTextColor="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_below="@+id/a">
-
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <Button
-                android:id="@+id/button14"
+                android:id="@+id/friends"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-
-                android:text="서로친구목록" />
-
+                android:layout_margin="3dp"
+                android:text="서로친구목록"/>
             <Button
-                android:id="@+id/button15"
+                android:id="@+id/friends_request"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="친구신청목록" />
+                android:layout_margin="3dp"
+                android:text="받은친구신청"/>
+
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/button8"
-            android:text="추가"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:text="삭제"
-            android:textSize="20sp" />
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recy_friend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
+            <Button
+                android:id="@+id/btn_del_friend"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="50dp"
+                android:layout_alignBottom="@id/recy_friend"
+                android:layout_marginHorizontal="3dp"
+                android:text="삭    제"
+                android:visibility="gone" />
 
-            </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+
 
 </LinearLayout>

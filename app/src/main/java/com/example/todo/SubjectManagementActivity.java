@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SubjectManagementActivity extends AppCompatActivity {
-    private static final int REQUEST_CODE = 0;
+  //  private static final int REQUEST_CODE = 0;
     public static Context mContext;
     private List<SubjectInfo> subjectlist;
     subjectAdapter subjectAdapter;
@@ -114,7 +114,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
         subjectAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -126,7 +126,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         }
     }
-
+*/
     public void btnCheck(int n){
         subjectAdapter.updateCheckBox(n);
         subjectAdapter.notifyDataSetChanged();;

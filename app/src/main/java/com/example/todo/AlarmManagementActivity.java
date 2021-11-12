@@ -28,7 +28,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
     private int ck=0;
     alarmAdapter alarmAdapter;
     public static Context mContext;
-    private static final int REQUEST_CODE = 1;
+    //private static final int REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +77,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.alarm_menu, menu); //툴바에 메뉴 설정
         return true;
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -88,7 +88,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
             alarmAdapter.notifyDataSetChanged();
         }
     }
-
+*/
 
 
     @Override
@@ -121,6 +121,11 @@ public class AlarmManagementActivity extends AppCompatActivity {
         alarmAdapter.updateCheckBox(i);
         alarmAdapter.notifyDataSetChanged();;
     }
+    public List<SubjectInfo> getSubjectList() {
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
+        List<SubjectInfo> list = adapter.loadSubjectList();
+        return list;
+    }
 
     public List<AlarmInfo> getAlarmList(){
         SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
@@ -143,4 +148,5 @@ public class AlarmManagementActivity extends AppCompatActivity {
         boolean result = adapter.excuteQuery(query);
         return result;
     }
+
 }
