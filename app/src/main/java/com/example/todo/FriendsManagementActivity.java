@@ -160,6 +160,11 @@ public class FriendsManagementActivity extends AppCompatActivity {
         firebaseDB.acceptFriend(friendID);
     }
 
+    public void delFriend(String friendID) { //친구 삭제
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
+        firebaseDB.delFriend(friendID);
+    }
+
     public List<List> getFriendToDoList(String friendID, int date) {    //친구 일정 조회
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper(userID);
         return firebaseDB.loadFriendToDoList(friendID, date);
