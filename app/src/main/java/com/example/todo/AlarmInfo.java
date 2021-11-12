@@ -4,7 +4,7 @@ public class AlarmInfo {
     public boolean checked;
     private String subjectName;
     private String examAlarmDate;
-    private String assingmentAlarmDate;
+    private String assignmentAlarmDate;
     private String videoLectureAlarmDate;
     private String realTimeLectureAlarmDate;
 
@@ -25,12 +25,12 @@ public class AlarmInfo {
         this.examAlarmDate = examAlarmDate;
     }
 
-    public String getAssingmentAlarmDate() {
-        return assingmentAlarmDate;
+    public String getAssignmentAlarmDate() {
+        return assignmentAlarmDate;
     }
 
-    public void setAssingmentAlarmDate(String assingmentAlarmDate) {
-        this.assingmentAlarmDate = assingmentAlarmDate;
+    public void setAssignmentAlarmDate(String assignmentAlarmDate) {
+        this.assignmentAlarmDate = assignmentAlarmDate;
     }
 
     public String getVideoLectureAlarmDate() {
@@ -49,11 +49,11 @@ public class AlarmInfo {
         this.realTimeLectureAlarmDate = realTimeLectureAlarmDate;
     }
 
-    public AlarmInfo(boolean checked, String subjectName, String examAlarmDate, String assingmentAlarmDate, String videoLectureAlarmDate, String realTimeLectureAlarmDate) {
+    public AlarmInfo(boolean checked, String subjectName, String examAlarmDate, String assignmentAlarmDate, String videoLectureAlarmDate, String realTimeLectureAlarmDate) {
         this.checked = checked;
         this.subjectName = subjectName;
         this.examAlarmDate = examAlarmDate;
-        this.assingmentAlarmDate = assingmentAlarmDate;
+        this.assignmentAlarmDate = assignmentAlarmDate;
         this.videoLectureAlarmDate = videoLectureAlarmDate;
         this.realTimeLectureAlarmDate = realTimeLectureAlarmDate;
     }

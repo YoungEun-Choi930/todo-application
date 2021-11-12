@@ -28,7 +28,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
     private int ck=0;
     alarmAdapter alarmAdapter;
     public static Context mContext;
-    private static final int REQUEST_CODE = 1;
+    //private static final int REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +77,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.alarm_menu, menu); //툴바에 메뉴 설정
         return true;
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -88,7 +88,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
             alarmAdapter.notifyDataSetChanged();
         }
     }
-
+*/
 
 
     @Override
@@ -122,29 +122,29 @@ public class AlarmManagementActivity extends AppCompatActivity {
         alarmAdapter.notifyDataSetChanged();;
     }
     public List<SubjectInfo> getSubjectList() {
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         List<SubjectInfo> list = adapter.loadSubjectList();
         return list;
     }
 
     public List<AlarmInfo> getAlarmList(){
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         List<AlarmInfo> list = adapter.loadAlarmList();
         return list;
     }
-    public boolean addAlarm(String subjectName, String exam, String assingment, String video, String real){
+    public boolean addAlarm(String subjectName, String exam, String assignment, String video, String real){
         String query = "INSERT INTO AlarmList VALUES('"+
-                subjectName+"','"+exam+"','"+assingment+"','"+video+"','"+real+"');";
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+                subjectName+"','"+exam+"','"+assignment+"','"+video+"','"+real+"');";
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         boolean result = adapter.excuteQuery(query);
-        AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assingment,video,real);
+        AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video,real);
         alarmInfoList.add(alarmInfo);
         alarmAdapter.notifyDataSetChanged();
         return result;
     }
     public boolean delAlarm(String subjectName) {
         String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
-        SQLiteDBAdapter adapter = SQLiteDBAdapter.getInstance(getApplicationContext());
+        SQLiteDBHelper adapter = new SQLiteDBHelper(getApplicationContext());
         boolean result = adapter.excuteQuery(query);
         return result;
     }

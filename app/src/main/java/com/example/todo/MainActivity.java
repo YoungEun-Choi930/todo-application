@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,8 +22,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private SignInButton btn_login; // 구글 로그인 버튼
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         auth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체 초기화
         if (auth.getCurrentUser() != null) {
-            Intent intent = new Intent(getApplication(), TodoActivity.class);
+            Intent intent = new Intent(getApplication(), TodoManagementActivity.class);
             String userID = auth.getCurrentUser().getEmail();
             userID = userID.substring(0,userID.indexOf('@'));
 
@@ -95,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {//로그인이 성공했으면
-                            Intent intent = new Intent(getApplicationContext(), TodoActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), TodoManagementActivity.class);
                             intent.putExtra("nickname", account.getDisplayName());
 
                             String userID = account.getEmail();

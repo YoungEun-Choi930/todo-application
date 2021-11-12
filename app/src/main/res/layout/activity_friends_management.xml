@@ -44,14 +44,27 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcy_friend"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recy_friend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/btn_del_friend"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignBottom="@id/recy_friend"
+                android:layout_marginHorizontal="3dp"
+                android:text="삭    제"
+                android:visibility="gone" />
 
 
-        </androidx.recyclerview.widget.RecyclerView>
-
+        </RelativeLayout>
 
 
 
