@@ -41,15 +41,25 @@ public class FirebaseDBHelper {
     }
 
 
-    public boolean confirmFriendExist(String friendID){
+    public void confirmFriendExist(String friendID){
         final boolean[] result = new boolean[1];
-        Task<DataSnapshot> task = databaseReference.child(friendID).get();
-        if(task.getResult().exists()) //존재하면
-            result[0] = true;
-        else
-            result[0] = false;
+        Task<DataSnapshot> task = databaseReference.child(friendID).child("friend").get();
 
-        return result[0];
+        OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().exists()) {
+                    requestFriend(friendID);
+                    FriendsManagementActivity.context.requestresult(true);
+                }
+                else{
+                    FriendsManagementActivity.context.requestresult(false);
+                }
+            }
+        };
+
+        task.addOnCompleteListener(friendlistener);
+
     }
 
     public void loadFriendsRequestList(){       //친구신청 목록 불러오기
@@ -65,8 +75,7 @@ public class FirebaseDBHelper {
                         System.out.println(friend.getKey());
                         System.out.println(friend.getValue());
                         if (value == 0) {  //친구신청 상태면 result에 넣는다.
-//                            if (friend.getKey().equals(userID)) continue;
-
+                            if (friend.getKey().equals(userID)) continue;
                             FriendInfo info = new FriendInfo(friend.getKey());
                             result.add(info);
 
@@ -74,7 +83,7 @@ public class FirebaseDBHelper {
 
                         }
                     }
-                   // FriendsManagementActivity.notifyfriendlist(result);
+                    FriendsManagementActivity.context.notifyfriendlist(result);
 
                 }
                 else{
@@ -112,7 +121,7 @@ public class FirebaseDBHelper {
 
                         }
                     }
-                    FriendsManagementActivity.notifyfriendlist(result);
+                    FriendsManagementActivity.context.notifyfriendlist(result);
 
                 }
                 else{
