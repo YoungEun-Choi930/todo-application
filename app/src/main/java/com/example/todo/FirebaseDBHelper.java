@@ -2,6 +2,8 @@ package com.example.todo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -68,7 +70,7 @@ public class FirebaseDBHelper {
 
 
     public List<String> loadFriendsList() {     //서로친구 목록 불러오기
-        List<String> result = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>();
         Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
 
         OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
@@ -76,14 +78,18 @@ public class FirebaseDBHelper {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()) {
                     for(DataSnapshot friend: task.getResult().getChildren()) {
+                        long value = (long) friend.getValue();
                         System.out.println(friend.getKey());
                         System.out.println(friend.getValue());
-                        if (friend.getValue() == (Object)1) {  //친구신청 상태면 result에 넣는다.
+                        if (value == 1) {  //친구신청 상태면 result에 넣는다.
 //                            if (friend.getKey().equals(userID)) continue;
                             result.add(friend.getKey());
-                            System.out.println(friend.getKey());
+                            System.out.println("+"+friend.getKey());
+
                         }
                     }
+                    FriendsManagementActivity.notifyfriendlist(result);
+
                 }
                 else{
                     System.out.println("11111111111");
@@ -92,7 +98,6 @@ public class FirebaseDBHelper {
         };
 
         task.addOnCompleteListener(friendlistener);
-
 
 
         System.out.println("영은3");
