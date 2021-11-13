@@ -72,7 +72,7 @@ public class FirebaseDBHelper {
 
                         }
                     }
-                    FriendsManagementActivity.notifyfriendlist(result);
+                   // FriendsManagementActivity.notifyfriendlist(result);
 
                 }
                 else{

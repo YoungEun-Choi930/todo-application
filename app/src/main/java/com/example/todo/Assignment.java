@@ -31,7 +31,7 @@ public class Assignment {
         return isDone;
     }
 
-    public void setIsDone(Boolean isdone) {
-        isDone = isdone;
+    public void setIsDone(Boolean isDone) {
+        isDone = isDone;
     }
 }
