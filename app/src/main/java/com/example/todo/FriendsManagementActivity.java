@@ -20,13 +20,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsManagementActivity extends AppCompatActivity {
-    List friendsList;
-    Button btn_del_friend;
-    friendAdapter friendAdapter;
+    public static ArrayList<String> friendsList = new ArrayList<>();    //firebase에서 정보 가져오면 넣어주고 notify 왜냐면 정보 가져오는데 시간이 걸려서
+    private Button btn_del_friend;
+    public static friendAdapter friendAdapter;
     boolean result;
     private int ck=0;
     @Override
@@ -34,19 +35,18 @@ public class FriendsManagementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_management);
 
+        getFriendsList();   //friendlist에 정보 넣고 notify
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.friend_toolbar);
         setSupportActionBar(myToolbar);//툴바달기
 
-        friendsList = getFriendsList();
-
-
         RecyclerView recyclerView = findViewById(R.id.recy_friend);
-        friendAdapter = new friendAdapter((ArrayList<String>) friendsList);
+        friendAdapter = new friendAdapter(friendsList);
         recyclerView.setAdapter(friendAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        friendAdapter.notifyDataSetChanged();
+
 
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -57,7 +57,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
             for(int i=0;i<friendAdapter.getcheckedList().size();i++){
                 friendsList.remove(friendAdapter.getcheckedList().get(i).getFriendName());  //친구리스트에서 삭제
-              //  delF(friendAdapter.getcheckedList().get(i).getSubjectName()); 디비가 안만들어졌네용
+                delFriend(friendAdapter.getcheckedList().get(i).getFriendName()); //디비가 안만들어졌네용
             }
 
             Toast.makeText(this, "친구 삭제 완료", Toast.LENGTH_SHORT).show();
@@ -128,18 +128,31 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friendAdapter.updateCheckBox(i);
         friendAdapter.notifyDataSetChanged();;
     }
-    public List<String> getFriendsList(){   //친구목록 불러오기
+
+
+    public void getFriendsList(){   //친구목록 불러오기
+        System.out.println("-------------getFreindsList-------------");
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        List<String> list = firebaseDB.loadFriendsList();
+        firebaseDB.loadFriendsList();
 
-        System.out.println("4");
-        for(String name: list) {
-            System.out.println("22222222");
-            System.out.println(name);
-        }
-
-        return list;
     }
+
+    public static void notifyfriendlist(ArrayList<String> list) {
+        friendsList = list;
+        friendAdapter.notifyDataSetChanged();       //왜 화면이 안뜰까
+        System.out.println("----notify");
+
+
+        for(String str: list)
+            System.out.print(str+",");
+        System.out.println("<- list");
+        for(String str: friendsList)
+            System.out.print(str+",");
+        System.out.println("<- friendlist");
+
+
+    }
+
     public List<String> getFriendsRequestList(){    //친구신청 목록 불러오기
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         List<String> list = firebaseDB.loadFriendsRequestList();
