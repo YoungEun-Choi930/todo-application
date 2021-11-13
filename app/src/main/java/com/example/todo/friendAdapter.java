@@ -1,8 +1,11 @@
 package com.example.todo;
 
+import static com.example.todo.FriendsManagementActivity.context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
 
     public friendAdapter(ArrayList<FriendInfo> list){
         this.myFriendsList=list;
+
     }
 
 
@@ -26,7 +30,6 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemview = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend, parent, false);
-
         return new ItemViewHolder(itemview);
     }
 
@@ -44,6 +47,7 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 friendInfo.setChecked(isChecked);
                 checkedList.add(friendInfo);
+
             }
         });
 
@@ -52,6 +56,14 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
         }
         else
             holder.checkBox.setVisibility(View.GONE);
+
+
+        holder.accept.setOnClickListener(view  -> {
+            myFriendsList.remove(friendInfo);
+            FriendsManagementActivity.context.acceptFriend(friendInfo.getFriendName());
+            notifyDataSetChanged();
+
+        });
     }
 
     @Override
@@ -62,12 +74,13 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
     public class ItemViewHolder extends RecyclerView.ViewHolder{
         TextView tv_name_friend;
         CheckBox checkBox;
+        Button accept;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tv_name_friend = itemView.findViewById(R.id.tv_name_friend);
             checkBox = itemView.findViewById(R.id.checkFriend);
-
+            accept = itemView.findViewById(R.id.accept_friend);
         }
     }
 
