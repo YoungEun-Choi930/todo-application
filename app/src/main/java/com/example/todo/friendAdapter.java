@@ -60,7 +60,7 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
 
         holder.accept.setOnClickListener(view  -> {
             myFriendsList.remove(friendInfo);
-            FriendsManagementActivity.context.acceptFriend(friendInfo.getFriendName());
+            FriendsManagementActivity.context.acceptFriend(friendInfo.getFriendName(), friendInfo.getFriendUID());
             notifyDataSetChanged();
 
         });

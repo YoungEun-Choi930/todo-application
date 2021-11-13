@@ -140,13 +140,25 @@ public class AlarmManagementActivity extends AppCompatActivity {
         AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video,real);
         alarmInfoList.add(alarmInfo);
         alarmAdapter.notifyDataSetChanged();
+
+        setSystemAlarm();
         return result;
     }
     public boolean delAlarm(String subjectName) {
         String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
+
+        delSystemAlarm();
         return result;
     }
 
+
+    private void setSystemAlarm() {
+
+    }
+
+    private void delSystemAlarm() {
+
+    }
 }
