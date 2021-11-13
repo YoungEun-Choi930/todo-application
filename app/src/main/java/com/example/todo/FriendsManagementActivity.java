@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsManagementActivity extends AppCompatActivity {
+     //firebase에서 정보 가져오면 넣어주고 notify 왜냐면 정보 가져오는데 시간이 걸려서
+    private Button btn_del_friend, friends, friends_request, accept_friend;
     private static ArrayList<FriendInfo> friendsList = new ArrayList<>();
-    private Button btn_del_friend;
     public friendAdapter friendAdapter;
     public AlertDialog dialog;
     private int ck=0;
@@ -60,6 +62,27 @@ public class FriendsManagementActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         EditText search = findViewById(R.id.et_search);
+
+        friends = findViewById(R.id.friends);
+        friends.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
+
+        friends.setOnClickListener(view -> { //서로친구목록
+            friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_500));
+            friends.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
+            getFriendsList();
+            friendAdapter.notifyDataSetChanged();
+        });
+
+        friends_request=findViewById(R.id.friends_request); //받은신청목록버튼
+        friends_request.setOnClickListener(view -> {
+            friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
+            friends.setBackgroundColor(context.getResources().getColor(R.color.purple_500));
+            getFriendsRequestList();
+            friendAdapter.notifyDataSetChanged();
+        });
+
+
+
 
         btn_del_friend = (Button)findViewById(R.id.btn_del_friend);
         btn_del_friend.setOnClickListener(view -> { //삭제버튼 선택되면
@@ -132,6 +155,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
                     break;
                 }
         }
+        friendAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
 
@@ -153,6 +177,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friendsList = list;
         friendAdapter.notifyDataSetChanged();       //왜 화면이 안뜰까
         System.out.println("----notify");
+
 
     }
 

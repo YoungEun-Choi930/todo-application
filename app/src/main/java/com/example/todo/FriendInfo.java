@@ -3,7 +3,7 @@ package com.example.todo;
 public class FriendInfo {
 
     private String friendName;
-    private boolean checked=false;
+    private boolean checked = false;
 
     public FriendInfo(String friendName) {
         this.friendName = friendName;
