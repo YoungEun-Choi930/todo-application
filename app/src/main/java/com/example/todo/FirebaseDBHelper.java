@@ -1,5 +1,7 @@
 package com.example.todo;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -72,35 +74,29 @@ public class FirebaseDBHelper {
                 if(task.isSuccessful()) {
                     for(DataSnapshot friend: task.getResult().getChildren()) {
                         long value = (long) friend.getValue();
-                        System.out.println(friend.getKey());
-                        System.out.println(friend.getValue());
                         if (value == 0) {  //친구신청 상태면 result에 넣는다.
-                            if (friend.getKey().equals(userID)) continue;
                             FriendInfo info = new FriendInfo(friend.getKey());
                             result.add(info);
-
-                            System.out.println("+"+friend.getKey());
-
                         }
                     }
+                    FriendsManagementActivity.context.friendAdapter.notifyDataSetChanged();
                     FriendsManagementActivity.context.notifyfriendlist(result);
 
                 }
                 else{
-                    System.out.println("11111111111");
+                    System.out.println("디비실패");
                 }
             }
         };
 
         task.addOnCompleteListener(friendlistener);
 
-
-        System.out.println("영은3");
     }
 
 
     public void loadFriendsList() {     //서로친구 목록 불러오기
         ArrayList<FriendInfo> result = new ArrayList<>();
+
         Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
 
         OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
@@ -109,15 +105,11 @@ public class FirebaseDBHelper {
                 if(task.isSuccessful()) {
                     for(DataSnapshot friend: task.getResult().getChildren()) {
                         long value = (long) friend.getValue();
-                        System.out.println(friend.getKey());
-                        System.out.println(friend.getValue());
                         if (value == 1) {  //친구신청 상태면 result에 넣는다.
-//                            if (friend.getKey().equals(userID)) continue;
+                            if (friend.getKey().equals(userID)) continue;
 
                             FriendInfo info = new FriendInfo(friend.getKey());
                             result.add(info);
-
-                            System.out.println("+"+friend.getKey());
 
                         }
                     }
@@ -125,7 +117,7 @@ public class FirebaseDBHelper {
 
                 }
                 else{
-                    System.out.println("11111111111");
+                    System.out.println("디비실패");
                 }
             }
         };
@@ -133,11 +125,9 @@ public class FirebaseDBHelper {
         task.addOnCompleteListener(friendlistener);
 
 
-        System.out.println("영은3");
-
     }
 
-    public void requestFriend(String friendID) { //친구신청
+    private void requestFriend(String friendID) { //친구신청
         databaseReference.child(friendID).child("friend").child(userID).setValue(0);
     }
 

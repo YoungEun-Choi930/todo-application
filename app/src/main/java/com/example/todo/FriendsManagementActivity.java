@@ -24,11 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsManagementActivity extends AppCompatActivity {
-    public static ArrayList<FriendInfo> friendsList = new ArrayList<>();    //firebase에서 정보 가져오면 넣어주고 notify 왜냐면 정보 가져오는데 시간이 걸려서
+    private static ArrayList<FriendInfo> friendsList = new ArrayList<>();
     private Button btn_del_friend;
     public friendAdapter friendAdapter;
     public AlertDialog dialog;
-    boolean result;
     private int ck=0;
 
     public static FriendsManagementActivity context;
@@ -53,7 +52,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        friendAdapter.notifyDataSetChanged();
+//        friendAdapter.notifyDataSetChanged();
 
 
         DividerItemDecoration dividerItemDecoration =
@@ -138,10 +137,10 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
     private void btnCheck(int i) {
         friendAdapter.updateCheckBox(i);
-        friendAdapter.notifyDataSetChanged();;
+        friendAdapter.notifyDataSetChanged();
     }
 
-    public void getFriendsList(){   //친구목록 불러오기
+    private void getFriendsList(){   //친구목록 불러오기
         System.out.println("-------------getFreindsList-------------");
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.loadFriendsList();
@@ -150,15 +149,14 @@ public class FriendsManagementActivity extends AppCompatActivity {
     }
 
     public void notifyfriendlist(ArrayList<FriendInfo> list) {
+        friendAdapter.setData(list);
         friendsList = list;
-        friendAdapter = new friendAdapter((ArrayList<FriendInfo>) friendsList);
         friendAdapter.notifyDataSetChanged();       //왜 화면이 안뜰까
         System.out.println("----notify");
 
-
     }
 
-    public void getFriendsRequestList(){    //친구신청 목록 불러오기
+    private void getFriendsRequestList(){    //친구신청 목록 불러오기
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.loadFriendsRequestList();
 
