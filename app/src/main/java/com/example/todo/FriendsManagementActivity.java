@@ -148,11 +148,10 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
     }
 
-    public List<String> getFriendsRequestList(){    //친구신청 목록 불러오기
+    public void getFriendsRequestList(){    //친구신청 목록 불러오기
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        List<String> list = firebaseDB.loadFriendsRequestList();
+        firebaseDB.loadFriendsRequestList();
 
-        return list;
     }
 
     public boolean requestFriend(String friendID) { //친구 ID를 받아서 존재하면 친구신청, return ture, 존재하지 않으면 return false
