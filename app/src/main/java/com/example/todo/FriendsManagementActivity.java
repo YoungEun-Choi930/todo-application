@@ -3,12 +3,12 @@ package com.example.todo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,20 +20,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsManagementActivity extends AppCompatActivity {
     public static ArrayList<FriendInfo> friendsList = new ArrayList<>();    //firebase에서 정보 가져오면 넣어주고 notify 왜냐면 정보 가져오는데 시간이 걸려서
     private Button btn_del_friend;
-    public static friendAdapter friendAdapter;
+    public friendAdapter friendAdapter;
+    public AlertDialog dialog;
     boolean result;
     private int ck=0;
+
+    public static FriendsManagementActivity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = this;
         setContentView(R.layout.activity_friends_management);
 
         friendAdapter = new friendAdapter(friendsList);
@@ -103,19 +107,13 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
                     }
                 });
-                AlertDialog dialog = builder.create();
+                dialog = builder.create();
                 dialog.show();
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        result = requestFriend(et.getText().toString());
-                        if(result){
-                            Toast.makeText(FriendsManagementActivity.this, "친구신청 완료", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                        requestFriend(et.getText().toString());
 
-                        }else {
-                            Toast.makeText(FriendsManagementActivity.this, "대상을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
-                        }
                     }
                 });
 
@@ -144,7 +142,6 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friendAdapter.notifyDataSetChanged();;
     }
 
-
     public void getFriendsList(){   //친구목록 불러오기
         System.out.println("-------------getFreindsList-------------");
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
@@ -153,7 +150,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         System.out.println("영은4");
     }
 
-    public static void notifyfriendlist(ArrayList<FriendInfo> list) {
+    public void notifyfriendlist(ArrayList<FriendInfo> list) {
         friendsList = list;
         friendAdapter = new friendAdapter((ArrayList<FriendInfo>) friendsList);
         friendAdapter.notifyDataSetChanged();       //왜 화면이 안뜰까
@@ -168,14 +165,19 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
     }
 
-    public boolean requestFriend(String friendID) { //친구 ID를 받아서 존재하면 친구신청, return ture, 존재하지 않으면 return false
+    public void requestFriend(String friendID) { //친구 ID를 받아서 존재하면 친구신청
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        if(firebaseDB.confirmFriendExist(friendID)) {
-            firebaseDB.requestFriend(friendID);
-            return true;
+        firebaseDB.confirmFriendExist(friendID);
+    }
+
+    public void requestresult(boolean result) {
+        if(result){
+            Toast.makeText(FriendsManagementActivity.this, "친구신청 완료", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+
+        }else {
+            Toast.makeText(FriendsManagementActivity.this, "대상을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
         }
-        else
-            return false;
     }
 
     public void acceptFriend(String friendID) { //친구 신청 수락하기
