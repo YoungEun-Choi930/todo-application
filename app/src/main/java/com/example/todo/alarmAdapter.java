@@ -25,7 +25,7 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemview = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subject, parent, false);
+        View itemview = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_alarm, parent, false);
 
         return new ItemViewHolder(itemview);
     }
@@ -34,11 +34,11 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         AlarmInfo alarmInfo=myAlarmList.get(position);
 
-        holder.tv_name_sub.setText(alarmInfo.getSubjectName());
+        holder.tv_name_alarm.setText(alarmInfo.getSubjectName());
 
-        holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(alarmInfo.getChecked());
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.checkBoxAlarm.setOnCheckedChangeListener(null);
+        holder.checkBoxAlarm.setChecked(alarmInfo.getChecked());
+        holder.checkBoxAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -48,10 +48,10 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
         });
 
         if(ck==1){
-            holder.checkBox.setVisibility(View.VISIBLE);
+            holder.checkBoxAlarm.setVisibility(View.VISIBLE);
         }
         else
-            holder.checkBox.setVisibility(View.GONE);
+            holder.checkBoxAlarm.setVisibility(View.GONE);
     }
 
     @Override
@@ -60,13 +60,13 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder{
-        TextView tv_name_sub;
-        CheckBox checkBox;
+        TextView tv_name_alarm;
+        CheckBox checkBoxAlarm;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_name_sub = itemView.findViewById(R.id.tv_name_sub);
-            checkBox = itemView.findViewById(R.id.checkBox);
+            tv_name_alarm = itemView.findViewById(R.id.tv_name_alarm);
+            checkBoxAlarm = itemView.findViewById(R.id.checkBoxAlarm);
 
         }
     }

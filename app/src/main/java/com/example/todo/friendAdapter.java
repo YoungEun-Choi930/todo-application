@@ -66,7 +66,7 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
             super(itemView);
 
             tv_name_friend = itemView.findViewById(R.id.tv_name_friend);
-            checkBox = itemView.findViewById(R.id.checkBox);
+            checkBox = itemView.findViewById(R.id.checkFriend);
 
         }
     }

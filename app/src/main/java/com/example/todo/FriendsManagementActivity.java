@@ -135,6 +135,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
                     break;
                 }
         }
+        friendAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
 
