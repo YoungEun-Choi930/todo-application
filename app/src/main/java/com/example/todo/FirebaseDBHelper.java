@@ -52,9 +52,8 @@ public class FirebaseDBHelper {
         return result[0];
     }
 
-    public List<String> loadFriendsRequestList(){       //친구신청 목록 불러오기
-        ArrayList<String> result = new ArrayList<>();
-
+    public void loadFriendsRequestList(){       //친구신청 목록 불러오기
+        ArrayList<FriendInfo> result = new ArrayList<>();
         Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
 
         OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
@@ -65,9 +64,12 @@ public class FirebaseDBHelper {
                         long value = (long) friend.getValue();
                         System.out.println(friend.getKey());
                         System.out.println(friend.getValue());
-                        if (value == 1) {  //친구신청 상태면 result에 넣는다.
+                        if (value == 0) {  //친구신청 상태면 result에 넣는다.
 //                            if (friend.getKey().equals(userID)) continue;
-                            result.add(friend.getKey());
+
+                            FriendInfo info = new FriendInfo(friend.getKey());
+                            result.add(info);
+
                             System.out.println("+"+friend.getKey());
 
                         }
