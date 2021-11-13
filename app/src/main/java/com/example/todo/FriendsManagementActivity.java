@@ -30,6 +30,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
     public static friendAdapter friendAdapter;
     boolean result;
     private int ck=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +51,12 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
         friendAdapter.notifyDataSetChanged();
 
+
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        EditText search = findViewById(R.id.et_search);
 
         btn_del_friend = (Button)findViewById(R.id.btn_del_friend);
         btn_del_friend.setOnClickListener(view -> { //삭제버튼 선택되면
@@ -83,11 +87,11 @@ public class FriendsManagementActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.add_friend:
-                View dialogView = getLayoutInflater().inflate(R.layout.add_friend, null);
-                EditText search = (EditText)findViewById(R.id.et_search);
-
+               // View dialogView = getLayoutInflater().inflate(R.layout.add_friend, null);
+                final EditText et = new EditText(this);
+                et.setHint("신청을 보낼 아이디를 입력하세요.");
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setView(dialogView);
+                builder.setView(et);
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -104,7 +108,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        result = requestFriend(search.getText().toString());
+                        result = requestFriend(et.getText().toString());
                         if(result){
                             Toast.makeText(FriendsManagementActivity.this, "친구신청 완료", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
