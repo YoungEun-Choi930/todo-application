@@ -24,63 +24,41 @@ import java.util.List;
 
 public class FirebaseDBHelper {
     private DatabaseReference databaseReference;
-    private String userID;
-
-    private List<String> myfriendslist;
-    private List<String> myfriendsrequestlist;
+    private String userUID;
 
     public FirebaseDBHelper() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("USERS");
-        userID = MainActivity.USERID;
+        databaseReference = firebaseDatabase.getReference();
+        userUID = MainActivity.USERUID;
     }
 
     public void login(){
-//        databaseReference.child(userID).child("lecture").setValue("lecture");
-//        databaseReference.child(userID).child("assingment").setValue("assingment");
-//        databaseReference.child(userID).child("exam").setValue("exam");
-        databaseReference.child(userID).child("friend").child(userID).setValue(1);
+        databaseReference.child("USERS").child(MainActivity.USERID).setValue(userUID);
     }
 
 
-    public void confirmFriendExist(String friendID){
-        final boolean[] result = new boolean[1];
-        Task<DataSnapshot> task = databaseReference.child(friendID).child("friend").get();
-
-        OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.getResult().exists()) {
-                    requestFriend(friendID);
-                    FriendsManagementActivity.context.requestresult(true);
-                }
-                else{
-                    FriendsManagementActivity.context.requestresult(false);
-                }
-            }
-        };
-
-        task.addOnCompleteListener(friendlistener);
-
-    }
 
     public void loadFriendsRequestList(){       //친구신청 목록 불러오기
         ArrayList<FriendInfo> result = new ArrayList<>();
-        Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
+
+        Task<DataSnapshot> task = databaseReference.child("INFO").child(userUID).child("friend").get();
 
         OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()) {
-                    for(DataSnapshot friend: task.getResult().getChildren()) {
-                        long value = (long) friend.getValue();
+                    for(DataSnapshot friends: task.getResult().getChildren()) {
+                        HashMap<String, Object> map = (HashMap<String, Object>) friends.getValue();
+                        long value = (long) map.get("value");
                         if (value == 0) {  //친구신청 상태면 result에 넣는다.
-                            FriendInfo info = new FriendInfo(friend.getKey());
+
+                            String id = friends.getKey();
+                            String uid = (String) map.get("friendUID");
+                            FriendInfo info = new FriendInfo(id, uid);
                             result.add(info);
                         }
                     }
-                    FriendsManagementActivity.context.friendAdapter.notifyDataSetChanged();
-                    FriendsManagementActivity.context.notifyfriendlist(result);
+                    FriendsManagementActivity.context.notifyfriendslist(result);
 
                 }
                 else{
@@ -97,23 +75,24 @@ public class FirebaseDBHelper {
     public void loadFriendsList() {     //서로친구 목록 불러오기
         ArrayList<FriendInfo> result = new ArrayList<>();
 
-        Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
+        Task<DataSnapshot> task = databaseReference.child("INFO").child(userUID).child("friend").get();
 
         OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()) {
-                    for(DataSnapshot friend: task.getResult().getChildren()) {
-                        long value = (long) friend.getValue();
-                        if (value == 1) {  //친구신청 상태면 result에 넣는다.
-                            if (friend.getKey().equals(userID)) continue;
+                    for(DataSnapshot friends: task.getResult().getChildren()) {
+                        HashMap<String, Object> map = (HashMap<String, Object>) friends.getValue();
+                        long value = (long) map.get("value");
+                        if (value == 1) {  //서로친구 상태면 result에 넣는다.
 
-                            FriendInfo info = new FriendInfo(friend.getKey());
+                            String id = friends.getKey();
+                            String uid = (String) map.get("friendUID");
+                            FriendInfo info = new FriendInfo(id, uid);
                             result.add(info);
-
                         }
                     }
-                    FriendsManagementActivity.context.notifyfriendlist(result);
+                    FriendsManagementActivity.context.notifyfriendslist(result);
 
                 }
                 else{
@@ -127,25 +106,50 @@ public class FirebaseDBHelper {
 
     }
 
-    private void requestFriend(String friendID) { //친구신청
-        databaseReference.child(friendID).child("friend").child(userID).setValue(0);
+
+    public void confirmFriendExist(String friendID){    //친구 존재하는지 확인
+        Task<DataSnapshot> task = databaseReference.child("USERS").child(friendID).get();
+
+        OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().exists()) {
+                    String friendUID = (String)(task.getResult().getValue());
+                    requestFriend(friendUID);
+                    FriendsManagementActivity.context.showresult(true);
+                }
+                else{
+                    FriendsManagementActivity.context.showresult(false);
+                }
+            }
+        };
+
+        task.addOnCompleteListener(friendlistener);
+
     }
 
-    public void acceptFriend(String friendID) { //친구신청수락
-        databaseReference.child(userID).child("friend").child(friendID).setValue(1);
-        databaseReference.child(friendID).child("friend").child(userID).setValue(1);
+    private void requestFriend(String friendUID) { //친구신청
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("friendUID", userUID);
+        map.put("value", 0);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(MainActivity.USERID).setValue(map);
     }
 
-    public void delFriend(String friendID) { //친구삭제
-        databaseReference.child(userID).child("friend").child(friendID).setValue(null);
-        databaseReference.child(friendID).child("friend").child(userID).setValue(null);
+    public void acceptFriend(String friendID, String friendUID) { //친구신청수락
+        databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("value").setValue(1);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(MainActivity.USERID).setValue(1);
+    }
+
+    public void delFriend(String friendID, String friendUID) { //친구삭제
+        databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("value").setValue(null);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(MainActivity.USERID).child("value").setValue(null);
     }
 
 
 
-    private List<LectureInfo> loadFriendLectureList(String friendID, int date){
+    private List<LectureInfo> loadFriendLectureList(String friendUID, int date){
         List<LectureInfo> result = new ArrayList<>();
-        Task<DataSnapshot> task = databaseReference.child(friendID).child("lecture").get();
+        Task<DataSnapshot> task = databaseReference.child("INFO").child(friendUID).child("lecture").get();
         if(task.getResult().exists()) { //데이터가 존재하면
 
             for (DataSnapshot subjectlist : task.getResult().getChildren()) { //과목목록
@@ -173,7 +177,7 @@ public class FirebaseDBHelper {
 
     private List<Assignment> loadFriendAssignmentList(String friendID, int date){
         List<Assignment> result = new ArrayList<>();
-        Task<DataSnapshot> task = databaseReference.child(friendID).child("lecture").get();
+        Task<DataSnapshot> task = databaseReference.child("INFO").child(friendID).child("lecture").get();
         if(task.getResult().exists()) { //데이터가 존재하면
 
             for(DataSnapshot subjectlist: task.getResult().getChildren()){
@@ -202,7 +206,7 @@ public class FirebaseDBHelper {
 
     private List<ExamInfo> loadFriendExamList(String friendID, int date){
         List<ExamInfo> result = new ArrayList<>();
-        Task<DataSnapshot> task = databaseReference.child(friendID).child("exam").get();
+        Task<DataSnapshot> task = databaseReference.child("INFO").child(friendID).child("exam").get();
         if(task.getResult().exists()) { //데이터가 존재하면
 
             for(DataSnapshot subjectlist: task.getResult().getChildren()){
@@ -224,17 +228,101 @@ public class FirebaseDBHelper {
         return result;
     }
 
-    public List<List> loadFriendToDoList(String friendID, int date) {
-        List<List> todo = new ArrayList();
-        List<LectureInfo> lecturelist = loadFriendLectureList(friendID, date);
-        List<Assignment> assignmentlist = loadFriendAssignmentList(friendID, date);
-        List<ExamInfo> examlist = loadFriendExamList(friendID, date);
+    public void loadFriendToDoList(String friendUID, int date) {
+        List<List> result = new ArrayList();
 
-        todo.add(lecturelist);
-        todo.add(assignmentlist);
-        todo.add(examlist);
+        List<LectureInfo> lectureInfolist = new ArrayList<>();
+        List<Assignment> assingmentInfolist = new ArrayList<>();
+        List<ExamInfo> examInfolist = new ArrayList<>();
 
-        return todo;
+
+        Task<DataSnapshot> task = databaseReference.child(friendUID).get();
+
+        OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()) {
+                    for(DataSnapshot friend: task.getResult().getChildren()) {
+
+                        for(DataSnapshot table: friend.getChildren()) {
+                            String tablename = table.getKey();
+                            if(tablename.equals("lecture")) {//강의 테이블
+                                for (DataSnapshot subjectlist : task.getResult().getChildren()) { //과목목록
+
+                                    for (DataSnapshot lecturelist : subjectlist.getChildren()) { //강의목록
+                                        UploadInfo lecture = lecturelist.getValue(UploadInfo.class);
+
+                                        if (lecture.startDate > date)        //date에 해당하지 않는 것은 넘어감.
+                                            continue;
+                                        if (lecture.endDate < date)
+                                            continue;
+
+                                        String lectureName = lecturelist.getKey();
+                                        String subjectName = subjectlist.getKey();
+                                        boolean isDone = lecture.isDone;
+
+                                        LectureInfo lectureInfo = new LectureInfo(subjectName, lectureName, isDone);
+                                        lectureInfolist.add(lectureInfo);
+                                    }
+
+                                }
+                            }
+                            else if(tablename.equals("assignment")) {//과제테이블
+                                for(DataSnapshot subjectlist: task.getResult().getChildren()){
+
+                                    for(DataSnapshot assignmentlist: subjectlist.getChildren()) {
+                                        UploadInfo lecture = assignmentlist.getValue(UploadInfo.class);
+
+                                        if(lecture.startDate > date)        //date에 해당하지 않는 것은 넘어감.
+                                            continue;
+                                        if(lecture.endDate < date)
+                                            continue;
+
+                                        String lectureName = assignmentlist.getKey();
+                                        String subjectName = subjectlist.getKey();
+                                        boolean isDone = lecture.isDone;
+
+                                        Assignment assignmentInfo = new Assignment(subjectName,lectureName,isDone);
+                                        assingmentInfolist.add(assignmentInfo);
+                                    }
+
+                                }
+                            }
+                            else if(tablename.equals("exam")) { //시험테이블
+                                for(DataSnapshot subjectlist: task.getResult().getChildren()){
+
+                                    for(DataSnapshot examlist: subjectlist.getChildren()) {
+                                        UploadExamInfo lecture = examlist.getValue(UploadExamInfo.class);
+
+                                        if(lecture.date == date)        //date에 해당하면 list에 넣음.
+                                        {
+                                            String lectureName = examlist.getKey();
+                                            String subjectName = subjectlist.getKey();
+
+                                            ExamInfo examInfo = new ExamInfo(subjectName,lectureName);
+                                            examInfolist.add(examInfo);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                    result.add(lectureInfolist);
+                    result.add(assingmentInfolist);
+                    result.add(examInfolist);
+//                    FriendsManagementActivity.context.notifyfriendslist(result);
+
+                }
+                else{
+                    System.out.println("디비실패");     //여기로 올 수도 있음
+                }
+            }
+        };
+
+        task.addOnCompleteListener(friendlistener);
+
     }
 
     public void uploadMyLecture(String subjectName, HashMap lecturelist){
@@ -269,7 +357,7 @@ public class FirebaseDBHelper {
     }
 
     private void uploadInfo(HashMap info,String table) {
-        databaseReference.child(userID).child(table).updateChildren(info);
+        databaseReference.child("INFO").child(userUID).child(table).updateChildren(info);
     }
 
 
@@ -277,23 +365,23 @@ public class FirebaseDBHelper {
 
 
     public void delSubject(String subjectName) {
-        databaseReference.child(userID).child("lecture").child(subjectName).setValue(null);
-        databaseReference.child(userID).child("assignment").child(subjectName).setValue(null);
-        databaseReference.child(userID).child("exam").child(subjectName).setValue(null);
+        databaseReference.child("INFO").child(userUID).child("lecture").child(subjectName).setValue(null);
+        databaseReference.child("INFO").child(userUID).child("assignment").child(subjectName).setValue(null);
+        databaseReference.child("INFO").child(userUID).child("exam").child(subjectName).setValue(null);
     }
 
     public void delMyAssignment(String assignmentName, String subjectName) {
-        databaseReference.child(userID).child("assignment").child(subjectName).child(assignmentName).setValue(null);
+        databaseReference.child("INFO").child(userUID).child("assignment").child(subjectName).child(assignmentName).setValue(null);
 
     }
 
     public void delMyExam(String examName, String subjectName) {
-        databaseReference.child(userID).child("exam").child(subjectName).child(examName).setValue(null);
+        databaseReference.child("INFO").child(userUID).child("exam").child(subjectName).child(examName).setValue(null);
 
     }
 
     public void changeMyIsDone(String name, String subjectName, String table, int value) {
-        databaseReference.child(userID).child(table.toLowerCase()).child(subjectName).child(name).child("isdone").setValue(value);
+        databaseReference.child("INFO").child(userUID).child(table.toLowerCase()).child(subjectName).child(name).child("isdone").setValue(value);
 
     }
 }
