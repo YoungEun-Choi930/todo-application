@@ -32,7 +32,7 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        FriendInfo friendInfo = new FriendInfo();
+        FriendInfo friendInfo = new FriendInfo(myFriendsList.get(position));
         friendInfo.setFriendName(myFriendsList.get(position));
 
         holder.tv_name_friend.setText(friendInfo.getFriendName());

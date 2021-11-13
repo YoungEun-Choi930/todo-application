@@ -53,24 +53,8 @@ public class FirebaseDBHelper {
     }
 
     public List<String> loadFriendsRequestList(){       //친구신청 목록 불러오기
-        List<String> result = new ArrayList<>();
-        Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
-        if(task.getResult().getValue().equals("friend"))
-            return result;
-        if(task.getResult().exists()) { //데이터가 존재하면
-            for(DataSnapshot friend: task.getResult().getChildren()) {
-                if((int) friend.getValue() == 0) {  //친구신청 상태면 result에 넣는다.
-                    result.add(friend.getKey());
-                    System.out.println(friend.getKey());
-                }
-            }
-        }
-        return result;
-    }
-
-
-    public List<String> loadFriendsList() {     //서로친구 목록 불러오기
         ArrayList<String> result = new ArrayList<>();
+
         Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
 
         OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
@@ -101,7 +85,44 @@ public class FirebaseDBHelper {
 
 
         System.out.println("영은3");
-        return result;
+    }
+
+
+    public void loadFriendsList() {     //서로친구 목록 불러오기
+        ArrayList<FriendInfo> result = new ArrayList<>();
+        Task<DataSnapshot> task = databaseReference.child(userID).child("friend").get();
+
+        OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()) {
+                    for(DataSnapshot friend: task.getResult().getChildren()) {
+                        long value = (long) friend.getValue();
+                        System.out.println(friend.getKey());
+                        System.out.println(friend.getValue());
+                        if (value == 1) {  //친구신청 상태면 result에 넣는다.
+//                            if (friend.getKey().equals(userID)) continue;
+
+                            FriendInfo info = new FriendInfo(friend.getKey());
+                            result.add(info);
+
+                            System.out.println("+"+friend.getKey());
+
+                        }
+                    }
+                    FriendsManagementActivity.notifyfriendlist(result);
+
+                }
+                else{
+                    System.out.println("11111111111");
+                }
+            }
+        };
+
+        task.addOnCompleteListener(friendlistener);
+
+
+        System.out.println("영은3");
 
     }
 

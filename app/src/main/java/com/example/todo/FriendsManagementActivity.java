@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsManagementActivity extends AppCompatActivity {
-    public static ArrayList<String> friendsList = new ArrayList<>();    //firebase에서 정보 가져오면 넣어주고 notify 왜냐면 정보 가져오는데 시간이 걸려서
+    public static ArrayList<FriendInfo> friendsList = new ArrayList<>();    //firebase에서 정보 가져오면 넣어주고 notify 왜냐면 정보 가져오는데 시간이 걸려서
     private Button btn_del_friend;
     public static friendAdapter friendAdapter;
     boolean result;
@@ -36,6 +36,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friends_management);
 
         getFriendsList();   //friendlist에 정보 넣고 notify
+        System.out.println("영은5");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.friend_toolbar);
         setSupportActionBar(myToolbar);//툴바달기
@@ -46,7 +47,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-
+        friendAdapter.notifyDataSetChanged();
 
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -66,6 +67,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
             ck=0;
             friendAdapter.notifyDataSetChanged();
         });
+        System.out.println("영은6");
 
     }
 
@@ -135,20 +137,13 @@ public class FriendsManagementActivity extends AppCompatActivity {
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.loadFriendsList();
 
+        System.out.println("영은4");
     }
 
-    public static void notifyfriendlist(ArrayList<String> list) {
+    public static void notifyfriendlist(ArrayList<FriendInfo> list) {
         friendsList = list;
         friendAdapter.notifyDataSetChanged();       //왜 화면이 안뜰까
         System.out.println("----notify");
-
-
-        for(String str: list)
-            System.out.print(str+",");
-        System.out.println("<- list");
-        for(String str: friendsList)
-            System.out.print(str+",");
-        System.out.println("<- friendlist");
 
 
     }

@@ -5,6 +5,9 @@ public class FriendInfo {
     private String friendName;
     private boolean checked=false;
 
+    public FriendInfo(String friendName) {
+        this.friendName = friendName;
+    }
 
     public String getFriendName() {
         return friendName;
