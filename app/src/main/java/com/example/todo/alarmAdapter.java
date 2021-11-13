@@ -37,12 +37,12 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
         holder.tv_name_sub.setText(alarmInfo.getSubjectName());
 
         holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(alarmInfo.checked);
+        holder.checkBox.setChecked(alarmInfo.getChecked());
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                alarmInfo.checked = isChecked;
+                alarmInfo.setChecked(isChecked);
                 checkedList.add(alarmInfo);
             }
         });

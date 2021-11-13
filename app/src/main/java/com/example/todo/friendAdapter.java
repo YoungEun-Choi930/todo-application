@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewHolder> {
-    ArrayList<String> myFriendsList;
+    ArrayList<FriendInfo> myFriendsList;
     ArrayList<FriendInfo> checkedList = new ArrayList();
     private int ck = 0;
 
-    public friendAdapter(ArrayList<String> list){
+    public friendAdapter(ArrayList<FriendInfo> list){
         this.myFriendsList=list;
     }
 
@@ -32,8 +32,7 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        FriendInfo friendInfo = new FriendInfo(myFriendsList.get(position));
-        friendInfo.setFriendName(myFriendsList.get(position));
+        FriendInfo friendInfo=myFriendsList.get(position);
 
         holder.tv_name_friend.setText(friendInfo.getFriendName());
 

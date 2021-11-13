@@ -35,6 +35,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_management);
 
+        friendAdapter = new friendAdapter(friendsList);
         getFriendsList();   //friendlist에 정보 넣고 notify
         System.out.println("영은5");
 
@@ -42,7 +43,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);//툴바달기
 
         RecyclerView recyclerView = findViewById(R.id.recy_friend);
-        friendAdapter = new friendAdapter(friendsList);
+
         recyclerView.setAdapter(friendAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
@@ -92,6 +93,12 @@ public class FriendsManagementActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
                 });
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -107,6 +114,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
                         }
                     }
                 });
+
                 break;
 
             case R.id.del_friend:
@@ -142,6 +150,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
     public static void notifyfriendlist(ArrayList<FriendInfo> list) {
         friendsList = list;
+        friendAdapter = new friendAdapter((ArrayList<FriendInfo>) friendsList);
         friendAdapter.notifyDataSetChanged();       //왜 화면이 안뜰까
         System.out.println("----notify");
 

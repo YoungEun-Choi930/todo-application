@@ -1,7 +1,7 @@
 package com.example.todo;
 
 public class AlarmInfo {
-    public boolean checked;
+    private boolean checked;
     private String subjectName;
     private String examAlarmDate;
     private String assignmentAlarmDate;
@@ -47,6 +47,14 @@ public class AlarmInfo {
 
     public void setRealTimeLectureAlarmDate(String realTimeLectureAlarmDate) {
         this.realTimeLectureAlarmDate = realTimeLectureAlarmDate;
+    }
+
+    public boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public AlarmInfo(boolean checked, String subjectName, String examAlarmDate, String assignmentAlarmDate, String videoLectureAlarmDate, String realTimeLectureAlarmDate) {
