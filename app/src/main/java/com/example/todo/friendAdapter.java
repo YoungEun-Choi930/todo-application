@@ -92,6 +92,10 @@ public class friendAdapter extends RecyclerView.Adapter <friendAdapter.ItemViewH
         return checkedList;
     }
 
+    public void setData(ArrayList<FriendInfo> list) {
+        this.myFriendsList = list;
+    }
+
 }
 
 
