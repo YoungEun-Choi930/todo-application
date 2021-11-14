@@ -59,7 +59,7 @@ public class FirebaseDBHelper {
                             result.add(info);
                         }
                     }
-                    FriendsManagementActivity.context.notifyfriendslist(result);
+                    FriendsManagementActivity.context.notifyFriendsList(result);
 
                 }
                 else{
@@ -91,9 +91,11 @@ public class FirebaseDBHelper {
                             String uid = (String) map.get("friendUID");
                             FriendInfo info = new FriendInfo(id, uid);
                             result.add(info);
+
+                            System.out.println("--------------"+id);
                         }
                     }
-                    FriendsManagementActivity.context.notifyfriendslist(result);
+                    FriendsManagementActivity.context.notifyFriendsList(result);
 
                 }
                 else{
@@ -138,7 +140,10 @@ public class FirebaseDBHelper {
 
     public void acceptFriend(String friendID, String friendUID) { //친구신청수락
         databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("value").setValue(1);
-        databaseReference.child("INFO").child(friendUID).child("friend").child(MainActivity.USERID).setValue(1);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("friendUID", userUID);
+        map.put("value", 1);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(MainActivity.USERID).setValue(map);
     }
 
     public void delFriend(String friendID, String friendUID) { //친구삭제
@@ -313,7 +318,7 @@ public class FirebaseDBHelper {
                     result.add(lectureInfolist);
                     result.add(assingmentInfolist);
                     result.add(examInfolist);
-//                    FriendsManagementActivity.context.notifyfriendslist(result);
+//                    FriendsManagementActivity.context.notifyFriendToDoList(result);
 
                 }
                 else{
