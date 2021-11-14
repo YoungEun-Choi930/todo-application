@@ -55,6 +55,7 @@ public class FirebaseDBHelper {
                             String id = friends.getKey();
                             String uid = (String) map.get("friendUID");
                             FriendInfo info = new FriendInfo(id, uid);
+                            info.setViewTipe(1);
                             result.add(info);
                         }
                     }

@@ -27,12 +27,12 @@ import java.util.List;
 public class FriendsManagementActivity extends AppCompatActivity {
      //firebase에서 정보 가져오면 넣어주고 notify 왜냐면 정보 가져오는데 시간이 걸려서
     private Button btn_del_friend, friends, friends_request, accept_friend;
-    private static ArrayList<FriendInfo> friendsList = new ArrayList<>();
+    private static ArrayList<FriendInfo> friendsList;
     public friendAdapter friendAdapter;
     public AlertDialog dialog;
     private int ck=0;
 
-    public static FriendsManagementActivity context;
+    public static FriendsManagementActivity context; //수정해놨는데오류생ㅅ기면바꿔야댐
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
         context = this;
         setContentView(R.layout.activity_friends_management);
-
+        friendsList = new ArrayList<>();
         friendAdapter = new friendAdapter(friendsList);
         getFriendsList();   //friendlist에 정보 넣고 notify
         System.out.println("영은5");
@@ -75,9 +75,11 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
         friends_request=findViewById(R.id.friends_request); //받은신청목록버튼
         friends_request.setOnClickListener(view -> {
+
             friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
             friends.setBackgroundColor(context.getResources().getColor(R.color.purple_500));
             getFriendsRequestList();
+            friendAdapter.setData(friendsList);
             friendAdapter.notifyDataSetChanged();
         });
 
