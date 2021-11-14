@@ -176,7 +176,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         System.out.println("영은4");
     }
 
-    public void notifyfriendslist(ArrayList<FriendInfo> list) {
+    public void notifyFriendsList(ArrayList<FriendInfo> list) {
         friendAdapter.setData(list);
         friendsList = list;
         friendAdapter.notifyDataSetChanged();       //왜 화면이 안뜰까

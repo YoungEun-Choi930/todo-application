@@ -16,10 +16,6 @@ public class FriendInfo {
         return friendName;
     }
 
-    public void setFriendName(String subjectName) {
-        this.friendName = friendName;
-    }
-
     public String getFriendUID() {
         return friendUID;
     }

@@ -13,40 +13,21 @@ public class AlarmInfo {
         return subjectName;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
 
     public String getExamAlarmDate() {
         return examAlarmDate;
-    }
-
-    public void setExamAlarmDate(String examAlarmDate) {
-        this.examAlarmDate = examAlarmDate;
     }
 
     public String getAssignmentAlarmDate() {
         return assignmentAlarmDate;
     }
 
-    public void setAssignmentAlarmDate(String assignmentAlarmDate) {
-        this.assignmentAlarmDate = assignmentAlarmDate;
-    }
-
     public String getVideoLectureAlarmDate() {
         return videoLectureAlarmDate;
     }
 
-    public void setVideoLectureAlarmDate(String videoLectureAlarmDate) {
-        this.videoLectureAlarmDate = videoLectureAlarmDate;
-    }
-
     public String getRealTimeLectureAlarmDate() {
         return realTimeLectureAlarmDate;
-    }
-
-    public void setRealTimeLectureAlarmDate(String realTimeLectureAlarmDate) {
-        this.realTimeLectureAlarmDate = realTimeLectureAlarmDate;
     }
 
     public boolean getChecked() {
