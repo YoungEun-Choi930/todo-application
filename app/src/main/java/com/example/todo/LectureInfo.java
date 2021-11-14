@@ -15,16 +15,8 @@ public class LectureInfo {
         return subjectName;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
     public String getLectureName() {
         return lectureName;
-    }
-
-    public void setLectureName(String lectureName) {
-        this.lectureName = lectureName;
     }
 
     public Boolean getIsDone() {

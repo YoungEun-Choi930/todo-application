@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlarmManagementActivity extends AppCompatActivity {
-    List<AlarmInfo> alarmInfoList;
+    private List<AlarmInfo> alarmInfoList;
     Button btn_del_alarm;
     private int ck=0;
     alarmAdapter alarmAdapter;
@@ -144,7 +144,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         setSystemAlarm();
         return result;
     }
-    public boolean delAlarm(String subjectName) {
+    private boolean delAlarm(String subjectName) {
         String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);

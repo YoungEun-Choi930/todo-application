@@ -14,15 +14,8 @@ public class ExamInfo {
         return subjectName;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
     public String getExamName() {
         return examName;
     }
 
-    public void setExamName(String examName) {
-        this.examName = examName;
-    }
 }
