@@ -19,11 +19,11 @@ public class FirebaseDBHelper {
     public FirebaseDBHelper() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-        userUID = MainActivity.USERUID;
+        userUID = LoginActivity.USERUID;
     }
 
     public void login(){
-        databaseReference.child("USERS").child(MainActivity.USERID).setValue(userUID);
+        databaseReference.child("USERS").child(LoginActivity.USERID).setValue(userUID);
     }
 
 
@@ -125,7 +125,7 @@ public class FirebaseDBHelper {
         HashMap<String, Object> map = new HashMap<>();
         map.put("friendUID", userUID);
         map.put("value", 0);
-        databaseReference.child("INFO").child(friendUID).child("friend").child(MainActivity.USERID).setValue(map);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).setValue(map);
     }
 
     public void acceptFriend(String friendID, String friendUID) { //친구신청수락
@@ -133,12 +133,12 @@ public class FirebaseDBHelper {
         HashMap<String, Object> map = new HashMap<>();
         map.put("friendUID", userUID);
         map.put("value", 1);
-        databaseReference.child("INFO").child(friendUID).child("friend").child(MainActivity.USERID).setValue(map);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).setValue(map);
     }
 
     public void delFriend(String friendID, String friendUID) { //친구삭제
         databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("value").setValue(null);
-        databaseReference.child("INFO").child(friendUID).child("friend").child(MainActivity.USERID).child("value").setValue(null);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).child("value").setValue(null);
     }
 
 

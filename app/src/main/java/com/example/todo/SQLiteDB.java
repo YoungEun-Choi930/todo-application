@@ -1,6 +1,5 @@
 package com.example.todo;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -10,7 +9,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static SQLiteDB db;
 
     private SQLiteDB() {
-        super(MainActivity.ApplicationContext,"sqlite_file.db",null,8);
+        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,8);
     }
 
     public static SQLiteDB getInstance(){
