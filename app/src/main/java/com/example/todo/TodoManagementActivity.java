@@ -86,7 +86,7 @@ public class TodoManagementActivity extends AppCompatActivity {
     private List<List> getToDoList(String date) {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         List<LectureInfo> lecturelist = helper.loadLectureList(date);
-        List<Assignment> assignmentList = helper.loadAssignmentList(date);
+        List<AssignmentInfo> assignmentList = helper.loadAssignmentList(date);
         List<ExamInfo> examlist = helper.loadExamList(date);
 
         List<List> todolist = new ArrayList<>();

@@ -1,22 +1,12 @@
 package com.example.todo;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -181,8 +171,8 @@ public class FirebaseDBHelper {
         return result;
     }
 
-    private List<Assignment> loadFriendAssignmentList(String friendID, int date){
-        List<Assignment> result = new ArrayList<>();
+    private List<AssignmentInfo> loadFriendAssignmentList(String friendID, int date){
+        List<AssignmentInfo> result = new ArrayList<>();
         Task<DataSnapshot> task = databaseReference.child("INFO").child(friendID).child("lecture").get();
         if(task.getResult().exists()) { //데이터가 존재하면
 
@@ -200,7 +190,7 @@ public class FirebaseDBHelper {
                     String subjectName = subjectlist.getKey();
                     boolean isDone = lecture.isDone;
 
-                    Assignment assignmentInfo = new Assignment(subjectName,lectureName,isDone);
+                    AssignmentInfo assignmentInfo = new AssignmentInfo(subjectName,lectureName,isDone);
                     result.add(assignmentInfo);
                 }
 
@@ -238,7 +228,7 @@ public class FirebaseDBHelper {
         List<List> result = new ArrayList();
 
         List<LectureInfo> lectureInfolist = new ArrayList<>();
-        List<Assignment> assingmentInfolist = new ArrayList<>();
+        List<AssignmentInfo> assingmentInfolist = new ArrayList<>();
         List<ExamInfo> examInfolist = new ArrayList<>();
 
 
@@ -288,7 +278,7 @@ public class FirebaseDBHelper {
                                         String subjectName = subjectlist.getKey();
                                         boolean isDone = lecture.isDone;
 
-                                        Assignment assignmentInfo = new Assignment(subjectName,lectureName,isDone);
+                                        AssignmentInfo assignmentInfo = new AssignmentInfo(subjectName,lectureName,isDone);
                                         assingmentInfolist.add(assignmentInfo);
                                     }
 
