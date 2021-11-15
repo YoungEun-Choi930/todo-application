@@ -196,7 +196,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         firebaseDB.confirmFriendExist(friendID);
     }
 
-    public void showresult(boolean result) {
+    public void showResult(boolean result) {
         if(result){
             Toast.makeText(FriendsManagementActivity.this, "친구신청 완료", Toast.LENGTH_SHORT).show();
             dialog.dismiss();

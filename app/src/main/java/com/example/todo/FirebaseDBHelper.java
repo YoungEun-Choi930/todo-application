@@ -119,10 +119,10 @@ public class FirebaseDBHelper {
                 if(task.getResult().exists()) {
                     String friendUID = (String)(task.getResult().getValue());
                     requestFriend(friendUID);
-                    FriendsManagementActivity.context.showresult(true);
+                    FriendsManagementActivity.context.showResult(true);
                 }
                 else{
-                    FriendsManagementActivity.context.showresult(false);
+                    FriendsManagementActivity.context.showResult(false);
                 }
             }
         };
