@@ -50,6 +50,13 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
         if (holder instanceof AHolder) {
             ((AHolder) holder).tv_name_friend.setText(friendInfo.getFriendName());
             ((AHolder) holder).checkBox.setChecked(friendInfo.getChecked());
+            ((AHolder) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    friendInfo.setChecked(isChecked);
+                    checkedList.add(friendInfo);
+                }
+            });
             if(ck==1){
                 ((AHolder) holder).checkBox.setVisibility(View.VISIBLE);
             }
@@ -58,7 +65,15 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
 
         } else { //수락버튼 있는 뷰
             ((BHolder) holder).tv_name_friend_ac.setText(friendInfo.getFriendName());
-            ((BHolder) holder).checkBox_ac.setText(friendInfo.getFriendName());
+            ((BHolder) holder).checkBox_ac.setChecked(friendInfo.getChecked());
+            ((BHolder) holder).checkBox_ac.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    friendInfo.setChecked(isChecked);
+                    checkedList.add(friendInfo);
+                }
+            });
+
             ((BHolder) holder).accept_ac.setOnClickListener(view -> {
                 myFriendsList.remove(friendInfo);
                 (FriendsManagementActivity.context).acceptFriend(friendInfo.getFriendName(), friendInfo.getFriendUID());
