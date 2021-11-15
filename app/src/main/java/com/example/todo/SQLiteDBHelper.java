@@ -1,6 +1,5 @@
 package com.example.todo;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -95,14 +94,14 @@ public class SQLiteDBHelper
             throw mSQLException;
         }
     }
-    public List<Assignment> loadAssignmentList(String date)
+    public List<AssignmentInfo> loadAssignmentList(String date)
     {
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
             String sql = "SELECT subjectName, assignmentName, isDone FROM AssignmentList WHERE startDate <= "+date+" AND endDate >= "+date+";";
 
-            List<Assignment> list = new ArrayList();
+            List<AssignmentInfo> list = new ArrayList();
 
             Cursor cursor = mDb.rawQuery(sql, null);
             if (cursor!=null)
@@ -110,7 +109,7 @@ public class SQLiteDBHelper
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    Assignment info = new Assignment(cursor.getString(0),cursor.getString(1),Boolean.valueOf(cursor.getString(2)));
+                    AssignmentInfo info = new AssignmentInfo(cursor.getString(0),cursor.getString(1),Boolean.valueOf(cursor.getString(2)));
 
                     list.add(info);
                 }
@@ -186,35 +185,35 @@ public class SQLiteDBHelper
             throw mSQLException;
         }
     }
-    public List<String> loadFriendsList()
-    {
-        try
-        {
-            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT * FROM Friends;";
-
-            List<String> list = new ArrayList();
-
-            Cursor cursor = mDb.rawQuery(sql, null);
-            if (cursor!=null)
-            {
-                // 칼럼의 마지막까지
-                while( cursor.moveToNext() ) {
-
-                    String id = cursor.getString(0);
-
-                    list.add(id);
-                }
-            }
-            cursor.close();
-            mDbHelper.close();
-            return list;
-        }
-        catch (SQLException mSQLException)
-        {
-            Log.e("DataAdapter", "getFriendsData >>"+ mSQLException.toString());
-            throw mSQLException;
-        }
-    }
+//    public List<String> loadFriendsList()
+//    {
+//        try
+//        {
+//            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+//            String sql = "SELECT * FROM Friends;";
+//
+//            List<String> list = new ArrayList();
+//
+//            Cursor cursor = mDb.rawQuery(sql, null);
+//            if (cursor!=null)
+//            {
+//                // 칼럼의 마지막까지
+//                while( cursor.moveToNext() ) {
+//
+//                    String id = cursor.getString(0);
+//
+//                    list.add(id);
+//                }
+//            }
+//            cursor.close();
+//            mDbHelper.close();
+//            return list;
+//        }
+//        catch (SQLException mSQLException)
+//        {
+//            Log.e("DataAdapter", "getFriendsData >>"+ mSQLException.toString());
+//            throw mSQLException;
+//        }
+//    }
 
 }

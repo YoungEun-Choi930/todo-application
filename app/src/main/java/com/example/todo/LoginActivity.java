@@ -24,7 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private SignInButton btn_login; // 구글 로그인 버튼
     private FirebaseAuth auth=null; // 파이어 베이스 인증 객체
     private GoogleApiClient googleApiClient; // 구글 API 클라이언트 객체
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 //                            intent.putExtra("photoUrl", String.valueOf(account.getPhotoUrl()));
                             startActivity(intent);
                         } else {
-                            Toast.makeText(MainActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                         }
 
                     }

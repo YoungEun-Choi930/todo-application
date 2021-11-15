@@ -1,11 +1,11 @@
 package com.example.todo;
 
-public class Assignment {
+public class AssignmentInfo {
     private String subjectName;
     private String assignmentName;
     private Boolean isDone;
 
-    public Assignment(String subjectName, String assignmentName, Boolean isDone) {
+    public AssignmentInfo(String subjectName, String assignmentName, Boolean isDone) {
         this.subjectName = subjectName;
         this.assignmentName = assignmentName;
         this.isDone = isDone;
