@@ -22,6 +22,11 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
     private int ck = 0;
     public static final int buttonType = 1;
     public static final int noButtonType = 0;
+    private OnItemClickListener mListener = null;
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
+    }
 
     public friendAdapter(ArrayList<FriendInfo> list){
         this.myFriendsList=list;
@@ -98,58 +103,12 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
             return buttonType;
         }
     }
-/*
-    @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        FriendInfo friendInfo=myFriendsList.get(position);
 
-        holder.tv_name_friend.setText(friendInfo.getFriendName());
-
-        holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(friendInfo.getChecked());
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                friendInfo.setChecked(isChecked);
-                checkedList.add(friendInfo);
-
-            }
-        });
-
-        if(ck==1){
-            holder.checkBox.setVisibility(View.VISIBLE);
-        }
-        else
-            holder.checkBox.setVisibility(View.GONE);
-
-
-        holder.accept.setOnClickListener(view  -> {
-            myFriendsList.remove(friendInfo);
-            FriendsManagementActivity.context.acceptFriend(friendInfo.getFriendName(), friendInfo.getFriendUID());
-            notifyDataSetChanged();
-
-        });
-    }
-*/
     @Override
     public int getItemCount() {
         return myFriendsList.size();
     }
-/*
-    public class ItemViewHolder extends RecyclerView.ViewHolder{
-        TextView tv_name_friend;
-        CheckBox checkBox;
-        Button accept;
-        public ItemViewHolder(@NonNull View itemView) {
-            super(itemView);
 
-            tv_name_friend = itemView.findViewById(R.id.tv_name_friend);
-            checkBox = itemView.findViewById(R.id.checkFriend);
-            accept = itemView.findViewById(R.id.accept_friend);
-        }
-    }
-*/
     public void updateCheckBox(int n){
         ck = n;
     }
@@ -168,6 +127,19 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
 
         public AHolder(@NonNull View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    if(pos!=RecyclerView.NO_POSITION){
+                        if(mListener!=null){
+                            mListener.onItemClick(view,pos);
+                        }
+                    }
+                }
+            });
             tv_name_friend = itemView.findViewById(R.id.tv_name_friend);
             checkBox = itemView.findViewById(R.id.checkFriend);
         }
@@ -184,6 +156,13 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
             checkBox_ac = itemView.findViewById(R.id.checkFriend_ac);
             accept_ac = itemView.findViewById(R.id.accept_friend_ac);
         }
+    }
+
+    public interface OnItemClickListener{ //리스너인터페이스
+        void onItemClick(View v, int pos);
+    }
+    public String getName(int position){
+        return myFriendsList.get(position).getFriendName();
     }
 }
 

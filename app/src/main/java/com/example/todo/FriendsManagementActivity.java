@@ -17,8 +17,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
     public friendAdapter friendAdapter;
     public AlertDialog dialog;
     private int ck=0;
+
 
     public static FriendsManagementActivity context; //수정해놨는데오류생ㅅ기면바꿔야댐
 
@@ -61,8 +64,19 @@ public class FriendsManagementActivity extends AppCompatActivity {
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        EditText search = findViewById(R.id.et_search);
+        friendAdapter.setOnItemClickListener(new friendAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                String name =friendAdapter.getName(pos);
 
+                System.out.println(name+"친구이름이뭐니?");
+                if(ck==0){
+                    Intent intent = new Intent(getApplicationContext(), FriendToDoActivity.class);
+                    intent.putExtra(name,"name");
+                    startActivity(intent);
+                }
+            }
+        });
         friends = findViewById(R.id.friends);
         friends.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
 
