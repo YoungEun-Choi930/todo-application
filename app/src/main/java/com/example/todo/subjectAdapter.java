@@ -43,7 +43,13 @@ public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemVie
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 subjectInfo.setChecked(isChecked);
-                checkedList.add(subjectInfo);
+                if(subjectInfo.getChecked()){
+                    checkedList.add(subjectInfo);
+
+                }else{
+                    checkedList.remove(subjectInfo);
+                }
+
             }
         });
 

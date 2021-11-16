@@ -63,7 +63,9 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 subjectlist.remove(subjectAdapter.getcheckedList().get(i)); //체크된목록 과목목록에서 제거
                 delSubject(subjectAdapter.getcheckedList().get(i).getSubjectName());
             }
-            Toast.makeText(this, "과목 삭제 완료", Toast.LENGTH_SHORT).show();
+            if(subjectAdapter.getcheckedList().size()>0){
+                Toast.makeText(this, "과목 삭제 완료", Toast.LENGTH_SHORT).show();
+            }
             btn_del_sub.setVisibility(View.GONE);
             btnCheck(0);
             ck=0;

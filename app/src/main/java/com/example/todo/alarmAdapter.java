@@ -43,7 +43,13 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 alarmInfo.setChecked(isChecked);
-                checkedList.add(alarmInfo);
+                if(alarmInfo.getChecked()){
+                    checkedList.add(alarmInfo);
+
+                }else{
+                    checkedList.remove(alarmInfo);
+                }
+
             }
         });
 
