@@ -57,7 +57,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-//        friendAdapter.notifyDataSetChanged();
+
 
 
         DividerItemDecoration dividerItemDecoration =
@@ -69,10 +69,9 @@ public class FriendsManagementActivity extends AppCompatActivity {
             public void onItemClick(View v, int pos) {
                 String name =friendAdapter.getName(pos);
 
-                System.out.println(name+"친구이름이뭐니?");
                 if(ck==0){
                     Intent intent = new Intent(getApplicationContext(), FriendToDoActivity.class);
-                    intent.putExtra(name,"name");
+                    intent.putExtra("name",name);
                     startActivity(intent);
                 }
             }

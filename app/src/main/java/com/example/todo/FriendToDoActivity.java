@@ -27,17 +27,12 @@ public class FriendToDoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend_to_do);
 
         Intent intent = getIntent();
-        String name = intent.getExtras().getString("name"); //선택한친구이름가져오기
+        String name = intent.getStringExtra("name"); //선택한친구이름가져오기
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.friendtodo_toolbar);
         setSupportActionBar(myToolbar);
-//툴바왜안되냐고ㅠㅠㅠㅠㅠㅠㅠㅠ
-      //  getSupportActionBar().setTitle(name);
 
-
-
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //getSupportActionBar().setTitle(name);
+        getSupportActionBar().setTitle(name);
 
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);

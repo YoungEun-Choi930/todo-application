@@ -20,8 +20,8 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:title="친구이름"
         app:titleTextColor="@color/white"/>
+
 
 
 
