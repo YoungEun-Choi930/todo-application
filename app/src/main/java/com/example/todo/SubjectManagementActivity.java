@@ -177,11 +177,11 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
                 //firebase
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("startdate", Integer.parseInt(strstartdate));
-                map.put("starttime", Integer.parseInt(startTime));
-                map.put("enddate", Integer.parseInt(strenddate));
-                map.put("endtime", Integer.parseInt(endTime));
-                map.put("isdone", 0);
+                map.put("startDate", Integer.parseInt(strstartdate));
+                map.put("startTime", Integer.parseInt(startTime));
+                map.put("endDate", Integer.parseInt(strenddate));
+                map.put("endTime", Integer.parseInt(endTime));
+                map.put("isDone", 0);
 
                 lecturelist.put(lectureName, map);
 
