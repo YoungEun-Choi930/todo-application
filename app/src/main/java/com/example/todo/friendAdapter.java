@@ -59,7 +59,12 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                     friendInfo.setChecked(isChecked);
-                    checkedList.add(friendInfo);
+                    if(friendInfo.getChecked()){
+                        checkedList.add(friendInfo);
+
+                    }else{
+                        checkedList.remove(friendInfo);
+                    }
                 }
             });
             if(ck==1){
@@ -75,7 +80,12 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                     friendInfo.setChecked(isChecked);
-                    checkedList.add(friendInfo);
+                    if(friendInfo.getChecked()){
+                        checkedList.add(friendInfo);
+
+                    }else{
+                        checkedList.remove(friendInfo);
+                    }
                 }
             });
 
