@@ -164,6 +164,9 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
     public String getName(int position){
         return myFriendsList.get(position).getFriendName();
     }
+    public String getUid(int position){
+        return myFriendsList.get(position).getFriendUID();
+    }
 }
 
 

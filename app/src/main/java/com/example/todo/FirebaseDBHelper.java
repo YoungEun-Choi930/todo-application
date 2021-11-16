@@ -143,87 +143,6 @@ public class FirebaseDBHelper {
 
 
 
-    private List<LectureInfo> loadFriendLectureList(String friendUID, int date){
-        List<LectureInfo> result = new ArrayList<>();
-        Task<DataSnapshot> task = databaseReference.child("INFO").child(friendUID).child("lecture").get();
-        if(task.getResult().exists()) { //데이터가 존재하면
-
-            for (DataSnapshot subjectlist : task.getResult().getChildren()) { //과목목록
-
-                for (DataSnapshot lecturelist : subjectlist.getChildren()) { //강의목록
-                    UploadInfo lecture = lecturelist.getValue(UploadInfo.class);
-
-                    if (lecture.startDate > date)        //date에 해당하지 않는 것은 넘어감.
-                        continue;
-                    if (lecture.endDate < date)
-                        continue;
-
-                    String lectureName = lecturelist.getKey();
-                    String subjectName = subjectlist.getKey();
-                    boolean isDone = lecture.isDone;
-
-                    LectureInfo lectureInfo = new LectureInfo(subjectName, lectureName, isDone);
-                    result.add(lectureInfo);
-                }
-
-            }
-        }
-        return result;
-    }
-
-    private List<AssignmentInfo> loadFriendAssignmentList(String friendID, int date){
-        List<AssignmentInfo> result = new ArrayList<>();
-        Task<DataSnapshot> task = databaseReference.child("INFO").child(friendID).child("lecture").get();
-        if(task.getResult().exists()) { //데이터가 존재하면
-
-            for(DataSnapshot subjectlist: task.getResult().getChildren()){
-
-                for(DataSnapshot assignmentlist: subjectlist.getChildren()) {
-                    UploadInfo lecture = assignmentlist.getValue(UploadInfo.class);
-
-                    if(lecture.startDate > date)        //date에 해당하지 않는 것은 넘어감.
-                        continue;
-                    if(lecture.endDate < date)
-                        continue;
-
-                    String lectureName = assignmentlist.getKey();
-                    String subjectName = subjectlist.getKey();
-                    boolean isDone = lecture.isDone;
-
-                    AssignmentInfo assignmentInfo = new AssignmentInfo(subjectName,lectureName,isDone);
-                    result.add(assignmentInfo);
-                }
-
-            }
-
-        }
-        return result;
-    }
-
-    private List<ExamInfo> loadFriendExamList(String friendID, int date){
-        List<ExamInfo> result = new ArrayList<>();
-        Task<DataSnapshot> task = databaseReference.child("INFO").child(friendID).child("exam").get();
-        if(task.getResult().exists()) { //데이터가 존재하면
-
-            for(DataSnapshot subjectlist: task.getResult().getChildren()){
-
-                for(DataSnapshot examlist: subjectlist.getChildren()) {
-                    UploadExamInfo lecture = examlist.getValue(UploadExamInfo.class);
-
-                    if(lecture.date == date)        //date에 해당하면 list에 넣음.
-                    {
-                        String lectureName = examlist.getKey();
-                        String subjectName = subjectlist.getKey();
-
-                        ExamInfo examInfo = new ExamInfo(subjectName,lectureName);
-                        result.add(examInfo);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
     public void loadFriendToDoList(String friendUID, int date) {
         List<List> result = new ArrayList();
 
@@ -232,18 +151,19 @@ public class FirebaseDBHelper {
         List<ExamInfo> examInfolist = new ArrayList<>();
 
 
-        Task<DataSnapshot> task = databaseReference.child(friendUID).get();
+        Task<DataSnapshot> task = databaseReference.child("INFO").child(friendUID).get();
 
         OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()) {
-                    for(DataSnapshot friend: task.getResult().getChildren()) {
+                    for(DataSnapshot table: task.getResult().getChildren()) {
 
-                        for(DataSnapshot table: friend.getChildren()) {
                             String tablename = table.getKey();
+
                             if(tablename.equals("lecture")) {//강의 테이블
-                                for (DataSnapshot subjectlist : task.getResult().getChildren()) { //과목목록
+
+                                for (DataSnapshot subjectlist : table.getChildren()) { //과목목록
 
                                     for (DataSnapshot lecturelist : subjectlist.getChildren()) { //강의목록
                                         UploadInfo lecture = lecturelist.getValue(UploadInfo.class);
@@ -255,7 +175,12 @@ public class FirebaseDBHelper {
 
                                         String lectureName = lecturelist.getKey();
                                         String subjectName = subjectlist.getKey();
-                                        boolean isDone = lecture.isDone;
+                                        boolean isDone;
+                                        if(lecture.isDone == 1)
+                                            isDone = true;
+                                        else
+                                            isDone = false;
+
 
                                         LectureInfo lectureInfo = new LectureInfo(subjectName, lectureName, isDone);
                                         lectureInfolist.add(lectureInfo);
@@ -264,7 +189,7 @@ public class FirebaseDBHelper {
                                 }
                             }
                             else if(tablename.equals("assignment")) {//과제테이블
-                                for(DataSnapshot subjectlist: task.getResult().getChildren()){
+                                for(DataSnapshot subjectlist: table.getChildren()){
 
                                     for(DataSnapshot assignmentlist: subjectlist.getChildren()) {
                                         UploadInfo lecture = assignmentlist.getValue(UploadInfo.class);
@@ -276,7 +201,11 @@ public class FirebaseDBHelper {
 
                                         String lectureName = assignmentlist.getKey();
                                         String subjectName = subjectlist.getKey();
-                                        boolean isDone = lecture.isDone;
+                                        boolean isDone;
+                                        if(lecture.isDone == 1)
+                                            isDone = true;
+                                        else
+                                            isDone = false;
 
                                         AssignmentInfo assignmentInfo = new AssignmentInfo(subjectName,lectureName,isDone);
                                         assingmentInfolist.add(assignmentInfo);
@@ -285,7 +214,7 @@ public class FirebaseDBHelper {
                                 }
                             }
                             else if(tablename.equals("exam")) { //시험테이블
-                                for(DataSnapshot subjectlist: task.getResult().getChildren()){
+                                for(DataSnapshot subjectlist: table.getChildren()){
 
                                     for(DataSnapshot examlist: subjectlist.getChildren()) {
                                         UploadExamInfo lecture = examlist.getValue(UploadExamInfo.class);
@@ -299,7 +228,7 @@ public class FirebaseDBHelper {
                                             examInfolist.add(examInfo);
                                         }
                                     }
-                                }
+
                             }
 
                         }
@@ -308,7 +237,12 @@ public class FirebaseDBHelper {
                     result.add(lectureInfolist);
                     result.add(assingmentInfolist);
                     result.add(examInfolist);
-//                    FriendsManagementActivity.context.notifyFriendToDoList(result);
+
+                    List<LectureInfo> lectureInfos = result.get(0);
+                    for(LectureInfo info: lectureInfos)
+                        System.out.println(info.getSubjectName());
+
+                    FriendToDoActivity.context.notifyFriendToDoList(result);
 
                 }
                 else{
@@ -329,7 +263,7 @@ public class FirebaseDBHelper {
     }
 
     public void uploadMyAssignment(String subjectName, String assignmentName, String startdate, String startTime, String enddate, String endTime){
-        UploadInfo list = new UploadInfo(Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),false);
+        UploadInfo list = new UploadInfo(Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),0);
 
         HashMap<String,Object> info = new HashMap<>();
         info.put(assignmentName, list.toMap());
@@ -386,13 +320,15 @@ public class FirebaseDBHelper {
 
 class UploadInfo
 {
-    int startDate;
-    int startTime;
-    int endDate;
-    int endTime;
-    boolean isDone;
+    public int startDate;
+    public int startTime;
+    public int endDate;
+    public int endTime;
+    public int isDone;
 
-    public UploadInfo(int startdate, int startTime, int enddate, int endTime, boolean isDone) {
+    public UploadInfo() {};
+
+    public UploadInfo(int startdate, int startTime, int enddate, int endTime, int isDone) {
         this.startDate = startdate;
         this.startTime = startTime;
         this.endDate = enddate;
@@ -402,19 +338,21 @@ class UploadInfo
 
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> info = new HashMap<>();
-        info.put("startdate", startDate);
-        info.put("starttime", startTime);
-        info.put("enddate", endDate);
-        info.put("endtime", endTime);
-        info.put("isdone", isDone);
+        info.put("startDate", startDate);
+        info.put("startTime", startTime);
+        info.put("endDate", endDate);
+        info.put("endTime", endTime);
+        info.put("isDone", isDone);
         return info;
     }
 }
 
 class UploadExamInfo
 {
-    int date;
-    int time;
+    public int date;
+    public int time;
+
+    public UploadExamInfo() {};
 
     public UploadExamInfo(int date, int time) {
         this.date = date;

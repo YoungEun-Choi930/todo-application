@@ -67,7 +67,7 @@ public class TodoManagementActivity extends AppCompatActivity {
                 String stringdate = date.toString().replace("CalendarDay{","").replace("}","");
                 String[] strdate = stringdate.split("-");
 
-                String sdate = strdate[0];
+                String sdate = strdate[0];      //20210901 이런식으로 바꿈
                 if(strdate[1].length() == 1)
                     sdate += "0";
                 sdate += strdate[1];
