@@ -16,23 +16,31 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendToDoActivity extends AppCompatActivity {
     MaterialCalendarView materialCalendarView;
-    List<List> Friendtodolist;
+    private List<List> friendToDoList;
+
+    public static FriendToDoActivity context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_friend_to_do);
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name"); //선택한친구이름가져오기
+        String uid = intent.getStringExtra("UID");
+
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.friendtodo_toolbar);
         setSupportActionBar(myToolbar);
 
         getSupportActionBar().setTitle(name);
+
 
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
@@ -53,17 +61,32 @@ public class FriendToDoActivity extends AppCompatActivity {
                     sdate += "0";
                 sdate += strdate[2];
 
-             //   Friendtodolist = getFriendToDoList(sdate);
-             //   List<LectureInfo> lectureInfos = Friendtodolist.get(0);
-              //  for(LectureInfo info: lectureInfos)
-             //       System.out.println(info.getSubjectName());
+
+                System.out.println("-----------------------------get");
+                getFriendToDoList(uid, Integer.parseInt(sdate));
+
+
             }
         });
 
     }
 
-    private List<List> getFriendToDoList(String sdate) {
-        return null;
+    private void getFriendToDoList(String friendUID, int sdate) {
+        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
+        firebaseDB.loadFriendToDoList(friendUID, sdate);
+    }
+
+    public void notifyFriendToDoList(List<List> list) {
+//        friendAdapter.setData(list);
+        friendToDoList = list;
+//        friendAdapter.notifyDataSetChanged();
+        System.out.println("----notify friend to do ------------");
+
+        List<LectureInfo> lectureInfos = list.get(0);
+        for(LectureInfo info: lectureInfos)
+            System.out.println(info.getSubjectName());
+
+
     }
 
     @Override

@@ -68,10 +68,12 @@ public class FriendsManagementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int pos) {
                 String name =friendAdapter.getName(pos);
+                String uid = friendAdapter.getUid(pos);
 
                 if(ck==0){
-                    Intent intent = new Intent(getApplicationContext(), FriendToDoActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), FriendToDoActivity.class);  //친구 일정 조회
                     intent.putExtra("name",name);
+                    intent.putExtra("UID",uid);
                     startActivity(intent);
                 }
             }
