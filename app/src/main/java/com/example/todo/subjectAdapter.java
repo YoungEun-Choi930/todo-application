@@ -32,8 +32,8 @@ public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemVie
 
     @Override
     public void onBindViewHolder(@NonNull subjectAdapter.ItemViewHolder holder, int position) {
-        SubjectInfo subjectInfo=mySubjectList.get(position);
 
+        SubjectInfo subjectInfo=mySubjectList.get(position);
         holder.tv_name_sub.setText(subjectInfo.getSubjectName());
 
         holder.checkBox.setOnCheckedChangeListener(null);
