@@ -183,6 +183,7 @@ public class FirebaseDBHelper {
 
 
                                         LectureInfo lectureInfo = new LectureInfo(subjectName, lectureName, isDone);
+                                        lectureInfo.setViewTipe(1);
                                         lectureInfolist.add(lectureInfo);
                                     }
 
@@ -208,6 +209,7 @@ public class FirebaseDBHelper {
                                             isDone = false;
 
                                         AssignmentInfo assignmentInfo = new AssignmentInfo(subjectName,lectureName,isDone);
+                                        assignmentInfo.setViewTipe(1);
                                         assingmentInfolist.add(assignmentInfo);
                                     }
 
@@ -225,6 +227,7 @@ public class FirebaseDBHelper {
                                             String subjectName = subjectlist.getKey();
 
                                             ExamInfo examInfo = new ExamInfo(subjectName,lectureName);
+                                            examInfo.setViewTipe(1);
                                             examInfolist.add(examInfo);
                                         }
                                     }
