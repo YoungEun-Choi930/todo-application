@@ -33,7 +33,7 @@
         app:mcv_showOtherDates="all" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcy_friend_subject"
+        android:id="@+id/rcy_friend_todolist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
