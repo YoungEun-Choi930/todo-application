@@ -11,14 +11,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ItemViewHolder> {
 
-    List<SubjectInfo> todoSubject;
+    HashMap<String, Object> todoList;
     Context mcontext;
-    public ToDoAdapter(Context context, List<SubjectInfo> list){
-        this.todoSubject=list;
+
+    public ToDoAdapter(Context context, HashMap<String, Object> todoList){
+        this.todoList = todoList;
         this.mcontext=context;
     }
     @NonNull
@@ -30,8 +32,9 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ItemViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        SubjectInfo subject=todoSubject.get(position);
-        holder.todo_sub.setText(subject.getSubjectName());
+        String subjectName = (String) todoList.keySet().toArray()[position];
+
+        holder.todo_sub.setText(subjectName);
 
     }
 

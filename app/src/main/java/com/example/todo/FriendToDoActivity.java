@@ -18,6 +18,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FriendToDoActivity extends AppCompatActivity {
@@ -86,9 +87,84 @@ public class FriendToDoActivity extends AppCompatActivity {
 //        friendAdapter.notifyDataSetChanged();
         System.out.println("----notify friend to do ------------");
 
-        List<LectureInfo> lectureInfos = list.get(0);
-        for(LectureInfo info: lectureInfos)
-            System.out.println(info.getSubjectName());
+
+        HashMap<String, Object> map = new HashMap<>();
+
+
+        List<LectureInfo> lectureList = list.get(0);
+        for (LectureInfo lectureInfo : lectureList) {
+            if(map.containsKey(lectureInfo.getSubjectName())) {
+                List<List> todolist = (List<List>) map.get(lectureInfo.getSubjectName());
+                List<LectureInfo> lecture = todolist.get(0);
+                lecture.add(lectureInfo);
+                todolist.set(0,lecture);
+                map.put(lectureInfo.getSubjectName(), todolist);
+            }
+            else {
+                List<List> todolist = new ArrayList<>();
+                List<LectureInfo> lecture = new ArrayList<>();
+                List<AssignmentInfo> assignment = new ArrayList<>();
+                List<ExamInfo> exam = new ArrayList<>();
+
+                lecture.add(lectureInfo);
+
+                todolist.add(lecture);
+                todolist.add(assignment);
+                todolist.add(exam);
+                map.put(lectureInfo.getSubjectName(),todolist);
+            }
+        }
+
+        List<AssignmentInfo> assignmentlist = list.get(1);
+        for(AssignmentInfo assignmentInfo: assignmentlist) {
+            if(map.containsKey(assignmentInfo.getSubjectName())) {
+                List<List> todolist = (List<List>) map.get(assignmentInfo.getSubjectName());
+                List<AssignmentInfo> lecture = todolist.get(1);
+                lecture.add(assignmentInfo);
+                todolist.set(1,lecture);
+                map.put(assignmentInfo.getSubjectName(), todolist);
+
+            }
+            else {
+                List<List> todolist = new ArrayList<>();
+                List<LectureInfo> lecture = new ArrayList<>();
+                List<AssignmentInfo> assignment = new ArrayList<>();
+                List<ExamInfo> exam = new ArrayList<>();
+
+                assignment.add(assignmentInfo);
+
+                todolist.add(lecture);
+                todolist.add(assignment);
+                todolist.add(exam);
+                map.put(assignmentInfo.getSubjectName(),todolist);
+            }
+        }
+
+        List<ExamInfo> examlist = list.get(2);
+        for(ExamInfo examInfo: examlist) {
+            if(map.containsKey(examInfo.getSubjectName())) {
+                List<List> todolist = (List<List>) map.get(examInfo.getSubjectName());
+                List<ExamInfo> lecture = todolist.get(2);
+                lecture.add(examInfo);
+                todolist.set(2,lecture);
+                map.put(examInfo.getSubjectName(), todolist);
+
+            }
+            else {
+                List<List> todolist = new ArrayList<>();
+                List<LectureInfo> lecture = new ArrayList<>();
+                List<AssignmentInfo> assignment = new ArrayList<>();
+                List<ExamInfo> exam = new ArrayList<>();
+
+                exam.add(examInfo);
+
+                todolist.add(lecture);
+                todolist.add(assignment);
+                todolist.add(exam);
+                map.put(examInfo.getSubjectName(),todolist);
+            }
+        }
+
 
 
     }

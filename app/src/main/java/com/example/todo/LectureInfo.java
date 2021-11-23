@@ -4,6 +4,7 @@ public class LectureInfo {
     private String subjectName;
     private String lectureName;
     private Boolean isDone;
+    private int viewTipe=0;
 
     public LectureInfo(String subjectName, String lectureName, Boolean isDone) {
         this.subjectName = subjectName;
@@ -25,5 +26,12 @@ public class LectureInfo {
 
     public void setIsDone(Boolean isDone) {
         this.isDone = isDone;
+    }
+    public int getViewTipe() {
+        return viewTipe;
+    }
+
+    public void setViewTipe(int viewTipe) {
+        this.viewTipe = viewTipe;
     }
 }
