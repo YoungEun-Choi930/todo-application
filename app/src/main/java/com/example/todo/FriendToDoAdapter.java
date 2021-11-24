@@ -56,16 +56,16 @@ public class FriendToDoAdapter extends RecyclerView.Adapter <RecyclerView.ViewHo
         if (holder instanceof AHolder) { //내 투두리스트
             ((AHolder) holder).todo_sub.setText(subjectName);
             ((AHolder) holder).todo_add.setVisibility(View.VISIBLE);
-            ((AHolder) holder).recy_lecture.setAdapter(new FriendToDoLectureAdapter(mcontext, list.get(0)));
-            ((AHolder) holder).recy_assignment.setAdapter(new FriendToDoAssignmentAdapter(mcontext,list.get(1)));
-            ((AHolder) holder).recy_exam.setAdapter(new FriendToDoExamAdapter(mcontext,list.get(2)));
+            ((AHolder) holder).recy_lecture.setAdapter(new FriendToDoLectureAdapter(mcontext, list.get(0),0));
+            ((AHolder) holder).recy_assignment.setAdapter(new FriendToDoAssignmentAdapter(mcontext,list.get(1),0));
+            ((AHolder) holder).recy_exam.setAdapter(new FriendToDoExamAdapter(mcontext,list.get(2),0));
 
 
         } else { //친구 투두리스트
             ((BHolder) holder).todo_sub.setText(subjectName);
-            ((BHolder) holder).recy_lecture.setAdapter(new FriendToDoLectureAdapter(mcontext, list.get(0)));
-            ((BHolder) holder).recy_assignment.setAdapter(new FriendToDoAssignmentAdapter(mcontext,list.get(1)));
-            ((BHolder) holder).recy_exam.setAdapter(new FriendToDoExamAdapter(mcontext,list.get(2)));
+            ((BHolder) holder).recy_lecture.setAdapter(new FriendToDoLectureAdapter(mcontext, list.get(0),1));
+            ((BHolder) holder).recy_assignment.setAdapter(new FriendToDoAssignmentAdapter(mcontext,list.get(1),1));
+            ((BHolder) holder).recy_exam.setAdapter(new FriendToDoExamAdapter(mcontext,list.get(2),1));
 
         }
     }

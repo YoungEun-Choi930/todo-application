@@ -1,10 +1,13 @@
 package com.example.todo;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -14,12 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class FriendToDoExamAdapter extends RecyclerView.Adapter <FriendToDoExamAdapter.ItemViewHolder> {
-    List<LectureInfo> todoExam;
+public class FriendToDoExamAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
+    List<ExamInfo> todoExam;
     Context mcontext;
     LayoutInflater inflater;
+    public static final int myType = 0;
+    public static final int friendType = 1;
+    int type;
 
-    public FriendToDoExamAdapter(Context context, List<LectureInfo> list){
+    public FriendToDoExamAdapter(Context context, List<ExamInfo> list, int type){
 
         this.todoExam = list;
         this.mcontext=context;
@@ -29,27 +35,70 @@ public class FriendToDoExamAdapter extends RecyclerView.Adapter <FriendToDoExamA
     @NonNull
 
     @Override
-    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemview = inflater.inflate(R.layout.item_in_friend_todo,parent,false);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == myType) {
+            View itemview = inflater.inflate(R.layout.item_in_friend_todo,parent,false);
+            return new AHolder(itemview);
+        } else {
+            View itemview =inflater.inflate(R.layout.item_in_friend_todo,parent,false);
+            return new BHolder(itemview);
+        }
 
-        return new ItemViewHolder(itemview);
     }
-    public class ItemViewHolder extends RecyclerView.ViewHolder{
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        ExamInfo examInfo = todoExam.get(position);
+
+        if (holder instanceof AHolder) { //내 투두리스트
+            ((AHolder) holder).tv_todo.setText(examInfo.getExamName());
+            ((AHolder) holder).checkBox.setVisibility(GONE);
+            ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ///삭제하는거 만들어넣어야해
+                }
+            });
+
+        } else { //친구 투두리스트
+            ((BHolder) holder).tv_todo.setText(examInfo.getExamName());
+            ((BHolder) holder).checkBox.setVisibility(GONE);
+            ((BHolder) holder).xbutton.setVisibility(GONE);
+        }
+    }
+
+
+    public class AHolder extends RecyclerView.ViewHolder {
         TextView tv_todo;
-
-
-        public ItemViewHolder(@NonNull View itemView) {
+        CheckBox checkBox;
+        ImageButton xbutton;
+        public AHolder(@NonNull View itemView) {
             super(itemView);
-
             tv_todo = itemView.findViewById(R.id.tv_todo);
+            checkBox = itemView.findViewById(R.id.checkBox_todo);
+            xbutton = itemView.findViewById(R.id.x_button);
+        }
+    }
+
+    public class BHolder extends RecyclerView.ViewHolder{
+        TextView tv_todo;
+        CheckBox checkBox;
+        ImageButton xbutton;
+        public BHolder(@NonNull View itemView) {
+            super(itemView);
+            tv_todo = itemView.findViewById(R.id.tv_todo);
+            checkBox = itemView.findViewById(R.id.checkBox_todo);
+            xbutton = itemView.findViewById(R.id.x_button);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendToDoExamAdapter.ItemViewHolder holder, int position) {
-        LectureInfo lectureInfo = todoExam.get(position);
-        holder.tv_todo.setText(lectureInfo.getLectureName());
-
+    public int getItemViewType(int position) {
+        if (type== 0) {
+            return myType;
+        } else {
+            return friendType;
+        }
     }
 
     @Override
