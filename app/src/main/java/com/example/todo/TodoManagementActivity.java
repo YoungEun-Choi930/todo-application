@@ -3,6 +3,9 @@ package com.example.todo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TodoManagementActivity extends AppCompatActivity {
+    private HashMap<String, Object> todoList;
+    public FriendToDoAdapter friendToDoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,8 @@ public class TodoManagementActivity extends AppCompatActivity {
         Button btn_friend = (Button) findViewById(R.id.btn_friend);
         Button btn_alarm = (Button) findViewById(R.id.btn_alarm);
         Button btn_month = (Button) findViewById(R.id.btn_month);
+
+        todoList = new HashMap<>();
 
 
         btn_subject.setOnClickListener((view) -> { // 과목관리버튼 선택
@@ -60,6 +67,8 @@ public class TodoManagementActivity extends AppCompatActivity {
                 materialCalendarView.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
             }
         });
+
+
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -89,6 +98,7 @@ public class TodoManagementActivity extends AppCompatActivity {
                         List<List> todolist = (List<List>) map.get(lectureInfo.getSubjectName());
                         List<LectureInfo> lecture = todolist.get(0);
                         lecture.add(lectureInfo);
+                        System.out.println(lectureInfo.getLectureName()+"강의이름뭐임");
                         todolist.set(0,lecture);
                         map.put(lectureInfo.getSubjectName(), todolist);
                     }
@@ -97,6 +107,7 @@ public class TodoManagementActivity extends AppCompatActivity {
                         List<LectureInfo> lecture = new ArrayList<>();
                         List<AssignmentInfo> assignment = new ArrayList<>();
                         List<ExamInfo> exam = new ArrayList<>();
+                        System.out.println(lectureInfo.getLectureName()+"강의이름");
 
                         lecture.add(lectureInfo);
 
@@ -156,13 +167,29 @@ public class TodoManagementActivity extends AppCompatActivity {
                         map.put(examInfo.getSubjectName(),todolist);
                     }
                 }
-
-
+                friendToDoAdapter.setList(map);
+                friendToDoAdapter.notifyDataSetChanged();
                 // 여기서 notify
 
             }
         });
+
+        RecyclerView recyclerView = findViewById(R.id.rcy_todolist);
+        friendToDoAdapter = new FriendToDoAdapter(this, todoList,0);
+        recyclerView.setAdapter(friendToDoAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        friendToDoAdapter.notifyDataSetChanged();
+
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+
     }
+
+
     private List<List> getToDoList(String date) {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         List<LectureInfo> lecturelist = helper.loadLectureList(date);

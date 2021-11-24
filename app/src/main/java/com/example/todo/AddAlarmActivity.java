@@ -2,6 +2,7 @@ package com.example.todo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AddAlarmActivity extends AppCompatActivity {
@@ -33,7 +35,7 @@ public class AddAlarmActivity extends AppCompatActivity {
     String[] dayList = {"1일 전", "3일 전","5일 전","7일 전"};
     String[] hourList = {"1시간 전", "2시간 전", "3시간 전", "5시간 전", "1일 전"};
     ArrayAdapter hourAdapter, timeAdapter, dayAdapter;
-
+    AlarmManager alarmManager;
 
 
     @Override
@@ -166,6 +168,11 @@ public class AddAlarmActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    public void setAlarm(View view){
+        Calendar subjectAlarm = Calendar.getInstance();
+    //    subjectAlarm.set(Calendar.HOUR_OF_DAY, )
     }
 
 }

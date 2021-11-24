@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AlarmManagementActivity extends AppCompatActivity {
@@ -28,6 +31,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
     private int ck=0;
     alarmAdapter alarmAdapter;
     public static Context mContext;
+
     //private static final int REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,18 +82,6 @@ public class AlarmManagementActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.alarm_menu, menu); //툴바에 메뉴 설정
         return true;
     }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode != Activity.RESULT_OK) {
-                return;
-            }
-            alarmAdapter.notifyDataSetChanged();
-        }
-    }
-*/
 
 
     @Override
@@ -122,6 +114,8 @@ public class AlarmManagementActivity extends AppCompatActivity {
         alarmAdapter.updateCheckBox(i);
         alarmAdapter.notifyDataSetChanged();;
     }
+
+
     public List<SubjectInfo> getSubjectList() {
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         List<SubjectInfo> list = adapter.loadSubjectList();
