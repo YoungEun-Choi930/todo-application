@@ -1,9 +1,10 @@
 package com.example.todo;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -23,8 +24,8 @@ import java.util.List;
 
 public class FriendToDoActivity extends AppCompatActivity {
     MaterialCalendarView materialCalendarView;
-    private List<List> friendToDoList;
-
+    private HashMap<String, Object> friendToDoList;
+    public FriendToDoAdapter friendToDoAdapter;
     public static FriendToDoActivity context;
 
     @Override
@@ -43,7 +44,7 @@ public class FriendToDoActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(name);
 
-
+        friendToDoList = new HashMap<>();
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
 
@@ -71,6 +72,17 @@ public class FriendToDoActivity extends AppCompatActivity {
             }
         });
 
+        RecyclerView recyclerView = findViewById(R.id.rcy_friend_todolist);
+        friendToDoAdapter = new FriendToDoAdapter(context, friendToDoList,1);
+        recyclerView.setAdapter(friendToDoAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        friendToDoAdapter.notifyDataSetChanged();
+
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
 
 
@@ -83,7 +95,7 @@ public class FriendToDoActivity extends AppCompatActivity {
 
     public void notifyFriendToDoList(List<List> list) {
 //        friendAdapter.setData(list);
-        friendToDoList = list;
+      //  friendToDoList = list;
 //        friendAdapter.notifyDataSetChanged();
         System.out.println("----notify friend to do ------------");
 
@@ -92,10 +104,12 @@ public class FriendToDoActivity extends AppCompatActivity {
 
 
         List<LectureInfo> lectureList = list.get(0);
+        System.out.println(lectureList.size()+"강의몇개?");
         for (LectureInfo lectureInfo : lectureList) {
             if(map.containsKey(lectureInfo.getSubjectName())) {
                 List<List> todolist = (List<List>) map.get(lectureInfo.getSubjectName());
                 List<LectureInfo> lecture = todolist.get(0);
+                System.out.println(lectureInfo.getSubjectName()+" 강의의 과목이름"+ lectureInfo.getLectureName());
                 lecture.add(lectureInfo);
                 todolist.set(0,lecture);
                 map.put(lectureInfo.getSubjectName(), todolist);
@@ -123,6 +137,7 @@ public class FriendToDoActivity extends AppCompatActivity {
                 lecture.add(assignmentInfo);
                 todolist.set(1,lecture);
                 map.put(assignmentInfo.getSubjectName(), todolist);
+                System.out.println(assignmentInfo.getSubjectName()+" 강의의 과목이름"+ assignmentInfo.getAssignmentName());
 
             }
             else {
@@ -148,6 +163,8 @@ public class FriendToDoActivity extends AppCompatActivity {
                 lecture.add(examInfo);
                 todolist.set(2,lecture);
                 map.put(examInfo.getSubjectName(), todolist);
+                System.out.println(examInfo.getSubjectName()+" 강의의 과목이름"+ examInfo.getExamName());
+
 
             }
             else {
@@ -164,8 +181,8 @@ public class FriendToDoActivity extends AppCompatActivity {
                 map.put(examInfo.getSubjectName(),todolist);
             }
         }
-
-
+        friendToDoAdapter.setList(map);
+        friendToDoAdapter.notifyDataSetChanged();
 
     }
 

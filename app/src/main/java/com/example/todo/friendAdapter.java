@@ -45,8 +45,7 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
 
             return new BHolder(v);
         }
-       // View itemview = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend, parent, false);
-       // return new ItemViewHolder(itemview);
+
     }
 
     @Override

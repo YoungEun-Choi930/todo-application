@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ToDoAssignmentAdapter extends RecyclerView.Adapter <ToDoAssignmentAdapter.ItemViewHolder> {
-    List<AssignmentInfo> todoAssignment;
+public class FriendToDoLectureAdapter extends RecyclerView.Adapter <FriendToDoLectureAdapter.ItemViewHolder> {
+    List<LectureInfo> todoLecture;
     Context mcontext;
     LayoutInflater inflater;
 
-    public ToDoAssignmentAdapter(Context context, List<AssignmentInfo> list){
+    public FriendToDoLectureAdapter(Context context, List<LectureInfo> list){
 
-        this.todoAssignment = list;
+        this.todoLecture = list;
         this.mcontext=context;
         this.inflater=LayoutInflater.from(context);
     }
@@ -34,33 +34,29 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <ToDoAssignmentA
 
         return new ItemViewHolder(itemview);
     }
-
-    @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        AssignmentInfo assignmentInfo = todoAssignment.get(position);
-        holder.tv_todo.setText(assignmentInfo.getAssignmentName());
-        holder.checkBox.setChecked(assignmentInfo.getIsDone());
-        holder.checkBox.setEnabled(false);
-    }
-
     public class ItemViewHolder extends RecyclerView.ViewHolder{
         TextView tv_todo;
         CheckBox checkBox;
-        ImageButton x_button;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tv_todo = itemView.findViewById(R.id.tv_todo);
             checkBox = itemView.findViewById(R.id.checkBox_todo);
-            x_button = itemView.findViewById(R.id.x_button);
             checkBox.setEnabled(false);
         }
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull FriendToDoLectureAdapter.ItemViewHolder holder, int position) {
+        LectureInfo lectureInfo = todoLecture.get(position);
+        holder.tv_todo.setText(lectureInfo.getLectureName());
+        holder.checkBox.setChecked(lectureInfo.getIsDone());
+        holder.checkBox.setEnabled(false);
+    }
 
     @Override
     public int getItemCount() {
-        return todoAssignment.size();
+        return todoLecture.size();
     }
 }
