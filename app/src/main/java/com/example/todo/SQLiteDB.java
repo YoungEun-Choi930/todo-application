@@ -9,7 +9,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static SQLiteDB db;
 
     private SQLiteDB() {
-        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,8);
+        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,9);
     }
 
     public static SQLiteDB getInstance(){
@@ -22,7 +22,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) { //sqlite에서는 foreign key를 추가할 수 없다.ㅠㅠ
 
         String subject = "CREATE TABLE IF NOT EXISTS SubjectList (" +
-                "subjectName TEXT NOT NULL, number INTEGER, startWeekNumberINTEGER," +
+                "subjectName TEXT NOT NULL, number INTEGER, startWeekNumber INTEGER," +
                 "startTime INTEGER, endWeekNumber INTEGER, endTime INTEGER, PRIMARY KEY(subjectName));";
         String lecture = "CREATE TABLE IF NOT EXISTS LectureList (" +
                 "subjectName TEXT, lectureName TEXT, startDate INTEGER, startTime INTEGER, endDate INTEGER, endTime INTEGER, isDone INTEGER);";
