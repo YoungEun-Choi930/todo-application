@@ -1,16 +1,12 @@
 package com.example.todo;
 
-import static com.example.todo.FriendsManagementActivity.context;
-
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.HashMap;
 import java.util.List;
 
-public class FriendToDoAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
+public class ToDoAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
 
     HashMap<String, Object> todoList;
     Context mcontext;
@@ -27,7 +23,7 @@ public class FriendToDoAdapter extends RecyclerView.Adapter <RecyclerView.ViewHo
     public static final int friendType = 1;
     int type;
 
-    public FriendToDoAdapter(Context context, HashMap<String, Object> todoList, int type){
+    public ToDoAdapter(Context context, HashMap<String, Object> todoList, int type){
         this.todoList = todoList;
         this.mcontext=context;
         this.inflater = LayoutInflater.from(context);
@@ -37,10 +33,10 @@ public class FriendToDoAdapter extends RecyclerView.Adapter <RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == myType) {
-            View itemview = inflater.from(parent.getContext()).inflate(R.layout.item_friend_todo, parent, false);
+            View itemview = inflater.from(parent.getContext()).inflate(R.layout.item_todo, parent, false);
             return new AHolder(itemview);
         } else {
-            View itemview = inflater.from(parent.getContext()).inflate(R.layout.item_friend_todo, parent, false);
+            View itemview = inflater.from(parent.getContext()).inflate(R.layout.item_todo, parent, false);
             return new BHolder(itemview);
         }
 
@@ -56,16 +52,25 @@ public class FriendToDoAdapter extends RecyclerView.Adapter <RecyclerView.ViewHo
         if (holder instanceof AHolder) { //내 투두리스트
             ((AHolder) holder).todo_sub.setText(subjectName);
             ((AHolder) holder).todo_add.setVisibility(View.VISIBLE);
-            ((AHolder) holder).recy_lecture.setAdapter(new FriendToDoLectureAdapter(mcontext, list.get(0),0));
-            ((AHolder) holder).recy_assignment.setAdapter(new FriendToDoAssignmentAdapter(mcontext,list.get(1),0));
-            ((AHolder) holder).recy_exam.setAdapter(new FriendToDoExamAdapter(mcontext,list.get(2),0));
+            ((AHolder) holder).recy_lecture.setAdapter(new ToDoLectureAdapter(mcontext, list.get(0),0));
+            ((AHolder) holder).recy_assignment.setAdapter(new ToDoAssignmentAdapter(mcontext,list.get(1),0));
+            ((AHolder) holder).recy_exam.setAdapter(new ToDoExamAdapter(mcontext,list.get(2),0));
+
+            ((AHolder) holder).todo_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mcontext, AddAssignmentExamActivity.class);
+                    intent.putExtra("subjectName", subjectName);
+                    mcontext.startActivity(intent);
+                }
+            });
 
 
         } else { //친구 투두리스트
             ((BHolder) holder).todo_sub.setText(subjectName);
-            ((BHolder) holder).recy_lecture.setAdapter(new FriendToDoLectureAdapter(mcontext, list.get(0),1));
-            ((BHolder) holder).recy_assignment.setAdapter(new FriendToDoAssignmentAdapter(mcontext,list.get(1),1));
-            ((BHolder) holder).recy_exam.setAdapter(new FriendToDoExamAdapter(mcontext,list.get(2),1));
+            ((BHolder) holder).recy_lecture.setAdapter(new ToDoLectureAdapter(mcontext, list.get(0),1));
+            ((BHolder) holder).recy_assignment.setAdapter(new ToDoAssignmentAdapter(mcontext,list.get(1),1));
+            ((BHolder) holder).recy_exam.setAdapter(new ToDoExamAdapter(mcontext,list.get(2),1));
 
         }
     }

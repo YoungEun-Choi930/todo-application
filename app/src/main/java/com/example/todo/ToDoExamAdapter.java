@@ -6,9 +6,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -18,22 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class FriendToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
-    List<LectureInfo> todoLecture;
+public class ToDoExamAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
+    List<ExamInfo> todoExam;
     Context mcontext;
     LayoutInflater inflater;
     public static final int myType = 0;
     public static final int friendType = 1;
     int type;
 
+    public ToDoExamAdapter(Context context, List<ExamInfo> list, int type){
 
-
-    public FriendToDoLectureAdapter(Context context, List<LectureInfo> list, int type){
-
-        this.todoLecture = list;
+        this.todoExam = list;
         this.mcontext=context;
         this.inflater=LayoutInflater.from(context);
-        this.type = type;
     }
 
     @NonNull
@@ -41,37 +36,35 @@ public class FriendToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == myType) {
-            View itemview = inflater.inflate(R.layout.item_in_friend_todo,parent,false);
+            View itemview = inflater.inflate(R.layout.item_in_todo,parent,false);
             return new AHolder(itemview);
         } else {
-            View itemview =inflater.inflate(R.layout.item_in_friend_todo,parent,false);
+            View itemview =inflater.inflate(R.layout.item_in_todo,parent,false);
             return new BHolder(itemview);
         }
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        LectureInfo lectureInfo = todoLecture.get(position);
+        ExamInfo examInfo = todoExam.get(position);
 
         if (holder instanceof AHolder) { //내 투두리스트
-            ((AHolder) holder).tv_todo.setText(lectureInfo.getLectureName());
-            ((AHolder) holder).checkBox.setChecked(lectureInfo.getIsDone());
-            ((AHolder) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            ((AHolder) holder).tv_todo.setText(examInfo.getExamName());
+            ((AHolder) holder).checkBox.setVisibility(GONE);
+            ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                        lectureInfo.setIsDone(isChecked);
+                public void onClick(View view) {
+                    ///삭제하는거 만들어넣어야해
                 }
             });
-            ((AHolder) holder).xbutton.setVisibility(GONE);
 
         } else { //친구 투두리스트
-            ((BHolder) holder).tv_todo.setText(lectureInfo.getLectureName());
-            ((BHolder) holder).checkBox.setChecked(lectureInfo.getIsDone());
-            ((BHolder) holder).checkBox.setEnabled(false);
+            ((BHolder) holder).tv_todo.setText(examInfo.getExamName());
+            ((BHolder) holder).checkBox.setVisibility(GONE);
             ((BHolder) holder).xbutton.setVisibility(GONE);
         }
     }
-
 
 
     public class AHolder extends RecyclerView.ViewHolder {
@@ -85,7 +78,8 @@ public class FriendToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView
             xbutton = itemView.findViewById(R.id.x_button);
         }
     }
-    public class BHolder extends RecyclerView.ViewHolder{ //친구
+
+    public class BHolder extends RecyclerView.ViewHolder{
         TextView tv_todo;
         CheckBox checkBox;
         ImageButton xbutton;
@@ -108,6 +102,6 @@ public class FriendToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView
 
     @Override
     public int getItemCount() {
-        return todoLecture.size();
+        return todoExam.size();
     }
 }

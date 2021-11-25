@@ -3,7 +3,6 @@ package com.example.todo;
 import static android.view.View.GONE;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,64 +17,63 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class FriendToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
-    List<AssignmentInfo> todoAssignment;
+public class ToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
+    List<LectureInfo> todoLecture;
     Context mcontext;
     LayoutInflater inflater;
     public static final int myType = 0;
     public static final int friendType = 1;
     int type;
 
-    public FriendToDoAssignmentAdapter(Context context, List<AssignmentInfo> list, int type){
 
-        this.todoAssignment = list;
+
+    public ToDoLectureAdapter(Context context, List<LectureInfo> list, int type){
+
+        this.todoLecture = list;
         this.mcontext=context;
         this.inflater=LayoutInflater.from(context);
         this.type = type;
     }
 
-
-
+    @NonNull
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         if (viewType == myType) {
-            View itemview = inflater.inflate(R.layout.item_in_friend_todo,parent,false);
+            View itemview = inflater.inflate(R.layout.item_in_todo,parent,false);
             return new AHolder(itemview);
         } else {
-            View itemview =inflater.inflate(R.layout.item_in_friend_todo,parent,false);
+            View itemview =inflater.inflate(R.layout.item_in_todo,parent,false);
             return new BHolder(itemview);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        AssignmentInfo assignmentInfo = todoAssignment.get(position);
+        LectureInfo lectureInfo = todoLecture.get(position);
 
         if (holder instanceof AHolder) { //내 투두리스트
-            ((AHolder) holder).tv_todo.setText(assignmentInfo.getAssignmentName());
-            ((AHolder) holder).checkBox.setChecked(assignmentInfo.getIsDone());
+            ((AHolder) holder).tv_todo.setText(lectureInfo.getLectureName());
+            ((AHolder) holder).checkBox.setChecked(lectureInfo.getIsDone());
             ((AHolder) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    assignmentInfo.setIsDone(isChecked);
+                    int checked = 0;
+                    if(isChecked)
+                        checked = 1;
+                    (TodoManagementActivity.mContext).changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
                 }
             });
-            ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ///삭제추가해야댐!!!
-                }
-            });
+            ((AHolder) holder).xbutton.setVisibility(GONE);
 
         } else { //친구 투두리스트
-            ((BHolder) holder).tv_todo.setText(assignmentInfo.getAssignmentName());
-            ((BHolder) holder).checkBox.setChecked(assignmentInfo.getIsDone());
+            ((BHolder) holder).tv_todo.setText(lectureInfo.getLectureName());
+            ((BHolder) holder).checkBox.setChecked(lectureInfo.getIsDone());
             ((BHolder) holder).checkBox.setEnabled(false);
             ((BHolder) holder).xbutton.setVisibility(GONE);
         }
     }
+
 
 
     public class AHolder extends RecyclerView.ViewHolder {
@@ -89,8 +87,7 @@ public class FriendToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerV
             xbutton = itemView.findViewById(R.id.x_button);
         }
     }
-
-    public class BHolder extends RecyclerView.ViewHolder{
+    public class BHolder extends RecyclerView.ViewHolder{ //친구
         TextView tv_todo;
         CheckBox checkBox;
         ImageButton xbutton;
@@ -113,6 +110,6 @@ public class FriendToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerV
 
     @Override
     public int getItemCount() {
-        return todoAssignment.size();
+        return todoLecture.size();
     }
 }

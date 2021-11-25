@@ -22,13 +22,13 @@ import java.util.List;
 
 public class TodoManagementActivity extends AppCompatActivity {
     private HashMap<String, Object> todoList;
-    public FriendToDoAdapter friendToDoAdapter;
-
+    public ToDoAdapter toDoAdapter;
+    public static TodoManagementActivity mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
-
+        mContext=this;
         Toolbar myToolbar = (Toolbar) findViewById(R.id.todo_toolbar);
         setSupportActionBar(myToolbar);
 
@@ -167,20 +167,20 @@ public class TodoManagementActivity extends AppCompatActivity {
                         map.put(examInfo.getSubjectName(),todolist);
                     }
                 }
-                friendToDoAdapter.setList(map);
-                friendToDoAdapter.notifyDataSetChanged();
+                toDoAdapter.setList(map);
+                toDoAdapter.notifyDataSetChanged();
                 // 여기서 notify
 
             }
         });
 
         RecyclerView recyclerView = findViewById(R.id.rcy_todolist);
-        friendToDoAdapter = new FriendToDoAdapter(this, todoList,0);
-        recyclerView.setAdapter(friendToDoAdapter);
+        toDoAdapter = new ToDoAdapter(this, todoList,0);
+        recyclerView.setAdapter(toDoAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        friendToDoAdapter.notifyDataSetChanged();
+        toDoAdapter.notifyDataSetChanged();
 
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -255,7 +255,7 @@ public class TodoManagementActivity extends AppCompatActivity {
     // subjectName: 말그대로 해당 lecture 또는 assignment의 과목이름.
     // table: "Lecture" or "Assignment" 로 보내주세요
     // value: 바꿔야하는 isDone 값. 만약 지금 1이면 0을 보내고, 0이면 1을 보내주어야 함.
-    private boolean changeIsDone(String name, String subjectName, String table, int value) {
+    public boolean changeIsDone(String name, String subjectName, String table, int value) {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "UPDATE "+table+"List SET isDone = "+value+" WHERE "+table.toLowerCase()+"Name = '"+name+"';";
         boolean result = helper.excuteQuery(query);
