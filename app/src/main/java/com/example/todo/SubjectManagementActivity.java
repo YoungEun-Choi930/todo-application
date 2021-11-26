@@ -135,6 +135,10 @@ public class SubjectManagementActivity extends AppCompatActivity {
     //+2021년(int) 2학기(int:1 or 2) 정보도 받아와야 할 듯
     //startWeekNumber 넘겨줄때 1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토 로 넘겨주세요
     public static boolean addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime, int year, int semester) {
+
+        if(Integer.parseInt(startTime) > 2400) return false;
+        if(Integer.parseInt(endTime) > 2400) return false;
+
         String query = "INSERT INTO SubjectList VALUES('"+
                 subjectName+"',"+number+","+startWeekNumber+","+startTime+","+endWeekNumber+","+endTime+");";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
