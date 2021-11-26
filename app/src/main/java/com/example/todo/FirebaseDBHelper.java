@@ -314,7 +314,7 @@ public class FirebaseDBHelper {
     }
 
     public void changeMyIsDone(String name, String subjectName, String table, int value) {
-        databaseReference.child("INFO").child(userUID).child(table.toLowerCase()).child(subjectName).child(name).child("isdone").setValue(value);
+        databaseReference.child("INFO").child(userUID).child(table.toLowerCase()).child(subjectName).child(name).child("isDone").setValue(value);
 
     }
 }
