@@ -188,7 +188,10 @@
                 android:ems="10"
                 android:inputType="number"
                 android:textSize="15dp"
-                android:hint="24시 00분 => ex) 2400"
+                android:hint="시작 시간 선택"
+                android:gravity="center"
+                android:focusable="false"
+                android:editable="false"
                 android:maxLength="4"/>
         </LinearLayout>
 
@@ -265,7 +268,10 @@
                 android:ems="10"
                 android:inputType="number"
                 android:textSize="15dp"
-                android:hint="24시 00분 => ex)2400"
+                android:hint="종료 시간 선택"
+                android:gravity="center"
+                android:focusable="false"
+                android:editable="false"
                 android:maxLength="4"/>
         </LinearLayout>
         <LinearLayout
