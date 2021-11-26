@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,13 +59,27 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
             ((AHolder) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    int ck=0;
+                    if(isChecked)
+                        ck=1;
+                    TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                     assignmentInfo.setIsDone(isChecked);
+                    TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
                 }
             });
             ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ///삭제추가해야댐!!!
+                    boolean result = TodoManagementActivity.mContext.delAssignment(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName());
+                    if(result){
+                        todoAssignment.remove(assignmentInfo);
+                        Toast.makeText(view.getContext(),"과제삭제 성공",Toast.LENGTH_SHORT);
+                        System.out.println("과제삭제성공");
+                        TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
+                    }
+                    else{
+                        Toast.makeText(view.getContext(),"과제삭제 실패", Toast.LENGTH_SHORT);
+                    }
                 }
             });
 

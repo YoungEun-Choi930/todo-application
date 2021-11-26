@@ -103,13 +103,14 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
 
                 boolean result = TodoManagementActivity.mContext.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
                 if(result){
-                    Toast.makeText(getContext(),"과제추가 완료",Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(),"과제추가 완료",Toast.LENGTH_SHORT);
                     System.out.println("추가완료");
                 }
                 else {
-                    Toast.makeText(getContext(), "과제추가 실패", Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), "과제추가 실패", Toast.LENGTH_SHORT);
                     System.out.println("추가실패");
                 }
+                TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
                 AddAssignmentExamActivity.context.finish();
                 break;
             case R.id.btn_no:
@@ -122,12 +123,13 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        int month = i1+1; //0부터 시작하기 때문에
         switch (view.getId()) {
             case R.id.startdate_a:
-                startdate.setText(i + "-" + i1 + "-" + i2);
+                startdate.setText(i + "-" + month + "-" + i2);
                 break;
             case R.id.enddate_a:
-                enddate.setText(i + "-" + i1 + "-" + i2);
+                enddate.setText(i + "-" + month + "-" + i2);
                 break;
 
         }

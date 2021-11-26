@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +56,16 @@ public class ToDoExamAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ///삭제하는거 만들어넣어야해
+                    boolean result = TodoManagementActivity.mContext.delExam(examInfo.getExamName(),examInfo.getSubjectName());
+                    if(result){
+                        todoExam.remove(examInfo);
+                        Toast.makeText(view.getContext(),"시험삭제 성공",Toast.LENGTH_SHORT);
+                        System.out.println("시험삭제성공");
+                        TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
+                    }
+                    else{
+                        Toast.makeText(view.getContext(),"시험삭제 실패", Toast.LENGTH_SHORT);
+                    }
                 }
             });
 
