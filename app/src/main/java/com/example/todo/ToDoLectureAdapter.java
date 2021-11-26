@@ -62,6 +62,8 @@ public class ToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView.ViewH
                     if(isChecked)
                         checked = 1;
                     (TodoManagementActivity.mContext).changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
+                    lectureInfo.setIsDone(isChecked);
+                    TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
                 }
             });
             ((AHolder) holder).xbutton.setVisibility(GONE);

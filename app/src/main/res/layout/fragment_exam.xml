@@ -18,7 +18,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/enddate_a"
+                android:id="@+id/date_e"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:gravity="center"/>
             <EditText
-                android:id="@+id/endtime_a"
+                android:id="@+id/time_e"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

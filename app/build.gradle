@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:20.0.2' // 파이어베이스 인증
     implementation 'com.firebaseui:firebase-ui-auth:4.2.1' //파이어베이스 인증2
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
     implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'// 달력
     testImplementation 'junit:junit:4.+'

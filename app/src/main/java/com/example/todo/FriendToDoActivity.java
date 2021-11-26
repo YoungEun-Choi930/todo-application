@@ -27,7 +27,7 @@ public class FriendToDoActivity extends AppCompatActivity {
     private HashMap<String, Object> friendToDoList;
     public ToDoAdapter toDoAdapter;
     public static FriendToDoActivity context;
-
+    String sdate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +47,8 @@ public class FriendToDoActivity extends AppCompatActivity {
         friendToDoList = new HashMap<>();
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
-
+        materialCalendarView.setSelectedDate(CalendarDay.today());
+        materialCalendarView.setDynamicHeightEnabled(true);
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -71,6 +72,19 @@ public class FriendToDoActivity extends AppCompatActivity {
 
             }
         });
+
+        String stringdate = CalendarDay.today().toString().replace("CalendarDay{","").replace("}","");
+        String[] strdate = stringdate.split("-");
+        sdate = strdate[0];      //20210901 이런식으로 바꿈
+        if(strdate[1].length() == 1)
+            sdate += "0";
+        sdate += strdate[1];
+        if(strdate[2].length() == 1)
+            sdate += "0";
+        sdate += strdate[2];
+        getFriendToDoList(uid, Integer.parseInt(sdate));
+        //들어가면 오늘날짜 선택된채로 리스트 띄울라고
+
 
         RecyclerView recyclerView = findViewById(R.id.rcy_friend_todolist);
         toDoAdapter = new ToDoAdapter(context, friendToDoList,1);
