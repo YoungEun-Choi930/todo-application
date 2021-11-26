@@ -23,6 +23,7 @@ public class SQLiteDBHelper
         try
         {
             SQLiteDatabase mDb = mDbHelper.getWritableDatabase();
+
             mDb.execSQL(sql);
             mDbHelper.close();
             return true;
@@ -78,8 +79,11 @@ public class SQLiteDBHelper
             {
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
-
-                    LectureInfo info = new LectureInfo(cursor.getString(0),cursor.getString(1),Boolean.valueOf(cursor.getString(2)));
+                    int is = cursor.getInt(2);
+                    boolean isd;
+                    if(is == 1) isd = true;
+                    else isd = false;
+                    LectureInfo info = new LectureInfo(cursor.getString(0),cursor.getString(1),isd);
 
                     list.add(info);
                 }
@@ -108,8 +112,12 @@ public class SQLiteDBHelper
             {
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
+                    int is = cursor.getInt(2);
+                    boolean isd;
+                    if(is == 1) isd = true;
+                    else isd = false;
 
-                    AssignmentInfo info = new AssignmentInfo(cursor.getString(0),cursor.getString(1),Boolean.valueOf(cursor.getString(2)));
+                    AssignmentInfo info = new AssignmentInfo(cursor.getString(0),cursor.getString(1),isd);
 
                     list.add(info);
                 }
