@@ -96,13 +96,20 @@ public class AddSubjectActivity extends Activity {
 
             String starttime_sub = startTime_subject.getText().toString();
             String[] splittime = starttime_sub.split(":"); //    : 빼야해서 가공
-            starttime_sub = splittime[0]+splittime[1];
+
+            starttime_sub = splittime[0];
+            if(splittime[1].length() == 1)
+                starttime_sub +="0";
+            starttime_sub += splittime[1];
 
             int endweeknumber_sub = Integer.parseInt(strEnd.substring(strEnd.length()-1));
 
             String endtime_sub = endTime_subject.getText().toString();
             splittime = endtime_sub.split(":");  //    : 빼야해서 가공
-            endtime_sub = splittime[0]+splittime[1];
+            endtime_sub = splittime[0];
+            if(splittime[1].length() == 1)
+                endtime_sub +="0";
+            endtime_sub += splittime[1];
            
             int year_sub =Integer.parseInt(year_subject.getText().toString());
             int semester_sub = Integer.parseInt(semester.getText().toString());
