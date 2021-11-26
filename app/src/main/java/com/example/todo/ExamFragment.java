@@ -81,11 +81,11 @@ public class ExamFragment extends Fragment implements View.OnClickListener, Time
 
                 boolean result = TodoManagementActivity.mContext.addExam(subjectName,todoName,s_date,s_time);
                 if(result){
-                    Toast.makeText(getActivity(),"시험추가 완료",Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(),"시험추가 완료",Toast.LENGTH_SHORT).show();
                     System.out.println("추가완료");
                 }
                 else {
-                    Toast.makeText(getActivity(), "시험추가 실패", Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), "시험추가 실패", Toast.LENGTH_SHORT).show();
                     System.out.println("추가실패");
                 }
                 AddAssignmentExamActivity.context.finish();

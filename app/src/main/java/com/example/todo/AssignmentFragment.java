@@ -103,11 +103,11 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
 
                 boolean result = TodoManagementActivity.mContext.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
                 if(result){
-                    Toast.makeText(getActivity(),"과제추가 완료",Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(),"과제추가 완료",Toast.LENGTH_SHORT).show();
                     System.out.println("추가완료");
                 }
                 else {
-                    Toast.makeText(getActivity(), "과제추가 실패", Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), "과제추가 실패", Toast.LENGTH_SHORT).show();
                     System.out.println("추가실패");
                 }
                 TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();

@@ -3,15 +3,18 @@ package com.example.todo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -43,6 +46,34 @@ public class AddSubjectActivity extends Activity {
         EditText year_subject = (EditText) findViewById(R.id.year_subject);//년도
 
 
+        startTime_subject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar c = Calendar.getInstance();
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddSubjectActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        startTime_subject.setText(i+":"+i1);
+                    }
+                },c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true);
+                timePickerDialog.show();
+            }
+        });
+        endTime_subject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar c = Calendar.getInstance();
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddSubjectActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        endTime_subject.setText(i+":"+i1);
+                    }
+                },c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true);
+                timePickerDialog.show();
+            }
+
+        });
+
       //  1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토
 
         btn_yes.setOnClickListener((view) -> { // 확인버튼 선택
@@ -62,9 +93,17 @@ public class AddSubjectActivity extends Activity {
             String name_sub = name_subject.getText().toString();
             int number_sub = Integer.parseInt(number_subject.getText().toString());
             int startweeknumber_sub = Integer.parseInt(strStart.substring(strStart.length()-1)); //아이디가져와서 마지막글자만 뽑음. 왜냠 그게 요일번호니까
+
             String starttime_sub = startTime_subject.getText().toString();
+            String[] splittime = starttime_sub.split(":"); //    : 빼야해서 가공
+            starttime_sub = splittime[0]+splittime[1];
+
             int endweeknumber_sub = Integer.parseInt(strEnd.substring(strEnd.length()-1));
+
             String endtime_sub = endTime_subject.getText().toString();
+            splittime = endtime_sub.split(":");  //    : 빼야해서 가공
+            endtime_sub = splittime[0]+splittime[1];
+           
             int year_sub =Integer.parseInt(year_subject.getText().toString());
             int semester_sub = Integer.parseInt(semester.getText().toString());
 

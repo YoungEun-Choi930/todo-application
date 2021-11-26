@@ -64,7 +64,7 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
                         ck=1;
                     TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                     assignmentInfo.setIsDone(isChecked);
-                    TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
+
                 }
             });
             ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
