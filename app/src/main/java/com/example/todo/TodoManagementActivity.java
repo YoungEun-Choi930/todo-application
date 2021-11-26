@@ -189,6 +189,10 @@ public class TodoManagementActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
 
     private List<List> getToDoList(String date) {
         SQLiteDBHelper helper = new SQLiteDBHelper();
@@ -199,11 +203,12 @@ public class TodoManagementActivity extends AppCompatActivity {
         List<List> todolist = new ArrayList<>();
         todolist.add(lecturelist);
         todolist.add(assignmentList);
+        System.out.println(assignmentList.size()+"과제몇개냐");
         todolist.add(examlist);
         return todolist;
     }
 
-    private boolean addAssignment(String subjectName, String assignmentName, String startDate, String startTime, String endDate, String endTime) {
+    public boolean addAssignment(String subjectName, String assignmentName, String startDate, String startTime, String endDate, String endTime) {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO AssignmentList VALUES('" +
                 subjectName+"','"+assignmentName+"',"+startDate+","+startTime+","+endDate+","+endTime+",0);";
@@ -211,7 +216,7 @@ public class TodoManagementActivity extends AppCompatActivity {
 
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.uploadMyAssignment(subjectName,assignmentName, startDate, startTime, endDate, endTime);
-
+        System.out.println("과제추가하러들어왔음");
         return result;
     }
 

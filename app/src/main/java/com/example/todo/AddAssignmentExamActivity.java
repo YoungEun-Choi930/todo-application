@@ -16,13 +16,17 @@ import android.widget.TextView;
 public class AddAssignmentExamActivity extends AppCompatActivity {
     ExamFragment examFragment;
     AssignmentFragment assignmentFragment;
+    String typeName;
+    String subjectName;
+    EditText et_todoname;
+    static AddAssignmentExamActivity context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assignment_exam);
-
+        context=this;
         Intent intent = getIntent();
-        String subjectName = intent.getStringExtra("subjectName");
+        subjectName = intent.getStringExtra("subjectName");
         TextView subjectname = findViewById(R.id.subjectname);
         subjectname.setText(subjectName);
 
@@ -30,7 +34,7 @@ public class AddAssignmentExamActivity extends AppCompatActivity {
         assignmentFragment = new AssignmentFragment();
 
         TextView tv_todoname = findViewById(R.id.tv_todoname);
-        EditText et_todoname = findViewById(R.id.et_todoname);
+        et_todoname = findViewById(R.id.et_todoname);
 
         RadioGroup select_type = findViewById(R.id.select_type);
 
@@ -45,11 +49,12 @@ public class AddAssignmentExamActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 int id = select_type.getCheckedRadioButtonId(); //선택한버튼가져옴
                 RadioButton type = findViewById(id);
-                String typeName = type.getResources().getResourceName(id);
+                typeName = type.getResources().getResourceName(id);
                 String[] split = typeName.split("/");
                 typeName = split[1];
                 if(typeName.equals("exam")){
                     tv_todoname.setText("시험명");
+                    et_todoname.setText(null);
                     et_todoname.setHint("시험명을 입력하세요.");
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     Fragment exam = new ExamFragment();
@@ -60,6 +65,7 @@ public class AddAssignmentExamActivity extends AppCompatActivity {
                 }
                 else{
                     tv_todoname.setText("과제명");
+                    et_todoname.setText(null);
                     et_todoname.setHint("과제명을 입력하세요.");
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     Fragment assignment = new AssignmentFragment();
@@ -71,14 +77,6 @@ public class AddAssignmentExamActivity extends AppCompatActivity {
             }
         });
 
-
-        Button yes = findViewById(R.id.btn_yes);
-        Button no = findViewById(R.id.btn_no);
-
-        yes.setOnClickListener(view -> {
-            int typeid = select_type.getCheckedRadioButtonId();
-            RadioButton type = findViewById(typeid);
-        });
 
 
     }
