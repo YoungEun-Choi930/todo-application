@@ -25,7 +25,7 @@ import java.util.List;
 public class FriendToDoActivity extends AppCompatActivity {
     MaterialCalendarView materialCalendarView;
     private HashMap<String, Object> friendToDoList;
-    public FriendToDoAdapter friendToDoAdapter;
+    public ToDoAdapter toDoAdapter;
     public static FriendToDoActivity context;
 
     @Override
@@ -73,12 +73,12 @@ public class FriendToDoActivity extends AppCompatActivity {
         });
 
         RecyclerView recyclerView = findViewById(R.id.rcy_friend_todolist);
-        friendToDoAdapter = new FriendToDoAdapter(context, friendToDoList,1);
-        recyclerView.setAdapter(friendToDoAdapter);
+        toDoAdapter = new ToDoAdapter(context, friendToDoList,1);
+        recyclerView.setAdapter(toDoAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        friendToDoAdapter.notifyDataSetChanged();
+        toDoAdapter.notifyDataSetChanged();
 
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -181,8 +181,8 @@ public class FriendToDoActivity extends AppCompatActivity {
                 map.put(examInfo.getSubjectName(),todolist);
             }
         }
-        friendToDoAdapter.setList(map);
-        friendToDoAdapter.notifyDataSetChanged();
+        toDoAdapter.setList(map);
+        toDoAdapter.notifyDataSetChanged();
 
     }
 
