@@ -129,15 +129,15 @@ public class AlarmManagementActivity extends AppCompatActivity {
     }
 
     // 리얼빼고 파라미터 4개인걸로 넘겼어용
-    public boolean addAlarm(String subjectName, String exam, String assignment, String video, String real){
+    public boolean addAlarm(String subjectName, String exam, String assignment, String video){
         String query = "INSERT INTO AlarmList VALUES('"+
-                subjectName+"','"+exam+"','"+assignment+"','"+video+"','"+real+"');";
+                subjectName+"','"+exam+"','"+assignment+"','"+video+"');";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
-        AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video,real);
+
+        AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video);
         alarmInfoList.add(alarmInfo);
         alarmAdapter.notifyDataSetChanged();
-
         setSystemAlarm();
         return result;
     }

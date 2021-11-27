@@ -11,7 +11,6 @@ public class AlarmInfo {
     private String examAlarmDate;
     private String assignmentAlarmDate;
     private String videoLectureAlarmDate;
-    private String realTimeLectureAlarmDate;
 
 
     public String getSubjectName() {
@@ -31,9 +30,6 @@ public class AlarmInfo {
         return videoLectureAlarmDate;
     }
 
-    public String getRealTimeLectureAlarmDate() {
-        return realTimeLectureAlarmDate;
-    }
 
     public boolean getChecked() {
         return checked;
@@ -43,12 +39,11 @@ public class AlarmInfo {
         this.checked = checked;
     }
 
-    public AlarmInfo(boolean checked, String subjectName, String examAlarmDate, String assignmentAlarmDate, String videoLectureAlarmDate, String realTimeLectureAlarmDate) {
+    public AlarmInfo(boolean checked, String subjectName, String examAlarmDate, String assignmentAlarmDate, String videoLectureAlarmDate) {
         this.checked = checked;
         this.subjectName = subjectName;
         this.examAlarmDate = examAlarmDate;
         this.assignmentAlarmDate = assignmentAlarmDate;
         this.videoLectureAlarmDate = videoLectureAlarmDate;
-        this.realTimeLectureAlarmDate = realTimeLectureAlarmDate;
     }
 }
