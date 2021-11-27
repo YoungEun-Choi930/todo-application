@@ -74,7 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1" />
+                    android:text="1"
+                    android:checked="true"/>
 
                 <RadioButton
                     android:id="@+id/semester2"
@@ -136,7 +137,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="월" />
+                    android:text="월"
+                    android:checked="true"/>
                 <RadioButton
                     android:id="@+id/start_3"
                     android:layout_width="wrap_content"
@@ -191,8 +193,7 @@
                 android:hint="시작 시간 선택"
                 android:gravity="center"
                 android:focusable="false"
-                android:editable="false"
-                android:maxLength="4"/>
+                android:editable="false"/>
         </LinearLayout>
 
         <LinearLayout
@@ -218,7 +219,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="월" />
+                    android:text="월"
+                    android:checked="true"/>
                 <RadioButton
                     android:id="@+id/end_3"
                     android:layout_width="wrap_content"
@@ -271,8 +273,7 @@
                 android:hint="종료 시간 선택"
                 android:gravity="center"
                 android:focusable="false"
-                android:editable="false"
-                android:maxLength="4"/>
+                android:editable="false" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

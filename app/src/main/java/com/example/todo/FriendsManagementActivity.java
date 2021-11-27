@@ -155,7 +155,12 @@ public class FriendsManagementActivity extends AppCompatActivity {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        requestFriend(et.getText().toString());
+                        if(et.getText().toString().equals("")){
+                            Toast.makeText(FriendsManagementActivity.this,"아이디를 입력하세요",Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                          requestFriend(et.getText().toString());
+                        }
 
                     }
                 });
