@@ -19,7 +19,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) { //sqlite에서는 foreign key를 추가할 수 없다.ㅠㅠ
+    public void onCreate(SQLiteDatabase db) { //db가 생성자로 불러와 졌을 경우
 
         String subject = "CREATE TABLE IF NOT EXISTS SubjectList (" +
                 "subjectName TEXT NOT NULL, number INTEGER, startWeekNumber INTEGER," +
@@ -44,7 +44,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {   //버전이 업그레이드 되었을 경우 내용을 모두 지우고 새로 테이블을 만든다
         String subject = "DROP TABLE IF EXISTS SubjectList;";
         String lecture = "DROP TABLE IF EXISTS LectureList;";
         String assignment = "DROP TABLE IF EXISTS AssignmentList;";
@@ -60,12 +60,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.execSQL(friend);
 
         onCreate(db);
-    }
-
-    @Override
-    public void onConfigure(SQLiteDatabase db) {
-        super.onConfigure(db);
-        db.disableWriteAheadLogging();
     }
 
 

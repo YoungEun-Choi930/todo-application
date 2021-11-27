@@ -7,7 +7,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+과목, 강의, 과제, 시험, 알림 정보를 sqliteDB에 저장하고, sqlite에 저장된 정보를 가져오기 위한 클래스이다.
+ */
 public class SQLiteDBHelper
 {
 
@@ -35,6 +37,7 @@ public class SQLiteDBHelper
         }
     }
 
+    // sqliteDB에 저장된 과목정보를 불러와 List<SubjectInfo>형태로 가공하여 반환한다.
     public List<SubjectInfo> loadSubjectList()
     {
         try
@@ -65,6 +68,10 @@ public class SQLiteDBHelper
         }
     }
 
+
+    // sqliteDB에 저장된 강의 정보에서 선택된 날짜에 해당하는 강의를 반환하는 메소드이다.
+    // 강의의 시작날짜가 사용자가 선택한 날짜보다 더 전이고, 강의의 종료 날짜가 선택 날짜보다 이후인
+    // 강의목록들을 가져오는 query문을 작성하여 sqliteDB에서 가져온다. 가져온 정보들을 List<LectureInfo>형태로 가공하여 반환한다.
     public List<LectureInfo> loadLectureList(String date)
     {
         try
