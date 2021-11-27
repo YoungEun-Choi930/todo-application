@@ -62,43 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="강의 유형"
-                android:textSize="18dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"/>
 
-            <RadioGroup
-                android:id="@+id/lecture"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/realtime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="실시간(대면)"
-                    android:layout_weight="1"
-                    android:checked="true"/>
-
-                <RadioButton
-                    android:id="@+id/video"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="동영상"
-                    android:layout_weight="1"/>
-
-            </RadioGroup>
-
-
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
