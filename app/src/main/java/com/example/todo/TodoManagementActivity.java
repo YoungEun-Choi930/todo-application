@@ -74,39 +74,34 @@ public class TodoManagementActivity extends AppCompatActivity {
             }
         });
 
-        String stringdate = CalendarDay.today().toString().replace("CalendarDay{","").replace("}","");
-        String[] strdate = stringdate.split("-");
-        sdate = strdate[0];      //20210901 이런식으로 바꿈
-        if(strdate[1].length() == 1)
-            sdate += "0";
-        sdate += strdate[1];
-        if(strdate[2].length() == 1)
-            sdate += "0";
-        sdate += strdate[2];
-        todoList = getToDoList(sdate);
-         //들어가면 오늘날짜 선택된채로 리스트 띄울라고
 
+        /* ------------------------ 화면 생성시 오늘 날짜 선택으로 하기 위함 -------------------------- */
+        String stringdate = CalendarDay.today().toString().replace("CalendarDay{","").replace("}","");  //오늘날짜
+
+        String[] strdate = stringdate.split("-");               // 날짜 형식을 20210901 과 같이 변환
+        if(strdate[1].length() == 1) strdate[1] = "0" + strdate[1];
+        if(strdate[2].length() == 1) strdate[2] = "0" + strdate[2];
+        sdate = strdate[0] + strdate[1] + strdate[2];
+
+        todoList = getToDoList(sdate);      // to do list 가져오기
+
+
+        /* -------------------- 달력에서 날짜를 선택하는 경우 해당 날짜의 to do 가져옴----------------------- */
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                //CalendarDay -> String으로 변환
-                String stringdate = date.toString().replace("CalendarDay{","").replace("}","");
-                String[] strdate = stringdate.split("-");
 
-                sdate = strdate[0];      //20210901 이런식으로 바꿈
-                if(strdate[1].length() == 1)
-                    sdate += "0";
-                sdate += strdate[1];
+                String stringdate = date.toString().replace("CalendarDay{","").replace("}",""); //선택된 날짜
 
-                if(strdate[2].length() == 1)
-                    sdate += "0";
-                sdate += strdate[2];
+                String[] strdate = stringdate.split("-");               // 날짜 형식을 20210901 과 같이 변환
+                if(strdate[1].length() == 1) strdate[1] = "0" + strdate[1];
+                if(strdate[2].length() == 1) strdate[2] = "0" + strdate[2];
+                sdate = strdate[0] + strdate[1] + strdate[2];
 
-                todoList = getToDoList(sdate);
+                todoList = getToDoList(sdate);          // to do list 가져오기
 
                 toDoAdapter.setList(todoList);
-                toDoAdapter.notifyDataSetChanged();
-
+                toDoAdapter.notifyDataSetChanged();     // 화면 새로고침
 
             }
         });
@@ -134,21 +129,24 @@ public class TodoManagementActivity extends AppCompatActivity {
         toDoAdapter.notifyDataSetChanged();
     }
 
+    /* -------------------------- 선택한 날짜에 대한 to do 목록 불러오기 ------------------------------ */
     private HashMap<String, Object> getToDoList(String date) {
+        // sqlite에서 정보 가져오기
         SQLiteDBHelper helper = new SQLiteDBHelper();
         List<LectureInfo> lecturelist = helper.loadLectureList(date);
         List<AssignmentInfo> assignmentList = helper.loadAssignmentList(date);
         List<ExamInfo> examlist = helper.loadExamList(date);
 
+        // HashMap으로 가공
+        // Key: SubjectName, Value: List<List>(lectureList, assignmnetList, examList)
         HashMap<String, Object> map = new HashMap<>();
 
-
+        //lecture
         for (LectureInfo lectureInfo : lecturelist) {
             if(map.containsKey(lectureInfo.getSubjectName())) {
                 List<List> todolist = (List<List>) map.get(lectureInfo.getSubjectName());
                 List<LectureInfo> lecture = todolist.get(0);
                 lecture.add(lectureInfo);
-                System.out.println(lectureInfo.getLectureName()+"강의이름뭐임");
                 todolist.set(0,lecture);
                 map.put(lectureInfo.getSubjectName(), todolist);
             }
@@ -157,7 +155,6 @@ public class TodoManagementActivity extends AppCompatActivity {
                 List<LectureInfo> lecture = new ArrayList<>();
                 List<AssignmentInfo> assignment = new ArrayList<>();
                 List<ExamInfo> exam = new ArrayList<>();
-                System.out.println(lectureInfo.getLectureName()+"강의이름");
 
                 lecture.add(lectureInfo);
 
@@ -168,7 +165,7 @@ public class TodoManagementActivity extends AppCompatActivity {
             }
         }
 
-
+        //assignment
         for(AssignmentInfo assignmentInfo: assignmentList) {
             if(map.containsKey(assignmentInfo.getSubjectName())) {
                 List<List> todolist = (List<List>) map.get(assignmentInfo.getSubjectName());
@@ -193,6 +190,7 @@ public class TodoManagementActivity extends AppCompatActivity {
             }
         }
 
+        //exam
         for(ExamInfo examInfo: examlist) {
             if(map.containsKey(examInfo.getSubjectName())) {
                 List<List> todolist = (List<List>) map.get(examInfo.getSubjectName());
@@ -220,66 +218,80 @@ public class TodoManagementActivity extends AppCompatActivity {
         return map;
     }
 
+    /* --------------------------- 선택한 과목에 대하여 과제를 추가하기 -------------------------------- */
     public boolean addAssignment(String subjectName, String assignmentName, String startDate, String startTime, String endDate, String endTime) {
+        // sqlite insert
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO AssignmentList VALUES('" +
                 subjectName+"','"+assignmentName+"',"+startDate+","+startTime+","+endDate+","+endTime+",0);";
         boolean result = helper.excuteQuery(query);
 
+        // firebase insert
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.uploadMyAssignment(subjectName,assignmentName, startDate, startTime, endDate, endTime);
-        System.out.println("과제추가하러들어왔음");
+
         return result;
     }
 
+    /* ------------------------------------ 선택한 과제 삭제하기 ------------------------------------ */
     public boolean delAssignment(String assignmentName, String subjectName) {
+        //sqlite delete
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "DELETE FROM AssignmentList WHERE assignmentName = '"+assignmentName+"';";
-
         boolean result = helper.excuteQuery(query);
 
+        // firebase delete
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delMyAssignment(assignmentName, subjectName);
 
         return result;
     }
 
+    /* --------------------------- 선택한 과목에 대하여 시험을 추가하기 -------------------------------- */
     public boolean addExam(String subjectName, String examName, String date, String time) {
+        // sqlite insert
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO ExamList VALUES('" +
                 subjectName+"','"+examName+"',"+date+","+time+");";
         boolean result = helper.excuteQuery(query);
 
+        // firebase insert
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.uploadMyExam(subjectName,examName, date, time);
 
         return result;
     }
 
+    /* ---------------------------------- 선택한 시험 삭제하기 -------------------------------------- */
     public boolean delExam(String examName, String subjectName) {
+        // sqlite delete
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "DELETE FROM ExamList WHERE examName = '"+examName+"';";
-
         boolean result = helper.excuteQuery(query);
 
+        // firebase delete
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delMyExam(examName, subjectName);
 
         return result;
     }
 
-    // name: lectureName or assignmentName
-    // subjectName: 말그대로 해당 lecture 또는 assignment의 과목이름.
-    // table: "Lecture" or "Assignment" 로 보내주세요
-    // value: 바꿔야하는 isDone 값. 만약 지금 1이면 0을 보내고, 0이면 1을 보내주어야 함.
+    /* --------------------------- 선택한 강의 또는 과제 완료 구분 변경하기 ---------------------------- */
     public boolean changeIsDone(String name, String subjectName, String table, int value) {
+        // name: lectureName or assignmentName
+        // subjectName: 해당 lecture 또는 assignment의 과목이름.
+        // table: "Lecture" or "Assignment"
+        // value: 바꿔야하는 isDone 값. 만약 지금 1이면 0을 보내고, 0이면 1을 보내주어야 함.
+
+        // sqlite update
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "UPDATE "+table+"List SET isDone = "+value+" WHERE "+table.toLowerCase()+"Name = '"+name+"';";
         boolean result = helper.excuteQuery(query);
 
+        // firebase update
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.changeMyIsDone(name, subjectName, table, value);
-        System.out.println("체크업데이트");
+
         return result;
     }
 
