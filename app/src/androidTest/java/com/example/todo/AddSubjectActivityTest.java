@@ -57,7 +57,7 @@ public class AddSubjectActivityTest {
                 case "목": this.startWeekNumber = 5; break;
                 case "금": this.startWeekNumber = 6; break;
             }
-            this.startTime = startTime;
+            this.startTime = startTime.replace(".","");
             switch(endWeekNumber){
                 case "월": this.endWeekNumber = 2; break;
                 case "화": this.endWeekNumber = 3; break;
@@ -65,12 +65,12 @@ public class AddSubjectActivityTest {
                 case "목": this.endWeekNumber = 5; break;
                 case "금": this.endWeekNumber = 6; break;
             }
-            this.endTime = endTime;
+            this.endTime = endTime.replace(".","");
 
-            this.startHour = Integer.parseInt(startTime.substring(0,2));            //09 00 10 30
-            this.startMinute = Integer.parseInt(startTime.substring(2,4));
-            this.endHour = Integer.parseInt(endTime.substring(0,2));
-            this.endMinute = Integer.parseInt(endTime.substring(2,4));
+            this.startHour = Integer.parseInt(this.startTime.substring(0,2));            //09 00 10 30
+            this.startMinute = Integer.parseInt(this.startTime.substring(2,4));
+            this.endHour = Integer.parseInt(this.endTime.substring(0,2));
+            this.endMinute = Integer.parseInt(this.endTime.substring(2,4));
         }
     }
 
@@ -115,9 +115,8 @@ public class AddSubjectActivityTest {
         };
     }
 
-    private void setSubjectInfo(subject s, String year, int semester)
+    public void insertSubject(subject s, String year, int semester)
     {
-
 
         onView(ViewMatchers.withId(R.id.name_subject)).perform(typeText(s.subjectName));     //과목이름
 
@@ -168,14 +167,8 @@ public class AddSubjectActivityTest {
 
         onView(ViewMatchers.withId(R.id.year_subject)).perform(typeText(year));      //년도
 
-    }
 
-    public void insertSubject(subject s, String year, int semester)
-    {
-        setSubjectInfo(s, year,semester);
-        onView(ViewMatchers.withId(R.id.yes_subject)).perform(click());
-
-        SQLiteDBHelper dbHelper = new SQLiteDBHelper();
+        onView(ViewMatchers.withId(R.id.yes_subject)).perform(click());         //확인버튼
 
 
     }
@@ -313,12 +306,15 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 시간이24시를넘는경우() {                         //추가 실패
+    public void 시간이24시를넘는경우() {                         //23시로 표기됨.
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test7","1","월","2401","월","2401");
         insertSubject(s, "2021",2);
 
-        //입력이 안되어야함. subjectList에 추가안하고 sqlite랑 비교.
+        s.startTime = "2301";
+        s.endTime = "2301";
+        subjectList.add(s);
+
         assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
 
     }
@@ -435,26 +431,18 @@ public class AddSubjectActivityTest {
 
 
 
-
-    public static void deleteSubject(int number) {
+    @AfterClass
+    public static void deleteSubject() {
         ActivityScenario.launch(SubjectManagementActivity.class);
         onView(ViewMatchers.withId(R.id.del_subject)).perform(click());
 
-        SubjectInfo subjectInfo = new SubjectInfo(subjectList.get(number).subjectName);
-        SubjectManagementActivity.subjectAdapter.checkedList.add(subjectInfo);
-
+        for(int i = 0; i <subjectList.size(); i ++) {
+            SubjectInfo subjectInfo = new SubjectInfo(subjectList.get(i).subjectName);
+            SubjectManagementActivity.subjectAdapter.checkedList.add(subjectInfo);
+        }
         onView(ViewMatchers.withId(R.id.btn_del_sub)).perform(click());
 
-        subjectList.remove(number);
 
-
-    }
-
-    @AfterClass         //왜안해????
-    public static void del() {
-        for(int i = 0; i < subjectList.size(); i ++){
-            deleteSubject(0);
-        }
 
     }
 
