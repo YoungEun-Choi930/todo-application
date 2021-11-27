@@ -4,12 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -21,8 +25,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class AlarmManagementActivity extends AppCompatActivity {
@@ -32,7 +40,12 @@ public class AlarmManagementActivity extends AppCompatActivity {
     alarmAdapter alarmAdapter;
     public static Context mContext;
 
-    //private static final int REQUEST_CODE = 1;
+    private AlarmManager alarmManager;
+    private NotificationManager notificationManager;
+    NotificationCompat.Builder builder;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,10 +165,51 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
 
     private void setSystemAlarm() {
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+
+        Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
+
+
+        String from = "2020-11-27 11:35:00"; //임의로 날짜와 시간을 지정
+        /// 일단 걍 긁은거라 이런데 나중에 파라미터로 넘겨받으면 될 듯...?
+        //날짜 포맷을 바꿔주는 소스코드
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date datetime = null;
+        try {
+            datetime = dateFormat.parse(from);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datetime);
+
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
 
     }
 
     private void delSystemAlarm() {
 
     }
+    /*
+    void creatNotification(String channelId, int id, String title, String text){
+        Intent intent2 = new Intent(this, TodoManagementActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,101,intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        builder = new NotificationCompat.Builder(this, channelId)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(id,builder.build());
+    }*/
 }
