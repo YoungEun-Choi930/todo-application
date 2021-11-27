@@ -1,5 +1,7 @@
 package com.example.todo;
 
+import static java.sql.Types.NULL;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -138,6 +140,8 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         if(Integer.parseInt(startTime) > 2400) return false;
         if(Integer.parseInt(endTime) > 2400) return false;
+
+
 
         String query = "INSERT INTO SubjectList VALUES('"+
                 subjectName+"',"+number+","+startWeekNumber+","+startTime+","+endWeekNumber+","+endTime+");";

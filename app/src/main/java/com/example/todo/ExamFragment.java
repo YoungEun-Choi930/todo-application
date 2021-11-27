@@ -67,28 +67,35 @@ public class ExamFragment extends Fragment implements View.OnClickListener, Time
                 break;
 
             case R.id.btn_yes:
-                String subjectName = AddAssignmentExamActivity.context.subjectName;
-                String todoName = AddAssignmentExamActivity.context.et_todoname.getText().toString();
-
-                String s_date = this.date.getText().toString();
-                String[] splitdate = s_date.split("-");
-                s_date = splitdate[0]+splitdate[1]+splitdate[2];     //시작날짜
-
-
-                String s_time = this.time.getText().toString();
-                String[] splittime = s_time.split(":");
-                s_time = splittime[0]+splittime[1];
-
-                boolean result = TodoManagementActivity.mContext.addExam(subjectName,todoName,s_date,s_time);
-                if(result){
-                    Toast.makeText(getActivity(),"시험추가 완료",Toast.LENGTH_SHORT).show();
-                    System.out.println("추가완료");
+                if(AddAssignmentExamActivity.context.et_todoname.getText().toString().equals("") | this.date.getText().toString().equals("")|this.time.getText().toString().equals("")){
+                    Toast.makeText(getActivity(),"모든 정보를 입력하세요.",Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    Toast.makeText(getActivity(), "시험추가 실패", Toast.LENGTH_SHORT).show();
-                    System.out.println("추가실패");
+                else{
+                    String subjectName = AddAssignmentExamActivity.context.subjectName;
+                    String todoName = AddAssignmentExamActivity.context.et_todoname.getText().toString();
+
+                    String s_date = this.date.getText().toString();
+                    String[] splitdate = s_date.split("-");
+                    s_date = splitdate[0]+splitdate[1]+splitdate[2];     //시작날짜
+
+
+                    String s_time = this.time.getText().toString();
+                    String[] splittime = s_time.split(":");
+                    s_time = splittime[0]+splittime[1];
+
+                    boolean result = TodoManagementActivity.mContext.addExam(subjectName,todoName,s_date,s_time);
+                    if(result){
+                        Toast.makeText(getActivity(),"시험추가 완료",Toast.LENGTH_SHORT).show();
+                        //날짜에 데코레이트 추가하면 될 듯?
+                        System.out.println("추가완료");
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "시험추가 실패", Toast.LENGTH_SHORT).show();
+                        System.out.println("추가실패");
+                    }
+                    AddAssignmentExamActivity.context.finish();
                 }
-                AddAssignmentExamActivity.context.finish();
+
                 break;
             case R.id.btn_no:
                 AddAssignmentExamActivity.context.finish();

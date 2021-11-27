@@ -54,11 +54,11 @@ public class AddAlarmActivity extends AppCompatActivity {
         sp_subject = (Spinner) findViewById(R.id.spinner_sub); //과목 불러와서 고르는 스피너
         subAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, sub);
         sp_subject.setAdapter(subAdapter);
+        selected_sub = subjectList.get(0).getSubjectName();
         sp_subject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ((TextView) view).setText(sub.get(i));
-                //Toast.makeText(getApplicationContext(),arrayList.get(i),Toast.LENGTH_SHORT).show();
                 selected_sub = sub.get(i);
             }
             @Override
@@ -69,11 +69,11 @@ public class AddAlarmActivity extends AppCompatActivity {
         sp_assignment = (Spinner) findViewById(R.id.spinner_assignment); //과제알림시간설정
         hourAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, hourList);
         sp_assignment.setAdapter(hourAdapter);
+        selected_assignment = hourList[0];
         sp_assignment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ((TextView) view).setText(hourList[i]);
-                //Toast.makeText(getApplicationContext(),arrayList.get(i),Toast.LENGTH_SHORT).show();
                 selected_assignment = hourList[i];
             }
             @Override
@@ -83,11 +83,11 @@ public class AddAlarmActivity extends AppCompatActivity {
         sp_exam = (Spinner) findViewById(R.id.spinner_exam); //시험알림시간설정
         dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, dayList);
         sp_exam.setAdapter(dayAdapter);
+        selected_exam = dayList[0];
         sp_exam.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ((TextView) view).setText(dayList[i]);
-                //Toast.makeText(getApplicationContext(),arrayList.get(i),Toast.LENGTH_SHORT).show();
                 selected_exam = dayList[i];
             }
             @Override
@@ -95,7 +95,25 @@ public class AddAlarmActivity extends AppCompatActivity {
             }
         });
         RadioGroup lecture = (RadioGroup) findViewById(R.id.lecture);
+        int id = lecture.getCheckedRadioButtonId();         //처음에 선택안하고 확인누르면 처음 설정값대로 알람추가하려고
+        RadioButton start = (RadioButton) findViewById(id);
+        lecturetype = start.getResources().getResourceName(id);
+        String[] split = lecturetype.split("/");
+        lecturetype = split[1];
+
         sp_lecture = (Spinner) findViewById(R.id.spinner_lecture);
+        sp_lecture.setAdapter(timeAdapter);
+        selected_lecture = timeList[0];
+        sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ((TextView) view).setText(timeList[i]);
+                selected_lecture = timeList[i];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
         lecture.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                                               @Override
                                                public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -103,30 +121,26 @@ public class AddAlarmActivity extends AppCompatActivity {
                                                    RadioButton start = (RadioButton) findViewById(id);
                                                    lecturetype = start.getResources().getResourceName(id);
 
-
                                                    String[] split = lecturetype.split("/");
                                                    lecturetype = split[1];
-                                                   System.out.println(lecturetype+"강의유형뭐임?");
-
 
                                                    if (lecturetype.equals("realtime")) {//그게 실시간(대면)이면
                                                        sp_lecture.setAdapter(timeAdapter);
-                                                       System.out.println("어디니?");
+                                                       selected_lecture = timeList[0];
                                                        sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                            @Override
                                                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                                                ((TextView) view).setText(timeList[i]);
                                                                selected_lecture = timeList[i];
                                                            }
-
                                                            @Override
                                                            public void onNothingSelected(AdapterView<?> adapterView) {
                                                            }
                                                        });
-                                                       //result = ((AlarmManagementActivity)AlarmManagementActivity.mContext).addAlarm(selected_sub,selected_exam,selected_assignment,"",selected_lecture);
 
                                                    } else {
                                                        sp_lecture.setAdapter(hourAdapter);
+                                                       selected_lecture = hourList[0];
                                                        sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                            @Override
                                                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -137,13 +151,14 @@ public class AddAlarmActivity extends AppCompatActivity {
                                                            public void onNothingSelected(AdapterView<?> adapterView) {
                                                            }
                                                        });
-                                                       // result = ((AlarmManagementActivity)AlarmManagementActivity.mContext).addAlarm(selected_sub,selected_exam,selected_assignment,selected_lecture,"");
+
                                                    }
                                                }
                                            });
 
-
                 btn_yes.setOnClickListener((view) -> { //확인버튼 누르면
+
+
                     boolean result;
                     if (lecturetype.equals("realtime")) {
                         result = ((AlarmManagementActivity) AlarmManagementActivity.mContext).addAlarm(selected_sub, selected_exam, selected_assignment, "", selected_lecture);

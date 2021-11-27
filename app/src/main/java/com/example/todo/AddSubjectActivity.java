@@ -89,42 +89,43 @@ public class AddSubjectActivity extends Activity {
             RadioButton semester = (RadioButton)findViewById(semesterid);
 
 
+            if(name_subject.getText().toString().equals("") | number_subject.getText().toString().equals("") | startTime_subject.getText().toString().equals("") | endTime_subject.getText().toString().equals("") |
+                    year_subject.getText().toString().equals("")){
+                Toast.makeText(this,"모든 정보를 입력하세요.", Toast.LENGTH_SHORT).show();
+            }
+            else{
 
-            String name_sub = name_subject.getText().toString();
-            int number_sub = Integer.parseInt(number_subject.getText().toString());
-            int startweeknumber_sub = Integer.parseInt(strStart.substring(strStart.length()-1)); //아이디가져와서 마지막글자만 뽑음. 왜냠 그게 요일번호니까
+                String name_sub = name_subject.getText().toString();
+                int number_sub = Integer.parseInt(number_subject.getText().toString());
+                int startweeknumber_sub = Integer.parseInt(strStart.substring(strStart.length()-1)); //아이디가져와서 마지막글자만 뽑음. 왜냠 그게 요일번호니까
 
-            String starttime_sub = startTime_subject.getText().toString();
-            String[] splittime = starttime_sub.split(":"); //    : 빼야해서 가공
+                String starttime_sub = startTime_subject.getText().toString();
+                String[] splittime = starttime_sub.split(":"); //    : 빼야해서 가공
+                starttime_sub = splittime[0]+splittime[1];
 
-            starttime_sub = splittime[0];
-            if(splittime[1].length() == 1)
-                starttime_sub +="0";
-            starttime_sub += splittime[1];
+                int endweeknumber_sub = Integer.parseInt(strEnd.substring(strEnd.length()-1));
 
-            int endweeknumber_sub = Integer.parseInt(strEnd.substring(strEnd.length()-1));
+                String endtime_sub = endTime_subject.getText().toString();
 
-            String endtime_sub = endTime_subject.getText().toString();
-            splittime = endtime_sub.split(":");  //    : 빼야해서 가공
-            endtime_sub = splittime[0];
-            if(splittime[1].length() == 1)
-                endtime_sub +="0";
-            endtime_sub += splittime[1];
-           
-            int year_sub =Integer.parseInt(year_subject.getText().toString());
-            int semester_sub = Integer.parseInt(semester.getText().toString());
+                splittime = endtime_sub.split(":");  //    : 빼야해서 가공
+                endtime_sub = splittime[0]+splittime[1];
 
-            System.out.println(year_sub+"년도"+semester_sub);
+                int year_sub =Integer.parseInt(year_subject.getText().toString());
+                int semester_sub = Integer.parseInt(semester.getText().toString());
 
 
-            boolean result = SubjectManagementActivity.addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,year_sub,semester_sub);
+                boolean result = SubjectManagementActivity.addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,year_sub,semester_sub);
 
-            if(result){
-                Toast.makeText(this, "과목추가 완료", Toast.LENGTH_SHORT).show();
-            }else
-                Toast.makeText(this, "과목추가 실패", Toast.LENGTH_SHORT).show();
+                if(result){
+                    Toast.makeText(this, "과목추가 완료", Toast.LENGTH_SHORT).show();
+                }else
+                    Toast.makeText(this, "과목추가 실패", Toast.LENGTH_SHORT).show();
 
-            finish();
+                finish();
+
+            }
+
+
         });
         btn_no.setOnClickListener((view) -> { // 취소버튼 선택
             finish();

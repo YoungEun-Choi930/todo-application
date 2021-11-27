@@ -28,6 +28,7 @@ public class TodoManagementActivity extends AppCompatActivity {
     public ToDoAdapter toDoAdapter;
     public static TodoManagementActivity mContext;
     String sdate;
+    MaterialCalendarView materialCalendarView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.todo_toolbar);
         setSupportActionBar(myToolbar);
 
-        MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+        materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
         materialCalendarView.setSelectedDate(CalendarDay.today());
         materialCalendarView.setDynamicHeightEnabled(true);
         Button btn_subject = (Button) findViewById(R.id.btn_subject);

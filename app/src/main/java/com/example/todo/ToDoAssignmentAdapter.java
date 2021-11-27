@@ -73,12 +73,12 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
                     boolean result = TodoManagementActivity.mContext.delAssignment(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName());
                     if(result){
                         todoAssignment.remove(assignmentInfo);
-                        Toast.makeText(view.getContext(),"과제삭제 성공",Toast.LENGTH_SHORT);
+                        Toast.makeText(view.getContext(),"과제삭제 성공",Toast.LENGTH_SHORT).show();
                         System.out.println("과제삭제성공");
                         TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
                     }
                     else{
-                        Toast.makeText(view.getContext(),"과제삭제 실패", Toast.LENGTH_SHORT);
+                        Toast.makeText(view.getContext(),"과제삭제 실패", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
