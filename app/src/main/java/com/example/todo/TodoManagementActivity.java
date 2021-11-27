@@ -307,13 +307,7 @@ public class TodoManagementActivity extends AppCompatActivity {
 
         // 알림 시간 설정
         String info = alarmInfo.getAssignmentAlarmDate();       //{"1일 전", "3일 전","5일 전","7일 전"
-        int examnum = 0;
-        switch (info) {
-            case "1일 전": examnum = 24; break;
-            case "3일 전": examnum = 24*3; break;
-            case "5일 전": examnum = 24*5; break;
-            case "7일 전": examnum = 24*7; break;
-        }
+        int examnum = Integer.parseInt(info.substring(0,1));
 
         //알림 날짜 Date로 변환
         String alarmtime = date + time;
@@ -333,7 +327,7 @@ public class TodoManagementActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(datetime);
-        calendar.add(Calendar.HOUR_OF_DAY, -examnum);
+        calendar.add(Calendar.DATE, -examnum);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
 
 
