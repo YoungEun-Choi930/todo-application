@@ -27,8 +27,8 @@ public class FirebaseDBHelper {
     }
 
 
-
-    public void loadFriendsRequestList(){       //친구신청 목록 불러오기
+    /* ------------------------------------ 친구신청 목록 불러오기----------------------------------- */
+    public void loadFriendsRequestList(){
         ArrayList<FriendInfo> result = new ArrayList<>();
 
         Task<DataSnapshot> task = databaseReference.child("INFO").child(userUID).child("friend").get();
@@ -62,8 +62,8 @@ public class FirebaseDBHelper {
 
     }
 
-
-    public void loadFriendsList() {     //서로친구 목록 불러오기
+    /* ------------------------------------ 서로친구 목록 불러오기----------------------------------- */
+    public void loadFriendsList() {
         ArrayList<FriendInfo> result = new ArrayList<>();
 
         Task<DataSnapshot> task = databaseReference.child("INFO").child(userUID).child("friend").get();
@@ -99,36 +99,55 @@ public class FirebaseDBHelper {
 
     }
 
+    /* -------------------------------- 친구 신청시 존재하는 id 인가 --------------------------------- */
+    public void confirmFriendExist(String friendID){
 
-    public void confirmFriendExist(String friendID){    //친구 존재하는지 확인
-        Task<DataSnapshot> task = databaseReference.child("USERS").child(friendID).get();
+        // 해당 아이디가 사용자로 등록되어 있는가
+        Task<DataSnapshot> userstask = databaseReference.child("USERS").child(friendID).get();
+
+        OnCompleteListener existlistener = new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().exists()) {
+                    String friendUID = (String)(task.getResult().getValue());
+                    requestFriend(friendUID);                                   // 사용자로 등록되어있으면 request Friend
+                    FriendsManagementActivity.context.showResult(true);         // true 반환
+                }
+                else{
+                    FriendsManagementActivity.context.showResult(false);        // 사용자로 등록되어 있지 않으니 false 반환
+                }
+            }
+        };
+
+        // 이미 친구인 아이디 인가.
+        Task<DataSnapshot> infotask = databaseReference.child("INFO").child(userUID).child("friend").child(friendID).get();
 
         OnCompleteListener friendlistener = new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.getResult().exists()) {
-                    String friendUID = (String)(task.getResult().getValue());
-                    requestFriend(friendUID);
-                    FriendsManagementActivity.context.showResult(true);
+                    FriendsManagementActivity.context.showResult(false);        // 이미 친구이면 false 반환
                 }
                 else{
-                    FriendsManagementActivity.context.showResult(false);
+                    userstask.addOnCompleteListener(existlistener);             // 친구가 아니면 등록되어있는 사용자인지 확인.
                 }
             }
         };
 
-        task.addOnCompleteListener(friendlistener);
+        infotask.addOnCompleteListener(friendlistener);
 
     }
 
-    private void requestFriend(String friendUID) { //친구신청
+    /* ------------------------------------------- 친구 신청 -------------------------------------- */
+    private void requestFriend(String friendUID) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("friendUID", userUID);
         map.put("value", 0);
         databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).setValue(map);
     }
 
-    public void acceptFriend(String friendID, String friendUID) { //친구신청수락
+    /* ---------------------------------------- 친구 신청 수락 ------------------------------------- */
+    public void acceptFriend(String friendID, String friendUID) {
         databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("value").setValue(1);
         HashMap<String, Object> map = new HashMap<>();
         map.put("friendUID", userUID);
@@ -136,13 +155,13 @@ public class FirebaseDBHelper {
         databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).setValue(map);
     }
 
-    public void delFriend(String friendID, String friendUID) { //친구삭제
+    /* -------------------------------------- 친구 삭제 ------------------------------------------- */
+    public void delFriend(String friendID, String friendUID) {
         databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("value").setValue(null);
         databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).child("value").setValue(null);
     }
 
-
-
+    /* ---------------------------------- 친구 to do list 가져오기---------------------------------- */
     public void loadFriendToDoList(String friendUID, int date) {
         List<List> result = new ArrayList();
 
@@ -258,6 +277,7 @@ public class FirebaseDBHelper {
 
     }
 
+    /* ---------------------------------- 강의 hashmap 변환 --------------------------------------- */
     public void uploadMyLecture(String subjectName, HashMap lecturelist){
         HashMap<String,Object> info = new HashMap<>();
         info.put(subjectName, lecturelist);
@@ -265,6 +285,7 @@ public class FirebaseDBHelper {
         uploadInfo(info, "lecture");
     }
 
+    /* ---------------------------------- 과제 hashmap 변환 --------------------------------------- */
     public void uploadMyAssignment(String subjectName, String assignmentName, String startdate, String startTime, String enddate, String endTime){
         UploadInfo list = new UploadInfo(Integer.parseInt(startdate),Integer.parseInt(startTime),Integer.parseInt(enddate),Integer.parseInt(endTime),0);
 
@@ -277,6 +298,7 @@ public class FirebaseDBHelper {
         uploadInfo(iinfo, "assignment");
     }
 
+    /* ---------------------------------- 시험 hashmap 변환 --------------------------------------- */
     public void uploadMyExam(String subjectName, String examName, String date, String time){
         UploadExamInfo list = new UploadExamInfo(Integer.parseInt(date), Integer.parseInt(time));
 
@@ -289,30 +311,31 @@ public class FirebaseDBHelper {
         uploadInfo(iinfo, "exam");
     }
 
+    /* ------------------------------- 강의, 과제, 시험 upload ------------------------------------- */
     private void uploadInfo(HashMap info,String table) {
         databaseReference.child("INFO").child(userUID).child(table).updateChildren(info);
     }
 
-
-
-
-
+    /* -------------------------------------- 과목 삭제 ------------------------------------------- */
     public void delSubject(String subjectName) {
         databaseReference.child("INFO").child(userUID).child("lecture").child(subjectName).setValue(null);
         databaseReference.child("INFO").child(userUID).child("assignment").child(subjectName).setValue(null);
         databaseReference.child("INFO").child(userUID).child("exam").child(subjectName).setValue(null);
     }
 
+    /* -------------------------------------- 과제 삭제 ------------------------------------------- */
     public void delMyAssignment(String assignmentName, String subjectName) {
         databaseReference.child("INFO").child(userUID).child("assignment").child(subjectName).child(assignmentName).setValue(null);
 
     }
 
+    /* -------------------------------------- 시험 삭제 ------------------------------------------- */
     public void delMyExam(String examName, String subjectName) {
         databaseReference.child("INFO").child(userUID).child("exam").child(subjectName).child(examName).setValue(null);
 
     }
 
+    /* -------------------------------- 강의, 과제 isDone 변경 ------------------------------------ */
     public void changeMyIsDone(String name, String subjectName, String table, int value) {
         databaseReference.child("INFO").child(userUID).child(table.toLowerCase()).child(subjectName).child(name).child("isDone").setValue(value);
 
@@ -320,7 +343,10 @@ public class FirebaseDBHelper {
 }
 
 
-
+/*
+firebaseDB에서 데이터를 받아올 때 class의 형태로 받아올 수 있는데, 이를 위하여 생성한 클래스이다.
+또한, firebase에 입력가능한 데이터 형태인 HashMap으로의 변환을 메소드로서 정의하였다.
+ */
 class UploadInfo
 {
     public int startDate;
@@ -350,6 +376,11 @@ class UploadInfo
     }
 }
 
+/*
+firebaseDB에서 데이터를 받아올 때 class의 형태로 받아올 수 있는데, 이를 위하여 생성한 클래스이다.
+강의와 과제는 데이터 형태가 동일하지만, 과제는 다른 정보들을 저장하기 때문에 강의과제와 분리하여 class를 정의하였다.
+또한, firebase에 입력가능한 데이터 형태인 HashMap으로의 변환을 메소드로서 정의하였다.
+ */
 class UploadExamInfo
 {
     public int date;

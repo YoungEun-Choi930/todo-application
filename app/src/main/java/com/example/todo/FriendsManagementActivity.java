@@ -190,55 +190,62 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friendAdapter.notifyDataSetChanged();
     }
 
-    private void getFriendsList(){   //친구목록 불러오기
-        System.out.println("-------------getFreindsList-------------");
+    /* ------------------------------------ 친구 목록 불러오기 ------------------------------------- */
+    private void getFriendsList(){
+        // firebase에서 가져오고 notifyFriendsList로 결과 받음.
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.loadFriendsList();
-
-        System.out.println("영은4");
     }
 
-    public void notifyFriendsList(ArrayList<FriendInfo> list) {
-        friendAdapter.setData(list);
-        friendsList = list;
-        friendAdapter.notifyDataSetChanged();       //왜 화면이 안뜰까
-        System.out.println("----notify");
-
-
-    }
-
-    private void getFriendsRequestList(){    //친구신청 목록 불러오기
+    /* ---------------------------------- 친구 신청 목록 불러오기 ----------------------------------- */
+    private void getFriendsRequestList(){
+        // firebase에서 가져오고 notifyFriendsList로 결과 받음.
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.loadFriendsRequestList();
+    }
+
+    /* ------------------------------- 친구 목록, 친구 신청 목록 결과 -------------------------------- */
+        public void notifyFriendsList(ArrayList<FriendInfo> list) {     //firebase에서 호출하는 메소드
+        friendAdapter.setData(list);
+        friendsList = list;
+        friendAdapter.notifyDataSetChanged();           // 목록 화면 업데이트
 
     }
 
-    public void requestFriend(String friendID) { //친구 ID를 받아서 존재하면 친구신청
+    /* ----------------------------- 친구 ID를 받아서 존재하면 친구신청 ------------------------------- */
+    public void requestFriend(String friendID) {
+        // firebase에서 confirm하고 showResult로 결과 받음.
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.confirmFriendExist(friendID);
     }
 
-    public void showResult(boolean result) {
+    /* -------------------------------------- 친구 신청 결과 -------------------------------------- */
+    public void showResult(boolean result) {                        //firebase에서 호출하는 메소드
         if(result){
             Toast.makeText(FriendsManagementActivity.this, "친구신청 완료", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
 
         }else {
-            Toast.makeText(FriendsManagementActivity.this, "대상을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FriendsManagementActivity.this, "친구신청 실패", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void acceptFriend(String friendID, String friendUID) { //친구 신청 수락하기
+    /* ------------------------------------ 친구 신청 수락하기 ------------------------------------- */
+    public void acceptFriend(String friendID, String friendUID) {
+        // firebase update
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.acceptFriend(friendID, friendUID);
     }
 
-    public void delFriend(String friendID, String friendUID) { //친구 삭제
+    /* ---------------------------------------- 친구 삭제 ----------------------------------------- */
+    public void delFriend(String friendID, String friendUID) {
+        // firebase update
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delFriend(friendID, friendUID);
     }
 
-    public void getFriendToDoList(String friendID, int date) {    //친구 일정 조회
+    /* --------------------------------------- 친구 일정 조회 -------------------------------------- */
+    public void getFriendToDoList(String friendID, int date) {
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.loadFriendToDoList(friendID, date);
     }

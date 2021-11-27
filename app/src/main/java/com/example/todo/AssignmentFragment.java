@@ -104,11 +104,13 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
 
                     String s_starttime = this.starttime.getText().toString();
                     String[] time = s_starttime.split(":");
+                    if(time[0].length() == 1) time[0] = "0"+time[0];
                     if(time[1].length() == 1) time[1] = "0"+time[1];
                     s_starttime = time[0]+time[1];
 
                     String s_endtime = this.endtime.getText().toString();
                     time = s_endtime.split(":");
+                    if(time[0].length() == 1) time[0] = "0"+time[0];
                     if(time[1].length() == 1) time[1] = "0"+time[1];
                     s_endtime = time[0]+time[1];
 
