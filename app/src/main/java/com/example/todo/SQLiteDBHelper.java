@@ -201,35 +201,115 @@ public class SQLiteDBHelper
             throw mSQLException;
         }
     }
-//    public List<String> loadFriendsList()
-//    {
-//        try
-//        {
-//            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-//            String sql = "SELECT * FROM Friends;";
-//
-//            List<String> list = new ArrayList();
-//
-//            Cursor cursor = mDb.rawQuery(sql, null);
-//            if (cursor!=null)
-//            {
-//                // 칼럼의 마지막까지
-//                while( cursor.moveToNext() ) {
-//
-//                    String id = cursor.getString(0);
-//
-//                    list.add(id);
-//                }
-//            }
-//            cursor.close();
-//            mDbHelper.close();
-//            return list;
-//        }
-//        catch (SQLException mSQLException)
-//        {
-//            Log.e("DataAdapter", "getFriendsData >>"+ mSQLException.toString());
-//            throw mSQLException;
-//        }
-//    }
+
+    /*String lecture = "CREATE TABLE IF NOT EXISTS LectureList (" +
+                "subjectName TEXT, lectureName TEXT, startDate INTEGER, startTime INTEGER, endDate INTEGER, endTime INTEGER, isDone INTEGER);";
+        String assignment = "CREATE TABLE IF NOT EXISTS AssignmentList ( " +
+                "subjectName TEXT NOT NULL, assignmentName TEXT NOT NULL, startDate INTEGER NOT NULL, startTIme INTEGER," +
+                "endDate INTEGER NOT NULL, endTime INTEGER, isDone INTEGER);";
+        String exam = "CREATE TABLE IF NOT EXISTS ExamList (" +
+                "subjectName TEXT NOT NULL, examName TEXT NOT NULL, date INTEGER NOT NULL, time INTEGER);";
+
+     */
+    public List<String> loadLectureDateList(String subjectName)
+    {
+        try
+        {
+            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+            String sql = "SELECT startDate, startTime FROM LectureList WHERE subjectName == '"+subjectName+"';";
+
+            List<String> list = new ArrayList();
+
+            Cursor cursor = mDb.rawQuery(sql, null);
+            if (cursor!=null)
+            {
+                // 칼럼의 마지막까지
+                while( cursor.moveToNext() ) {
+
+                    String date = Integer.toString(cursor.getInt(0));
+                    String time = Integer.toString(cursor.getInt(1));
+                    if(time.length() == 3) time = "0" + time;
+
+                    list.add(date+time);
+                }
+            }
+            cursor.close();
+            mDbHelper.close();
+            return list;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e("DataAdapter", "getExamData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
+    public List<String> loadAssignmentDateList(String subjectName)
+    {
+        try
+        {
+            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+            String sql = "SELECT startDate, startTime FROM AssignmentList WHERE subjectName == '"+subjectName+"';";
+
+            List<String> list = new ArrayList();
+
+            Cursor cursor = mDb.rawQuery(sql, null);
+            if (cursor!=null)
+            {
+                // 칼럼의 마지막까지
+                while( cursor.moveToNext() ) {
+
+                    String date = Integer.toString(cursor.getInt(0));
+                    String time = Integer.toString(cursor.getInt(1));
+                    if(time.length() == 3) time = "0" + time;
+
+                    list.add(date+time);
+                }
+            }
+            cursor.close();
+            mDbHelper.close();
+            return list;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e("DataAdapter", "getExamData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
+    public List<String> loadExamDateList(String subjectName)
+    {
+        try
+        {
+            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+            String sql = "SELECT date, time FROM ExamList WHERE subjectName == '"+subjectName+"';";
+
+            List<String> list = new ArrayList();
+
+            Cursor cursor = mDb.rawQuery(sql, null);
+            if (cursor!=null)
+            {
+                // 칼럼의 마지막까지
+                while( cursor.moveToNext() ) {
+
+                    String date = Integer.toString(cursor.getInt(0));
+                    String time = Integer.toString(cursor.getInt(1));
+                    if(time.length() == 3) time = "0" + time;
+
+                    list.add(date+time);
+                }
+            }
+            cursor.close();
+            mDbHelper.close();
+            return list;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e("DataAdapter", "getExamData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
+
 
 }
