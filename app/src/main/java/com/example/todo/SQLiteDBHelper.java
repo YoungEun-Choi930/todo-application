@@ -22,6 +22,7 @@ public class SQLiteDBHelper
 
     public Boolean excuteQuery(String sql)
     {
+        System.out.println(sql);
         try
         {
             SQLiteDatabase mDb = mDbHelper.getWritableDatabase();
@@ -185,7 +186,7 @@ public class SQLiteDBHelper
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    AlarmInfo info = new AlarmInfo(false,cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
+                    AlarmInfo info = new AlarmInfo(false,cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
 
                     list.add(info);
                 }

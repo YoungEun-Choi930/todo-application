@@ -183,7 +183,6 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 query = "INSERT INTO LectureList VALUES('" +
                         subjectName+"','"+lectureName+"',"+strstartdate+","+startTime+","+strenddate+","+endTime+",0);";
                 result = adapter.excuteQuery(query);
-                System.out.println(query);
 
                 //firebase
                 HashMap<String, Object> map = new HashMap<>();
