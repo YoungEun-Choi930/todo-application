@@ -151,7 +151,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video);
         alarmInfoList.add(alarmInfo);
         alarmAdapter.notifyDataSetChanged();
-        setSystemAlarm();
+        setSystemAlarm(subjectName);
         return result;
     }
     private boolean delAlarm(String subjectName) {
@@ -164,30 +164,83 @@ public class AlarmManagementActivity extends AppCompatActivity {
     }
 
 
-    private void setSystemAlarm() {
+    private void setSystemAlarm(String subjectName) {
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
-
+        // 여기서 에러뜸
         Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
 
 
-        String from = "2020-11-27 11:35:00"; //임의로 날짜와 시간을 지정
-        /// 일단 걍 긁은거라 이런데 나중에 파라미터로 넘겨받으면 될 듯...?
-        //날짜 포맷을 바꿔주는 소스코드
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date datetime = null;
-        try {
-            datetime = dateFormat.parse(from);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        SQLiteDBHelper helper = new SQLiteDBHelper();
+        List<String> list = helper.loadLectureDateList(subjectName);            // sqlite에서 강의목록 들고오기
+
+        //lecture
+        for(String date: list) {
+            String from = date; //임의로 날짜와 시간을 지정
+            /// 일단 걍 긁은거라 이런데 나중에 파라미터로 넘겨받으면 될 듯...?
+            //날짜 포맷을 바꿔주는 소스코드
+
+            //여기서 강의 몇시간전 받아와서 from 바꿔주면 될듯 일단 지금은 해당 날짜 시간으로 설정됨
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+            Date datetime = null;
+            try {
+                datetime = dateFormat.parse(from);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(datetime);
+
+            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(datetime);
+        //assignment
+        list = helper.loadAssignmentDateList(subjectName);
+        for(String date: list) {
+            String from = date; //임의로 날짜와 시간을 지정
+            /// 일단 걍 긁은거라 이런데 나중에 파라미터로 넘겨받으면 될 듯...?
+            //날짜 포맷을 바꿔주는 소스코드
 
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
+            //여기서 강의 몇시간전 받아와서 from 바꿔주면 될듯
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+            Date datetime = null;
+            try {
+                datetime = dateFormat.parse(from);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(datetime);
+
+            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        }
+
+        //exam
+        list = helper.loadExamDateList(subjectName);
+        for(String date: list) {
+            String from = date; //임의로 날짜와 시간을 지정
+            System.out.println("--------------"+from);
+            /// 일단 걍 긁은거라 이런데 나중에 파라미터로 넘겨받으면 될 듯...?
+            //날짜 포맷을 바꿔주는 소스코드
+
+            //여기서 강의 몇시간전 받아와서 from 바꿔주면 될듯
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+            Date datetime = null;
+            try {
+                datetime = dateFormat.parse(from);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(datetime);
+
+            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        }
 
     }
 
