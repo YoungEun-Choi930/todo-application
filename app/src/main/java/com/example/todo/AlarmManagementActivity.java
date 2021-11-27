@@ -151,7 +151,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video);
         alarmInfoList.add(alarmInfo);
         alarmAdapter.notifyDataSetChanged();
-        setSystemAlarm(subjectName);
+        setSystemAlarm(subjectName, exam, assignment, video);
         return result;
     }
     private boolean delAlarm(String subjectName) {
@@ -164,12 +164,30 @@ public class AlarmManagementActivity extends AppCompatActivity {
     }
 
 
-    private void setSystemAlarm(String subjectName) {
+    private void setSystemAlarm(String subjectName, String exam, String assignment, String video) {
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        System.out.println(assignment+"과제"+video+"강의"+exam+"시험 제대로나와주라ㅠㅠ");
+
+        int examnum = Integer.parseInt(exam.substring(0,1));
+        int assignmentnum;
+        if(assignment.equals("1일 전"))
+            assignmentnum=24;
+        else
+            assignmentnum=Integer.parseInt(assignment.substring(0,1));
+        int videonum;
+        if(video.equals("1일 전"))
+            videonum=24;
+        else {
+            videonum = Integer.parseInt(video.substring(0, 1));
+            System.out.println("1일전선택");
+        }
+
+
+
 
         // 여기서 에러뜸
-        Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
+       Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
 
 
@@ -178,12 +196,10 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
         //lecture
         for(String date: list) {
-            String from = date; //임의로 날짜와 시간을 지정
-            /// 일단 걍 긁은거라 이런데 나중에 파라미터로 넘겨받으면 될 듯...?
-            //날짜 포맷을 바꿔주는 소스코드
+            String from = date;
 
-            //여기서 강의 몇시간전 받아와서 from 바꿔주면 될듯 일단 지금은 해당 날짜 시간으로 설정됨
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+
             Date datetime = null;
             try {
                 datetime = dateFormat.parse(from);
@@ -193,18 +209,15 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(datetime);
-
+            calendar.add(Calendar.HOUR_OF_DAY, -videonum); //몇시간전인지 빼
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
 
         //assignment
         list = helper.loadAssignmentDateList(subjectName);
         for(String date: list) {
-            String from = date; //임의로 날짜와 시간을 지정
-            /// 일단 걍 긁은거라 이런데 나중에 파라미터로 넘겨받으면 될 듯...?
-            //날짜 포맷을 바꿔주는 소스코드
+            String from = date;
 
-            //여기서 강의 몇시간전 받아와서 from 바꿔주면 될듯
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
             Date datetime = null;
             try {
@@ -215,19 +228,14 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(datetime);
-
+            calendar.add(Calendar.HOUR_OF_DAY, -assignmentnum);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
 
         //exam
         list = helper.loadExamDateList(subjectName);
         for(String date: list) {
-            String from = date; //임의로 날짜와 시간을 지정
-            System.out.println("--------------"+from);
-            /// 일단 걍 긁은거라 이런데 나중에 파라미터로 넘겨받으면 될 듯...?
-            //날짜 포맷을 바꿔주는 소스코드
-
-            //여기서 강의 몇시간전 받아와서 from 바꿔주면 될듯
+            String from = date;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
             Date datetime = null;
             try {
@@ -238,7 +246,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(datetime);
-
+            calendar.add(Calendar.DATE, -examnum);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
 
