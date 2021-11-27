@@ -54,7 +54,9 @@ public class AddAlarmActivity extends AppCompatActivity {
         sp_subject = (Spinner) findViewById(R.id.spinner_sub); //과목 불러와서 고르는 스피너
         subAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, sub);
         sp_subject.setAdapter(subAdapter);
-        selected_sub = subjectList.get(0).getSubjectName();
+        if(subjectList.size()>0){
+            selected_sub = subjectList.get(0).getSubjectName();
+        }
         sp_subject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -101,8 +103,8 @@ public class AddAlarmActivity extends AppCompatActivity {
         sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((TextView) view).setText(timeList[i]);
-                selected_lecture = timeList[i];
+                ((TextView) view).setText(hourList[i]);
+                selected_lecture = hourList[i];
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -112,13 +114,20 @@ public class AddAlarmActivity extends AppCompatActivity {
                 btn_yes.setOnClickListener((view) -> { //확인버튼 누르면
 
 
-                    boolean result = ((AlarmManagementActivity) AlarmManagementActivity.mContext).addAlarm(selected_sub, selected_exam, selected_assignment, selected_lecture);
+                    if(selected_sub == null){
+                        Toast.makeText(this, "과목이 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        boolean result = ((AlarmManagementActivity) AlarmManagementActivity.mContext).addAlarm(selected_sub, selected_exam, selected_assignment, selected_lecture);
 
-                    if (result) {
-                        Toast.makeText(this, "알림추가 완료", Toast.LENGTH_SHORT).show();
-                    } else
-                        Toast.makeText(this, "알림추가 실패", Toast.LENGTH_SHORT).show();
-                    finish();
+                        if (result) {
+                            System.out.println("알림추가 성공");
+                            Toast.makeText(this, "알림추가 완료", Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(this, "알림추가 실패", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
                 });
         btn_no.setOnClickListener((view) -> { // 취소버튼 선택
             finish();

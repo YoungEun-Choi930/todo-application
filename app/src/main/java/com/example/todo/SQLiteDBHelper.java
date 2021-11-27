@@ -228,6 +228,9 @@ public class SQLiteDBHelper
 
                     String date = Integer.toString(cursor.getInt(0));
                     String time = Integer.toString(cursor.getInt(1));
+                    System.out.println("---------------------------date:"+date);
+                    System.out.println("---------------------------time:"+time);
+                    if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
                     list.add(date+time);
@@ -261,6 +264,7 @@ public class SQLiteDBHelper
 
                     String date = Integer.toString(cursor.getInt(0));
                     String time = Integer.toString(cursor.getInt(1));
+                    if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
                     list.add(date+time);
@@ -294,6 +298,7 @@ public class SQLiteDBHelper
 
                     String date = Integer.toString(cursor.getInt(0));
                     String time = Integer.toString(cursor.getInt(1));
+                    if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
                     list.add(date+time);
