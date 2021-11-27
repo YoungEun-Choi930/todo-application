@@ -118,6 +118,7 @@ public class AddAlarmActivity extends AppCompatActivity {
                         Toast.makeText(this, "과목이 없습니다.", Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        System.out.println(selected_assignment+"과제"+selected_lecture+"강의"+selected_exam+"시험"+selected_sub);
                         boolean result = ((AlarmManagementActivity) AlarmManagementActivity.mContext).addAlarm(selected_sub, selected_exam, selected_assignment, selected_lecture);
 
                         if (result) {

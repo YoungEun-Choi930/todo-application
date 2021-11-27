@@ -28,9 +28,7 @@ public class AlarmRecevier extends BroadcastReceiver {
 
         manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            manager.createNotificationChannel(
-                    new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
-            );
+            manager.createNotificationChannel(new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH));
          //   builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         } else {
             builder = new NotificationCompat.Builder(context);
@@ -38,20 +36,7 @@ public class AlarmRecevier extends BroadcastReceiver {
 
         //알림창 클릭 시 activity 화면 부름
         Intent intent2 = new Intent(context, TodoManagementActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,101,intent2, PendingIntent.FLAG_UPDATE_CURRENT);
-/*
-        //알림창 제목
-        builder.setContentTitle("TODO");
-        //알림창 아이콘
-        builder.setSmallIcon(R.drawable.ic_launcher_background);
-        //알림창 터치시 자동 삭제
-        builder.setAutoCancel(true);
-
-        builder.setContentIntent(pendingIntent);
-
-        Notification notification = builder.build();
-        manager.notify(1,notification);
-*/
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,1,intent2, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -61,8 +46,6 @@ public class AlarmRecevier extends BroadcastReceiver {
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-
-
         manager.notify(1,builder.build());
     }
 }
