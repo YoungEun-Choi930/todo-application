@@ -76,11 +76,14 @@ public class ExamFragment extends Fragment implements View.OnClickListener, Time
 
                     String s_date = this.date.getText().toString();
                     String[] splitdate = s_date.split("-");
+                    if(splitdate[1].length() == 1) splitdate[1] = "0"+splitdate[1];
+                    if(splitdate[2].length() == 1) splitdate[2] = "0"+splitdate[2];
                     s_date = splitdate[0]+splitdate[1]+splitdate[2];     //시작날짜
 
 
                     String s_time = this.time.getText().toString();
                     String[] splittime = s_time.split(":");
+                    if(splittime[1].length() == 1) splittime[1] = "0"+splittime[1];
                     s_time = splittime[0]+splittime[1];
 
                     boolean result = TodoManagementActivity.mContext.addExam(subjectName,todoName,s_date,s_time);
