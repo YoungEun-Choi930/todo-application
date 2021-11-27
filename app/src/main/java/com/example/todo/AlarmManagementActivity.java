@@ -127,6 +127,8 @@ public class AlarmManagementActivity extends AppCompatActivity {
         List<AlarmInfo> list = adapter.loadAlarmList();
         return list;
     }
+
+    // 리얼빼고 파라미터 4개인걸로 넘겼어용
     public boolean addAlarm(String subjectName, String exam, String assignment, String video, String real){
         String query = "INSERT INTO AlarmList VALUES('"+
                 subjectName+"','"+exam+"','"+assignment+"','"+video+"','"+real+"');";

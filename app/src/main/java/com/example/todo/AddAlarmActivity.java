@@ -34,7 +34,7 @@ public class AddAlarmActivity extends AppCompatActivity {
     String[] timeList = {"10분 전","15분 전","30분 전","1시간 전"};
     String[] dayList = {"1일 전", "3일 전","5일 전","7일 전"};
     String[] hourList = {"1시간 전", "2시간 전", "3시간 전", "5시간 전", "1일 전"};
-    ArrayAdapter hourAdapter, timeAdapter, dayAdapter;
+    ArrayAdapter hourAdapter, dayAdapter;
     AlarmManager alarmManager;
 
 
@@ -65,7 +65,6 @@ public class AddAlarmActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        timeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, timeList);
         sp_assignment = (Spinner) findViewById(R.id.spinner_assignment); //과제알림시간설정
         hourAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, hourList);
         sp_assignment.setAdapter(hourAdapter);
@@ -94,16 +93,11 @@ public class AddAlarmActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        RadioGroup lecture = (RadioGroup) findViewById(R.id.lecture);
-        int id = lecture.getCheckedRadioButtonId();         //처음에 선택안하고 확인누르면 처음 설정값대로 알람추가하려고
-        RadioButton start = (RadioButton) findViewById(id);
-        lecturetype = start.getResources().getResourceName(id);
-        String[] split = lecturetype.split("/");
-        lecturetype = split[1];
+
 
         sp_lecture = (Spinner) findViewById(R.id.spinner_lecture);
-        sp_lecture.setAdapter(timeAdapter);
-        selected_lecture = timeList[0];
+        sp_lecture.setAdapter(hourAdapter);
+        selected_lecture = hourList[0];
         sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -114,56 +108,11 @@ public class AddAlarmActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        lecture.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                                              @Override
-                                               public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                                                   int id = lecture.getCheckedRadioButtonId(); //선택되어있는 라디오버튼 가져옴
-                                                   RadioButton start = (RadioButton) findViewById(id);
-                                                   lecturetype = start.getResources().getResourceName(id);
-
-                                                   String[] split = lecturetype.split("/");
-                                                   lecturetype = split[1];
-
-                                                   if (lecturetype.equals("realtime")) {//그게 실시간(대면)이면
-                                                       sp_lecture.setAdapter(timeAdapter);
-                                                       selected_lecture = timeList[0];
-                                                       sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                           @Override
-                                                           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                               ((TextView) view).setText(timeList[i]);
-                                                               selected_lecture = timeList[i];
-                                                           }
-                                                           @Override
-                                                           public void onNothingSelected(AdapterView<?> adapterView) {
-                                                           }
-                                                       });
-
-                                                   } else {
-                                                       sp_lecture.setAdapter(hourAdapter);
-                                                       selected_lecture = hourList[0];
-                                                       sp_lecture.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                           @Override
-                                                           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                               ((TextView) view).setText(hourList[i]);
-                                                               selected_lecture = hourList[i];
-                                                           }
-                                                           @Override
-                                                           public void onNothingSelected(AdapterView<?> adapterView) {
-                                                           }
-                                                       });
-
-                                                   }
-                                               }
-                                           });
 
                 btn_yes.setOnClickListener((view) -> { //확인버튼 누르면
 
 
-                    boolean result;
-                    if (lecturetype.equals("realtime")) {
-                        result = ((AlarmManagementActivity) AlarmManagementActivity.mContext).addAlarm(selected_sub, selected_exam, selected_assignment, "", selected_lecture);
-                    } else
-                        result = ((AlarmManagementActivity) AlarmManagementActivity.mContext).addAlarm(selected_sub, selected_exam, selected_assignment, selected_lecture, "");
+                    boolean result = ((AlarmManagementActivity) AlarmManagementActivity.mContext).addAlarm(selected_sub, selected_exam, selected_assignment, selected_lecture);
 
                     if (result) {
                         Toast.makeText(this, "알림추가 완료", Toast.LENGTH_SHORT).show();
