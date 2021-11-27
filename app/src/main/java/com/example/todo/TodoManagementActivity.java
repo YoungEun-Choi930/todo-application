@@ -241,7 +241,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
 
         // 알림 시간 설정
-        String info = alarmInfo.getAssignmentAlarmDate();       //{"1시간 전", "2시간 전", "3시간 전", "5시간 전", "1일 전"};
+        String info = alarmInfo.getAssignmentAlarmDate();
         int assignmentnum = 0;
         switch (info) {
             case "1시간 전": assignmentnum = 1; break;
@@ -252,7 +252,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         }
 
         //알림 날짜 Date로 변환
-        String alarmtime = startDate + startTime;
+        String alarmtime = endDate + endTime;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         Date datetime = null;
         try {
@@ -300,6 +300,42 @@ public class TodoManagementActivity extends AppCompatActivity {
         // firebase insert
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.uploadMyExam(subjectName,examName, date, time);
+
+        // 과목에 알림이 설정되어 있다면 추가한 시험에 대하여 알림 설정
+        AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
+        if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
+
+        // 알림 시간 설정
+        String info = alarmInfo.getAssignmentAlarmDate();       //{"1일 전", "3일 전","5일 전","7일 전"
+        int examnum = 0;
+        switch (info) {
+            case "1일 전": examnum = 24; break;
+            case "3일 전": examnum = 24*3; break;
+            case "5일 전": examnum = 24*5; break;
+            case "7일 전": examnum = 24*7; break;
+        }
+
+        //알림 날짜 Date로 변환
+        String alarmtime = date + time;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        Date datetime = null;
+        try {
+            datetime = dateFormat.parse(alarmtime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //알림추가
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datetime);
+        calendar.add(Calendar.HOUR_OF_DAY, -examnum);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
 
         return result;
     }
