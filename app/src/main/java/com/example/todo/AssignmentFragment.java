@@ -92,18 +92,24 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
 
                     String s_startdate = this.startdate.getText().toString();
                     String[] date = s_startdate.split("-");
+                    if(date[1].length() == 1) date[1] = "0"+date[1];
+                    if(date[2].length() == 1) date[2] = "0"+date[2];
                     s_startdate = date[0]+date[1]+date[2];     //시작날짜
 
                     String s_enddate = this.enddate.getText().toString();
                     date = s_enddate.split("-");
+                    if(date[1].length() == 1) date[1] = "0"+date[1];
+                    if(date[2].length() == 1) date[2] = "0"+date[2];
                     s_enddate = date[0]+date[1]+date[2];  //종료날짜
 
                     String s_starttime = this.starttime.getText().toString();
                     String[] time = s_starttime.split(":");
+                    if(time[1].length() == 1) time[1] = "0"+time[1];
                     s_starttime = time[0]+time[1];
 
                     String s_endtime = this.endtime.getText().toString();
                     time = s_endtime.split(":");
+                    if(time[1].length() == 1) time[1] = "0"+time[1];
                     s_endtime = time[0]+time[1];
 
                     boolean result = TodoManagementActivity.mContext.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
