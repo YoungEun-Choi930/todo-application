@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -16,6 +20,8 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -229,6 +235,42 @@ public class TodoManagementActivity extends AppCompatActivity {
         // firebase insert
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.uploadMyAssignment(subjectName,assignmentName, startDate, startTime, endDate, endTime);
+
+        // 과목에 알림이 설정되어 있다면 추가한 과제에 대하여 알림 설정
+        AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
+        if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
+
+        // 알림 시간 설정
+        String info = alarmInfo.getAssignmentAlarmDate();       //{"1시간 전", "2시간 전", "3시간 전", "5시간 전", "1일 전"};
+        int assignmentnum = 0;
+        switch (info) {
+            case "1시간 전": assignmentnum = 1; break;
+            case "2시간 전": assignmentnum = 2; break;
+            case "3시간 전": assignmentnum = 3; break;
+            case "5시간 전": assignmentnum = 4; break;
+            case "1일 전": assignmentnum = 24; break;
+        }
+
+        //알림 날짜 Date로 변환
+        String alarmtime = startDate + startTime;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        Date datetime = null;
+        try {
+            datetime = dateFormat.parse(alarmtime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //알림추가
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datetime);
+        calendar.add(Calendar.HOUR_OF_DAY, -assignmentnum);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
 
         return result;
     }

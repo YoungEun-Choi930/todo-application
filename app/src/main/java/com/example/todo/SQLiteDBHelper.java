@@ -202,6 +202,37 @@ public class SQLiteDBHelper
         }
     }
 
+
+    public AlarmInfo loadAlarm(String subjectName)
+    {
+        try
+        {
+            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+            String sql = "SELECT * FROM AlarmList WHERE subjectName == '"+subjectName+"';";
+
+            AlarmInfo info = null;
+
+            Cursor cursor = mDb.rawQuery(sql, null);
+            if (cursor!=null)
+            {
+                // 칼럼의 마지막까지
+                while( cursor.moveToNext() ) {
+
+                    info = new AlarmInfo(false,cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
+
+                }
+            }
+            cursor.close();
+            mDbHelper.close();
+            return info;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e("DataAdapter", "getAlarmData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
     /*String lecture = "CREATE TABLE IF NOT EXISTS LectureList (" +
                 "subjectName TEXT, lectureName TEXT, startDate INTEGER, startTime INTEGER, endDate INTEGER, endTime INTEGER, isDone INTEGER);";
         String assignment = "CREATE TABLE IF NOT EXISTS AssignmentList ( " +
@@ -228,8 +259,7 @@ public class SQLiteDBHelper
 
                     String date = Integer.toString(cursor.getInt(0));
                     String time = Integer.toString(cursor.getInt(1));
-                    System.out.println("---------------------------date:"+date);
-                    System.out.println("---------------------------time:"+time);
+                    if(time.length() == 1) time = "000" + time;
                     if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
@@ -264,6 +294,7 @@ public class SQLiteDBHelper
 
                     String date = Integer.toString(cursor.getInt(0));
                     String time = Integer.toString(cursor.getInt(1));
+                    if(time.length() == 1) time = "000" + time;
                     if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
@@ -298,6 +329,7 @@ public class SQLiteDBHelper
 
                     String date = Integer.toString(cursor.getInt(0));
                     String time = Integer.toString(cursor.getInt(1));
+                    if(time.length() == 1) time = "000" + time;
                     if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
