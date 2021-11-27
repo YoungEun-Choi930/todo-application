@@ -167,7 +167,6 @@ public class AlarmManagementActivity extends AppCompatActivity {
     private void setSystemAlarm(String subjectName, String exam, String assignment, String video) {
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        System.out.println(assignment+"과제"+video+"강의"+exam+"시험 제대로나와주라ㅠㅠ");
 
         int examnum = Integer.parseInt(exam.substring(0,1));
         int assignmentnum;
@@ -180,7 +179,6 @@ public class AlarmManagementActivity extends AppCompatActivity {
             videonum=24;
         else {
             videonum = Integer.parseInt(video.substring(0, 1));
-            System.out.println("1일전선택");
         }
 
 
