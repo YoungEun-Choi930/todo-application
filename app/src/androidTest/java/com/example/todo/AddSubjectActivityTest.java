@@ -394,7 +394,7 @@ public class AddSubjectActivityTest {
     @Test
     public void 시작요일이수요일인경우() {                         //1주차 강의 시작날짜가 0901
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test14","1","수","0900","수","1030");
+        subject s = new subject("test13","1","수","0900","수","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -405,7 +405,7 @@ public class AddSubjectActivityTest {
     @Test
     public void 시작요일이목요일인경우() {                         //1주차 강의 시작날짜가 0902
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test15","1","목","0900","목","1030");
+        subject s = new subject("test14","1","목","0900","목","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -416,7 +416,7 @@ public class AddSubjectActivityTest {
     @Test
     public void 시작요일이금요일인경우() {                         //1주차 강의 시작날짜가 0903
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test16","1","금","0900","금","1030");
+        subject s = new subject("test15","1","금","0900","금","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -427,7 +427,7 @@ public class AddSubjectActivityTest {
     @Test
     public void 시작요일이월요일인경우() {                         //1주차 강의 시작날짜가 0906
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test17","1","월","0900","월","1030");
+        subject s = new subject("test16","1","월","0900","월","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -438,7 +438,7 @@ public class AddSubjectActivityTest {
     @Test
     public void 시작요일이화요일인경우() {                         //1주차 강의 시작날짜가 0907
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test18","1","화","0900","화","1030");
+        subject s = new subject("test17","1","화","0900","화","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -449,7 +449,7 @@ public class AddSubjectActivityTest {
     @Test
     public void 학기가1인경우() {                                 //1주차 강의 시작날짜가 0301
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test19","1","월","0900","월","1030");
+        subject s = new subject("test18","1","월","0900","월","1030");
         insertSubject(s, 2021,1);
 
         subjectList.add(s);
