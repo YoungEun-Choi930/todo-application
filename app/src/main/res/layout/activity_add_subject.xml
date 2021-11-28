@@ -38,20 +38,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="생성 년도"
+                android:text="생성 연도"
                 android:layout_marginLeft="3dp"
                 android:textSize="18dp"
-                                    />
+                  />
 
             <EditText
                 android:id="@+id/year_subject"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="ex) 2021"
+                android:hint="연도 선택"
                 android:textSize="15dp"
                 android:inputType="number"
-                android:maxLength="4" />
+                android:maxLength="4"
+                android:gravity="center"
+                android:focusable="false"
+                android:editable="false"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -167,6 +170,8 @@
                     android:layout_weight="1"
 
                     android:text="금" />
+
+
             </RadioGroup>
 
         </LinearLayout>

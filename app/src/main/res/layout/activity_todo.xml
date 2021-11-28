@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginHorizontal="3dp"
-                android:text="알림 관리"
+                android:text="알림관리"
                 app:backgroundTint="@color/purple_500" />
 
             <Button

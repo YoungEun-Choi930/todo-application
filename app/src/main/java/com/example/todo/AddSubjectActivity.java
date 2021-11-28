@@ -1,8 +1,10 @@
 package com.example.todo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +13,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,7 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddSubjectActivity extends Activity {
+public class AddSubjectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,21 @@ public class AddSubjectActivity extends Activity {
         RadioGroup semester_subject = (RadioGroup) findViewById(R.id.semester);//학기
         EditText year_subject = (EditText) findViewById(R.id.year_subject);//년도
 
+        year_subject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                       year_subject.setText(i+"");
+                    }
+                };
+                MyYearPickerDialog pickerDialog = new MyYearPickerDialog();
+                pickerDialog.setListener(listener);
+                pickerDialog.show(getSupportFragmentManager(),"YearPicker");
 
+            }
+        });
         startTime_subject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,6 +166,8 @@ public class AddSubjectActivity extends Activity {
         }
         return true;
     }
+
+
 
 
 

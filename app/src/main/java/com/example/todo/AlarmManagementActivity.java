@@ -241,7 +241,6 @@ public class AlarmManagementActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(datetime);
             calendar.add(Calendar.DATE, -examnum);
