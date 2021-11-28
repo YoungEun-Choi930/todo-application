@@ -173,8 +173,8 @@ public class AddSubjectActivityTest {
 
     }
 
-    public boolean sqliteSubjectListTrue(int i){    //subjectList에서의 번호
-        //sqlite랑 subjectList랑 똑같으면 true반환. 두개에 들어있는 갯수가 다르면 false반환. 내용이 다르면 error
+    public boolean sqliteSubjectListTrue(subject s){    //subjectList에서의 번호
+        //sqlite에 subject가 저장되어있고, 똑같으면 true반환. 저장되지 않으면 false반환. 내용이 다르면 error
         SQLiteDB db = SQLiteDB.getInstance();
 
         SQLiteDatabase mDb = db.getReadableDatabase();
@@ -183,29 +183,24 @@ public class AddSubjectActivityTest {
         Cursor cursor = mDb.rawQuery(sql, null);
         if (cursor!=null)
         {
-            if(subjectList.size() != cursor.getCount()){
-                cursor.close();
-                db.close();
-                return false;
-            }
 
             // 칼럼의 마지막까지
             while( cursor.moveToNext() ) {
-                if(cursor.getString(0).equals(subjectList.get(i).subjectName)) {
-                    assertEquals(subjectList.get(i).subjectName, cursor.getString(0));
-                    assertEquals(Integer.parseInt(subjectList.get(i).number), cursor.getInt(1));           //여기서 걸리는것같은데
-                    assertEquals(subjectList.get(i).startWeekNumber, cursor.getInt(2));
-                    assertEquals(Integer.parseInt(subjectList.get(i).startTime), cursor.getInt(3));
-                    assertEquals(subjectList.get(i).endWeekNumber, cursor.getInt(4));
-                    assertEquals(Integer.parseInt(subjectList.get(i).endTime), cursor.getInt(5));
-                    break;
+                if(cursor.getString(0).equals(s.subjectName)) {
+                    assertEquals(s.subjectName, cursor.getString(0));
+                    assertEquals(Integer.parseInt(s.number), cursor.getInt(1));           //여기서 걸리는것같은데
+                    assertEquals(s.startWeekNumber, cursor.getInt(2));
+                    assertEquals(Integer.parseInt(s.startTime), cursor.getInt(3));
+                    assertEquals(s.endWeekNumber, cursor.getInt(4));
+                    assertEquals(Integer.parseInt(s.endTime), cursor.getInt(5));
+                    return true;
                 }
             }
 
         }
         cursor.close();
         db.close();
-        return true;
+        return false;
     }
 
     public boolean sqliteLectureListTrue(String subjectName, int count, int startDate){
@@ -243,7 +238,7 @@ public class AddSubjectActivityTest {
         insertSubject(s, "2021",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
+        assertTrue(sqliteSubjectListTrue(s));
     }
 
     @Test
@@ -253,8 +248,8 @@ public class AddSubjectActivityTest {
         insertSubject(s, "2021",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test2",16,20210906));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210906));
     }
 
     @Test
@@ -265,8 +260,8 @@ public class AddSubjectActivityTest {
 
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test3",144,20210906));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,144,20210906));
     }
 
     @Test
@@ -277,8 +272,8 @@ public class AddSubjectActivityTest {
 
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test4",0,20210906));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,0,20210906));
     }
 
     @Test
@@ -289,8 +284,8 @@ public class AddSubjectActivityTest {
 
         s.number = "1";
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test5",16,20210906));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210906));
     }
 
     @Test
@@ -301,8 +296,8 @@ public class AddSubjectActivityTest {
 
         s.number = "1";
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test6",16,20210906));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210906));
     }
 
     @Test
@@ -315,7 +310,7 @@ public class AddSubjectActivityTest {
         s.endTime = "2301";
         subjectList.add(s);
 
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
+        assertTrue(sqliteSubjectListTrue(s));
 
     }
 
@@ -328,104 +323,122 @@ public class AddSubjectActivityTest {
         s.startTime = "0900";
         s.endTime = "1030";
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test6",16,20210906));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210906));
     }
-
+// 1899 1900 2100 2101
     @Test
-    public void 년도가9999년인경우() {                         //추가성공
+    public void 년도가1899년인경우() {                         //추가실패
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test9","1","월","0900","월","1030");
-        insertSubject(s, "9999",2);
+        insertSubject(s, "1899",2);
 
-        subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
+        assertFalse(sqliteSubjectListTrue(s));
     }
 
     @Test
-    public void 년도가0년인경우() {                            //추가성공
+    public void 년도가1900년인경우() {                         //추가성공
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test10","1","월","0900","월","1030");
-        insertSubject(s, "0",2);
+        insertSubject(s, "1900",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
+        assertTrue(sqliteSubjectListTrue(s));
+    }
+
+    @Test
+    public void 년도가2100년인경우() {                         //추가성공
+        ActivityScenario.launch(AddSubjectActivity.class);
+        subject s = new subject("test11","1","월","0900","월","1030");
+        insertSubject(s, "2100",2);
+
+        subjectList.add(s);
+        assertTrue(sqliteSubjectListTrue(s));
+    }
+
+    @Test
+    public void 년도가2101년인경우() {                            //추가실패
+        ActivityScenario.launch(AddSubjectActivity.class);
+        subject s = new subject("test12","1","월","0900","월","1030");
+        insertSubject(s, "2101",2);
+
+        assertFalse(sqliteSubjectListTrue(s));
     }
 
     @Test
     public void 년도가소수점인경우() {                           //소수점이 입력되지 않아 2021으로 입력
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test11","1","월","0900","월","1030");
+        subject s = new subject("test13","1","월","0900","월","1030");
         insertSubject(s, "20.21",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
+        assertTrue(sqliteSubjectListTrue(s));
     }
 
     @Test
     public void 시작요일이수요일인경우() {                         //1주차 강의 시작날짜가 0901
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test12","1","수","0900","수","1030");
+        subject s = new subject("test14","1","수","0900","수","1030");
         insertSubject(s, "2021",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test12",16,20210901));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210901));
     }
 
     @Test
     public void 시작요일이목요일인경우() {                         //1주차 강의 시작날짜가 0902
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test13","1","목","0900","목","1030");
+        subject s = new subject("test15","1","목","0900","목","1030");
         insertSubject(s, "2021",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test13",16,20210902));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210902));
     }
 
     @Test
     public void 시작요일이금요일인경우() {                         //1주차 강의 시작날짜가 0903
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test14","1","금","0900","금","1030");
+        subject s = new subject("test16","1","금","0900","금","1030");
         insertSubject(s, "2021",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test14",16,20210903));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210903));
     }
 
     @Test
     public void 시작요일이월요일인경우() {                         //1주차 강의 시작날짜가 0906
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test15","1","월","0900","월","1030");
+        subject s = new subject("test17","1","월","0900","월","1030");
         insertSubject(s, "2021",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test15",16,20210906));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210906));
     }
 
     @Test
     public void 시작요일이화요일인경우() {                         //1주차 강의 시작날짜가 0907
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test16","1","화","0900","화","1030");
+        subject s = new subject("test18","1","화","0900","화","1030");
         insertSubject(s, "2021",2);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test16",16,20210907));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210907));
     }
 
     @Test
     public void 학기가1인경우() {                                 //1주차 강의 시작날짜가 0301
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test17","1","월","0900","월","1030");
+        subject s = new subject("test19","1","월","0900","월","1030");
         insertSubject(s, "2021",1);
 
         subjectList.add(s);
-        assertTrue(sqliteSubjectListTrue(subjectList.size()-1));
-        assertTrue(sqliteLectureListTrue("test17",16,20210301));
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,20210301));
     }
 
 

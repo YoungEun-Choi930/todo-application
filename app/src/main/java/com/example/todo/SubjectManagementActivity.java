@@ -142,6 +142,9 @@ public class SubjectManagementActivity extends AppCompatActivity {
         if(Integer.parseInt(startTime) > 2400) return false;
         if(Integer.parseInt(endTime) > 2400) return false;
 
+        if(year < 1900) return false;
+        else if(year > 2100) return false;
+
         // sqlite에 과목 추가
         String query = "INSERT INTO SubjectList VALUES('"+
                 subjectName+"',"+number+","+startWeekNumber+","+startTime+","+endWeekNumber+","+endTime+");";
