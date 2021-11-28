@@ -9,16 +9,17 @@ import static org.junit.Assert.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 
-import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.hamcrest.Matcher;
@@ -28,7 +29,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class AddSubjectActivityTest {
@@ -115,7 +115,8 @@ public class AddSubjectActivityTest {
         };
     }
 
-    public void insertSubject(subject s, String year, int semester)
+
+    public void insertSubject(subject s, int year, int semester)
     {
 
         onView(ViewMatchers.withId(R.id.name_subject)).perform(typeText(s.subjectName));     //과목이름
@@ -143,7 +144,7 @@ public class AddSubjectActivityTest {
         }
 
         onView(ViewMatchers.withId(R.id.startTime_subject)).perform(click());         //시작시간
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(s.startHour, s.startMinute));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(s.startHour, s.startMinute));
         onView(ViewMatchers.withText("확인")).perform(click());
 
         switch(s.endWeekNumber) {   // 2:월, 3:화, 4:수, 5:목, 6:금        종료요일
@@ -160,17 +161,37 @@ public class AddSubjectActivityTest {
         }
 
         onView(ViewMatchers.withId(R.id.endTime_subject)).perform(click());         //종료시간
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(s.endHour, s.endMinute));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(s.endHour, s.endMinute));
         onView(ViewMatchers.withText("확인")).perform(click());
 
+        onView(ViewMatchers.withId(R.id.year_subject)).perform(click());            //년도
+        onView(ViewMatchers.withClassName(Matchers.equalTo(NumberPicker.class.getName()))).perform(setNumber(year));
+        onView(ViewMatchers.withId(R.id.btn_confirm)).perform(click());
+
+        onView(ViewMatchers.withId(R.id.yes_subject)).perform(click());             //확인버튼
 
 
-        onView(ViewMatchers.withId(R.id.year_subject)).perform(typeText(year));      //년도
+    }
 
+    public static ViewAction setNumber(final int num) {
+        return new ViewAction() {
+            @Override
+            public void perform(UiController uiController, View view) {
+                NumberPicker np = (NumberPicker) view;
+                np.setValue(num);
 
-        onView(ViewMatchers.withId(R.id.yes_subject)).perform(click());         //확인버튼
+            }
 
+            @Override
+            public String getDescription() {
+                return "Set the passed number into the NumberPicker";
+            }
 
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(NumberPicker.class);
+            }
+        };
     }
 
     public boolean sqliteSubjectListTrue(subject s){    //subjectList에서의 번호
@@ -235,7 +256,7 @@ public class AddSubjectActivityTest {
     public void 정상적인과목입력() {                        //추가성공
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test1","1","월","0900","월","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
@@ -245,7 +266,7 @@ public class AddSubjectActivityTest {
     public void 강의개수가1개인경우() {                      //저장된 강의의 개수가 16개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test2","1","월","0900","월","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
@@ -256,7 +277,7 @@ public class AddSubjectActivityTest {
     public void 강의개수가9개인경우() {                      //저장된 강의의 개수가 144개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test3","9","월","0900","월","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
 
         subjectList.add(s);
@@ -268,7 +289,7 @@ public class AddSubjectActivityTest {
     public void 강의개수가0개인경우() {                      //저장된 강의의 개수가 0개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test4","0","월","0900","월","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
 
         subjectList.add(s);
@@ -280,7 +301,7 @@ public class AddSubjectActivityTest {
     public void 강의개수가10개인경우() {                     //10 에서 0이 입력되지 않고 1로 입력 -> 저장된 강의의 개수가 16개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test5","10","월","0900","월","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         s.number = "1";
         subjectList.add(s);
@@ -292,7 +313,7 @@ public class AddSubjectActivityTest {
     public void 강의개수가소수점인경우() {                     //소수점이 입력되지 않아 11, 2자리 숫자가 입력되지 않아 1 -> 저장된 강의의 개수가 16개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test6","1.1","월","0900","월","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         s.number = "1";
         subjectList.add(s);
@@ -304,7 +325,7 @@ public class AddSubjectActivityTest {
     public void 시간이24시를넘는경우() {                         //23시로 표기됨.
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test7","1","월","2401","월","2401");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         s.startTime = "2301";
         s.endTime = "2301";
@@ -318,7 +339,7 @@ public class AddSubjectActivityTest {
     public void 시간이소수점인경우() {                           //소수점이 입력되지 않아 0900, 1030으로 입력
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test8","1","월","09.00","월","10.30");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         s.startTime = "0900";
         s.endTime = "1030";
@@ -328,19 +349,21 @@ public class AddSubjectActivityTest {
     }
 // 1899 1900 2100 2101
     @Test
-    public void 년도가1899년인경우() {                         //추가실패
+    public void 년도가1899년인경우() {                         //1900 에서 -1이라서 2100으로 추가됨
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test9","1","월","0900","월","1030");
-        insertSubject(s, "1899",2);
+        insertSubject(s, 1899,2);
 
-        assertFalse(sqliteSubjectListTrue(s));
+        subjectList.add(s);
+        assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,21000906));
     }
 
     @Test
     public void 년도가1900년인경우() {                         //추가성공
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test10","1","월","0900","월","1030");
-        insertSubject(s, "1900",2);
+        insertSubject(s, 1900,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
@@ -350,36 +373,29 @@ public class AddSubjectActivityTest {
     public void 년도가2100년인경우() {                         //추가성공
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test11","1","월","0900","월","1030");
-        insertSubject(s, "2100",2);
+        insertSubject(s, 2100,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
     }
 
     @Test
-    public void 년도가2101년인경우() {                            //추가실패
+    public void 년도가2101년인경우() {                            //2101에서 +1이라서 1900으로 추가됨
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test12","1","월","0900","월","1030");
-        insertSubject(s, "2101",2);
-
-        assertFalse(sqliteSubjectListTrue(s));
-    }
-
-    @Test
-    public void 년도가소수점인경우() {                           //소수점이 입력되지 않아 2021으로 입력
-        ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test13","1","월","0900","월","1030");
-        insertSubject(s, "20.21",2);
+        insertSubject(s, 2101,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
+        assertTrue(sqliteLectureListTrue(s.subjectName,16,19000903));
     }
+
 
     @Test
     public void 시작요일이수요일인경우() {                         //1주차 강의 시작날짜가 0901
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test14","1","수","0900","수","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
@@ -390,7 +406,7 @@ public class AddSubjectActivityTest {
     public void 시작요일이목요일인경우() {                         //1주차 강의 시작날짜가 0902
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test15","1","목","0900","목","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
@@ -401,7 +417,7 @@ public class AddSubjectActivityTest {
     public void 시작요일이금요일인경우() {                         //1주차 강의 시작날짜가 0903
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test16","1","금","0900","금","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
@@ -412,7 +428,7 @@ public class AddSubjectActivityTest {
     public void 시작요일이월요일인경우() {                         //1주차 강의 시작날짜가 0906
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test17","1","월","0900","월","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
@@ -423,7 +439,7 @@ public class AddSubjectActivityTest {
     public void 시작요일이화요일인경우() {                         //1주차 강의 시작날짜가 0907
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test18","1","화","0900","화","1030");
-        insertSubject(s, "2021",2);
+        insertSubject(s, 2021,2);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
@@ -434,7 +450,7 @@ public class AddSubjectActivityTest {
     public void 학기가1인경우() {                                 //1주차 강의 시작날짜가 0301
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test19","1","월","0900","월","1030");
-        insertSubject(s, "2021",1);
+        insertSubject(s, 2021,1);
 
         subjectList.add(s);
         assertTrue(sqliteSubjectListTrue(s));
