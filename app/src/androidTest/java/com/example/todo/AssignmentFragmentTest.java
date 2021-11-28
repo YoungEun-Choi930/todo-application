@@ -103,7 +103,8 @@ public class AssignmentFragmentTest {
         onView(ViewMatchers.withId(R.id.endTime_subject)).perform(click());         //종료시간
         onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(10, 10));
         onView(ViewMatchers.withText("확인")).perform(click());
-        onView(ViewMatchers.withId(R.id.year_subject)).perform(typeText("2021"));      //년도
+        onView(ViewMatchers.withId(R.id.year_subject)).perform(click());            //년도
+        onView(ViewMatchers.withId(R.id.btn_confirm)).perform(click());      //년도
 
 
         onView(ViewMatchers.withId(R.id.yes_subject)).perform(click());             //확인버튼
