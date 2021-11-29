@@ -60,10 +60,21 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                     int ck=0;
-                    if(isChecked)
+                    if(isChecked){
                         ck=1;
-                    TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
-                    assignmentInfo.setIsDone(isChecked);
+                        //알람삭제
+                        AlarmManagementActivity.mContext.delSystemAlarm(assignmentInfo.getAssignmentName());
+                        TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
+                        assignmentInfo.setIsDone(isChecked);
+                    }
+                    else{
+                        //알람추가
+                        AlarmManagementActivity.mContext.addSystemAlarm(assignmentInfo.getSubjectName(),assignmentInfo.getAssignmentName());
+                        TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
+                        assignmentInfo.setIsDone(isChecked);
+
+                    }
+
 
                 }
             });
