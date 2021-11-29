@@ -240,9 +240,15 @@ public class TodoManagementActivity extends AppCompatActivity {
         AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
         if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
 
-        System.out.println("1111111111");
+        int hourNum = 0;
+        switch (alarmInfo.getAssignmentAlarmDate()) {
+            case "1시간 전": hourNum = 1; break;
+            case "2시간 전": hourNum = 2; break;
+            case "3시간 전": hourNum = 3; break;
+            case "5시간 전": hourNum = 4; break;
+        }
         AlarmManagementActivity activity = new AlarmManagementActivity();
-        activity.addSystemAlarm(subjectName, assignmentName,endDate+endTime, alarmInfo,"Lecture");
+        activity.addSystemAlarm(subjectName, assignmentName,endDate+endTime, hourNum,"Lecture");
 
         return result;
     }
@@ -288,8 +294,16 @@ public class TodoManagementActivity extends AppCompatActivity {
         AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
         if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
 
+        int hourNum = 0;
+        switch (alarmInfo.getExamAlarmDate()) {
+            case "1일 전": hourNum = 24; break;
+            case "3일 전": hourNum = 24*3; break;
+            case "5일 전": hourNum = 24*5; break;
+            case "7일 전": hourNum = 24*7; break;
+        }
+
         AlarmManagementActivity activity = new AlarmManagementActivity();
-        activity.addSystemAlarm(subjectName, examName, date+time, alarmInfo, "Exam");
+        activity.addSystemAlarm(subjectName, examName, date+time, hourNum, "Exam");
 
         return result;
     }
@@ -346,7 +360,21 @@ public class TodoManagementActivity extends AppCompatActivity {
         if(value == 0) activity.delSystemAlarm(name);
         else {  //isDone을 true로 설정해야하면
             String alarmTime = helper.getAlarmTime(name, subjectName, table);
-            activity.addSystemAlarm(subjectName, name, alarmTime, alarmInfo, table);
+
+            String num = "";
+            if(table.equals("Lecture")) num = alarmInfo.getVideoLectureAlarmDate();
+            else if(table.equals("Assignment")) num = alarmInfo.getAssignmentAlarmDate();
+
+            int hourNum = 0;
+            switch (num) {
+                case "1일 전": hourNum = 24; break;
+                case "3일 전": hourNum = 24*3; break;
+                case "5일 전": hourNum = 24*5; break;
+                case "7일 전": hourNum = 24*7; break;
+            }
+
+
+            activity.addSystemAlarm(subjectName, name, alarmTime, hourNum, table);
         }
 
         return result;
