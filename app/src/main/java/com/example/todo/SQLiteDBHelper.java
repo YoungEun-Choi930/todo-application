@@ -261,7 +261,7 @@ public class SQLiteDBHelper
                     if(datelist.contains(date+time)) continue;
                     else {
                         datelist.add(date+time);
-                        list.add(date+time+)
+                        list.add(date+time+name);
                     }
                 }
             }
@@ -281,8 +281,9 @@ public class SQLiteDBHelper
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT endDate, endTime FROM AssignmentList WHERE subjectName == '"+subjectName+"';";
+            String sql = "SELECT assignmentName, endDate, endTime FROM AssignmentList WHERE subjectName == '"+subjectName+"';";
 
+            List<String> datelist = new ArrayList<>();
             List<String> list = new ArrayList();
 
             Cursor cursor = mDb.rawQuery(sql, null);
@@ -291,14 +292,18 @@ public class SQLiteDBHelper
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    String date = Integer.toString(cursor.getInt(0));
-                    String time = Integer.toString(cursor.getInt(1));
+                    String name = cursor.getString(0);
+                    String date = Integer.toString(cursor.getInt(1));
+                    String time = Integer.toString(cursor.getInt(2));
                     if(time.length() == 1) time = "000" + time;
                     if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
-                    if(list.contains(date+time)) continue;
-                    else list.add(date+time);
+                    if(datelist.contains(date+time)) continue;
+                    else {
+                        datelist.add(date+time);
+                        list.add(date+time+name);
+                    }
                 }
             }
             cursor.close();
@@ -317,8 +322,9 @@ public class SQLiteDBHelper
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT date, time FROM ExamList WHERE subjectName == '"+subjectName+"';";
+            String sql = "SELECT examName, date, time FROM ExamList WHERE subjectName == '"+subjectName+"';";
 
+            List<String> datelist = new ArrayList<>();
             List<String> list = new ArrayList();
 
             Cursor cursor = mDb.rawQuery(sql, null);
@@ -327,14 +333,18 @@ public class SQLiteDBHelper
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    String date = Integer.toString(cursor.getInt(0));
-                    String time = Integer.toString(cursor.getInt(1));
+                    String name = cursor.getString(0);
+                    String date = Integer.toString(cursor.getInt(1));
+                    String time = Integer.toString(cursor.getInt(2));
                     if(time.length() == 1) time = "000" + time;
                     if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
-                    if(list.contains(date+time)) continue;
-                    else list.add(date+time);
+                    if(datelist.contains(date+time)) continue;
+                    else {
+                        datelist.add(date+time);
+                        list.add(date+time+name);
+                    }
                 }
             }
             cursor.close();
