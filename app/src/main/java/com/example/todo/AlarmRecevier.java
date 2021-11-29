@@ -25,7 +25,6 @@ public class AlarmRecevier extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
-
         manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             manager.createNotificationChannel(new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH));
@@ -36,7 +35,7 @@ public class AlarmRecevier extends BroadcastReceiver {
 
         //알림창 클릭 시 activity 화면 부름
         Intent intent2 = new Intent(context, TodoManagementActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,1,intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,AlarmManagementActivity.number,intent2, PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -46,6 +45,7 @@ public class AlarmRecevier extends BroadcastReceiver {
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-        manager.notify(1,builder.build());
+        manager.notify(AlarmManagementActivity.number,builder.build());
     }
+
 }

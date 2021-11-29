@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -43,7 +44,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
     public AlarmManager alarmManager;
     private NotificationManager notificationManager;
     NotificationCompat.Builder builder;
-
+    public static int number;
 
 
     @Override
@@ -155,7 +156,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         return result;
     }
     private boolean delAlarm(String subjectName) {
-        String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
+        String query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
         delSubjectAlarm(subjectName);
@@ -205,8 +206,10 @@ public class AlarmManagementActivity extends AppCompatActivity {
             calendar.setTime(datetime);
             calendar.add(Calendar.HOUR_OF_DAY, -videonum); //몇시간전인지 빼
             int alarmNum = helper.setAlarmNum(name, subjectName);
+            number = alarmNum;
             PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
         }
 
         //assignment
@@ -226,6 +229,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
             calendar.setTime(datetime);
             calendar.add(Calendar.HOUR_OF_DAY, -assignmentnum);
             int alarmNum = helper.setAlarmNum(name, subjectName);
+            number = alarmNum;
             PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
@@ -247,6 +251,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
             calendar.setTime(datetime);
             calendar.add(Calendar.DATE, -examnum);
             int alarmNum = helper.setAlarmNum(name,subjectName);
+            number = alarmNum;
             PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
@@ -263,29 +268,36 @@ public class AlarmManagementActivity extends AppCompatActivity {
     }
     public void delSubjectAlarm(String subjectName){ //과목에 대한 알람을 한꺼번에 삭제
         SQLiteDBHelper sqLiteDBHelper = new SQLiteDBHelper();
+
         List<Integer> alarmNumber = sqLiteDBHelper.loadAlarmSubjectList(subjectName);
         for(int i=0;i<alarmNumber.size();i++){
             delSystemAlarmNum(alarmNumber.get(i));
+
         }
     }
     public void delSystemAlarmNum(int num){ //delSubjectAlarm에서 사용함. 번호로 삭제
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext.getApplicationContext(), TodoManagementActivity.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, num, intent, 0);
+        notificationManager.cancel(num);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
     }
     public void delSystemAlarm(String alarmName) { //할일 체크 여부에 따라 개별로 삭제하기 위한 메소드
         SQLiteDBHelper helper = new SQLiteDBHelper();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int alarmNum = helper.loadAlarmNum(alarmName);
         if(alarmNum != -1) {
             alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(mContext.getApplicationContext(), TodoManagementActivity.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, intent, 0);
+            notificationManager.cancel(alarmNum);
             alarmManager.cancel(pendingIntent);
             pendingIntent.cancel();
         }
     }
+
     /*
     void creatNotification(String channelId, int id, String title, String text){
         Intent intent2 = new Intent(this, TodoManagementActivity.class);
