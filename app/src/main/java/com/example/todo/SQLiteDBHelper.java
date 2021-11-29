@@ -5,7 +5,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 /*
 과목, 강의, 과제, 시험, 알림 정보를 sqliteDB에 저장하고, sqlite에 저장된 정보를 가져오기 위한 클래스이다.
@@ -237,10 +239,12 @@ public class SQLiteDBHelper
     /*알림추가할 때 사용*/
     public List<String> loadLectureDateList(String subjectName)
     {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        int currentDate = Integer.parseInt(format.format(new Date(System.currentTimeMillis())));
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT lectureName, endDate, endTime FROM LectureList WHERE subjectName == '"+subjectName+"';";
+            String sql = "SELECT lectureName, endDate, endTime, isDone FROM LectureList WHERE subjectName == '"+subjectName+"';";
 
             List<String> datelist = new ArrayList();
             List<String> list = new ArrayList<>();
@@ -250,6 +254,12 @@ public class SQLiteDBHelper
             {
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
+
+                    int is = cursor.getInt(3);
+                    if(is == 1) continue;
+
+                    int d = cursor.getInt(1);
+                    if(d < currentDate) continue;
 
                     String name = cursor.getString(0);
                     String date = Integer.toString(cursor.getInt(1));
@@ -278,10 +288,12 @@ public class SQLiteDBHelper
 
     public List<String> loadAssignmentDateList(String subjectName)
     {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        int currentDate = Integer.parseInt(format.format(new Date(System.currentTimeMillis())));
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT assignmentName, endDate, endTime FROM AssignmentList WHERE subjectName == '"+subjectName+"';";
+            String sql = "SELECT assignmentName, endDate, endTime, isDone FROM AssignmentList WHERE subjectName == '"+subjectName+"';";
 
             List<String> datelist = new ArrayList<>();
             List<String> list = new ArrayList();
@@ -291,6 +303,12 @@ public class SQLiteDBHelper
             {
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
+
+                    int is = cursor.getInt(3);
+                    if(is == 1) continue;
+
+                    int d = cursor.getInt(1);
+                    if(d < currentDate) continue;
 
                     String name = cursor.getString(0);
                     String date = Integer.toString(cursor.getInt(1));
@@ -319,6 +337,8 @@ public class SQLiteDBHelper
 
     public List<String> loadExamDateList(String subjectName)
     {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        int currentDate = Integer.parseInt(format.format(new Date(System.currentTimeMillis())));
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
@@ -332,6 +352,12 @@ public class SQLiteDBHelper
             {
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
+
+                    int is = cursor.getInt(3);
+                    if(is == 1) continue;
+
+                    int d = cursor.getInt(1);
+                    if(d < currentDate) continue;
 
                     String name = cursor.getString(0);
                     String date = Integer.toString(cursor.getInt(1));
@@ -359,8 +385,7 @@ public class SQLiteDBHelper
     }
 
 
-    /* 시스템 알림을 sqlite에 저장 */
-
+    /* -------------------------------- 시스템 알림을 sqlite에 저장 ----------------------------------*/
     public int setAlarmNum(String name, String subjectName) {
         String sql = "INSERT INTO AlarmList VALUES('"+name+"', '"+subjectName+"', null);";
         System.out.println(sql);
@@ -371,7 +396,7 @@ public class SQLiteDBHelper
         return loadAlarmNum(name);
     }
 
-    /* chang is done 하거나 과제, 시험 삭제할때 알림 설정되어있는지 확인 용도  */
+    /* -------------- chang is done 하거나 과제, 시험 삭제할때 알림 설정되어있는지 확인 용도 -------------- */
     public int loadAlarmNum(String name) {
 
         int number = -1;
@@ -386,6 +411,7 @@ public class SQLiteDBHelper
             Cursor cursor = mDb.rawQuery(sql, null);
             if (cursor!=null)
             {
+                if(cursor.getCount() == 0) return -1;
                 cursor.moveToNext();
 
                 number = cursor.getInt(0);
@@ -404,6 +430,7 @@ public class SQLiteDBHelper
         }
     }
 
+    /* ------------------------- 알림 삭제할 경우 시스템 알림 삭제하기 위해서 ---------------------------- */
     public List<Integer> loadAlarmSubjectList(String subjectName) {
         try
         {
