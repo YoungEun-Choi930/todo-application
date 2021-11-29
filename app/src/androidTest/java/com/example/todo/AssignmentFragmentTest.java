@@ -92,8 +92,6 @@ public class AssignmentFragmentTest {
         ActivityScenario.launch(SubjectManagementActivity.class);
         ActivityScenario.launch(AddSubjectActivity.class);
 
-
-
         onView(ViewMatchers.withId(R.id.name_subject)).perform(typeText("assignmentTest"));     //과목이름
         onView(ViewMatchers.withId(R.id.semester2)).perform(doubleClick());         // 학기
         onView(ViewMatchers.withId(R.id.number_subject)).perform(typeText("1"));       //강의갯수

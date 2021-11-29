@@ -34,7 +34,7 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         AlarmInfo alarmInfo=myAlarmList.get(position);
 
-        holder.tv_name_alarm.setText(alarmInfo.getAlarmTime()+"시간"+alarmInfo.getAlarmNumber()+"번호");
+        holder.tv_name_alarm.setText(alarmInfo.getSubjectName());
 
         holder.checkBoxAlarm.setOnCheckedChangeListener(null);
         holder.checkBoxAlarm.setChecked(alarmInfo.getChecked());
