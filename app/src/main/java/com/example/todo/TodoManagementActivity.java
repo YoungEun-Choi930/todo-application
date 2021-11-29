@@ -236,48 +236,20 @@ public class TodoManagementActivity extends AppCompatActivity {
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.uploadMyAssignment(subjectName,assignmentName, startDate, startTime, endDate, endTime);
 
-        // 과목에 알림이 설정되어 있다면 추가한 과제에 대하여 알림 설정
+        // 과목에 알림이 설정되어 있다면 추가한 시험에 대하여 알림 설정
         AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
         if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
 
-        // 알림 시간 설정
-        String info = alarmInfo.getAssignmentAlarmDate();
-        int assignmentnum = 0;
-        switch (info) {
-            case "1시간 전": assignmentnum = 1; break;
-            case "2시간 전": assignmentnum = 2; break;
-            case "3시간 전": assignmentnum = 3; break;
-            case "5시간 전": assignmentnum = 4; break;
-            case "1일 전": assignmentnum = 24; break;
-        }
-
-        //알림 날짜 Date로 변환
-        String alarmtime = endDate + endTime;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-        Date datetime = null;
-        try {
-            datetime = dateFormat.parse(alarmtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        //알림추가
-        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(datetime);
-        calendar.add(Calendar.HOUR_OF_DAY, -assignmentnum);
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        System.out.println("1111111111");
+        AlarmManagementActivity activity = new AlarmManagementActivity();
+        activity.addSystemAlarm(subjectName, assignmentName,endDate+endTime, alarmInfo,"Lecture");
 
         return result;
     }
 
     /* ------------------------------------ 선택한 과제 삭제하기 ------------------------------------ */
     public boolean delAssignment(String assignmentName, String subjectName) {
-        //sqlite delete
+        // sqlite delete
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "DELETE FROM AssignmentList WHERE assignmentName = '"+assignmentName+"';";
         boolean result = helper.excuteQuery(query);
@@ -285,6 +257,17 @@ public class TodoManagementActivity extends AppCompatActivity {
         // firebase delete
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delMyAssignment(assignmentName, subjectName);
+
+        // 알림이 존재한다면 삭제
+        int num = helper.loadAlarmNum(assignmentName);
+        if(num != -1){
+            //system delete
+            AlarmManagementActivity.mContext.delSystemAlarm(assignmentName);
+
+            // sqlite delete
+            query = "DELETE FROM AlarmList WHERE number = "+num+";";
+            helper.excuteQuery(query);
+        }
 
         return result;
     }
@@ -305,31 +288,8 @@ public class TodoManagementActivity extends AppCompatActivity {
         AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
         if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
 
-        // 알림 시간 설정
-        String info = alarmInfo.getAssignmentAlarmDate();       //{"1일 전", "3일 전","5일 전","7일 전"
-        int examnum = Integer.parseInt(info.substring(0,1));
-
-        //알림 날짜 Date로 변환
-        String alarmtime = date + time;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-        Date datetime = null;
-        try {
-            datetime = dateFormat.parse(alarmtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        //알림추가
-        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(datetime);
-        calendar.add(Calendar.DATE, -examnum);
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-
+        AlarmManagementActivity activity = new AlarmManagementActivity();
+        activity.addSystemAlarm(subjectName, examName, date+time, alarmInfo, "Exam");
 
         return result;
     }
@@ -344,6 +304,17 @@ public class TodoManagementActivity extends AppCompatActivity {
         // firebase delete
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.delMyExam(examName, subjectName);
+
+        // 알림이 존재한다면 삭제
+        int num = helper.loadAlarmNum(examName);
+        if(num != -1){
+            //system delete
+            AlarmManagementActivity.mContext.delSystemAlarm(examName);
+
+            // sqlite delete
+            query = "DELETE FROM AlarmList WHERE number = "+num+";";
+            helper.excuteQuery(query);
+        }
 
         return result;
     }
@@ -363,6 +334,20 @@ public class TodoManagementActivity extends AppCompatActivity {
         // firebase update
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
         firebaseDB.changeMyIsDone(name, subjectName, table, value);
+
+        // 과목에 알림이 설정되어 있다면 알림 설정을 바꿔주어야함.
+        AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
+        if(alarmInfo == null)   return result;     // 알림이 설정되어 있지 않으면 종료
+
+        //알림이 설정되 있다면
+        AlarmManagementActivity activity = new AlarmManagementActivity();
+
+        //isDone을 false로 설정해야하면
+        if(value == 0) activity.delSystemAlarm(name);
+        else {  //isDone을 true로 설정해야하면
+            String alarmTime = helper.getAlarmTime(name, subjectName, table);
+            activity.addSystemAlarm(subjectName, name, alarmTime, alarmInfo, table);
+        }
 
         return result;
     }

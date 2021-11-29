@@ -181,7 +181,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
             videonum = Integer.parseInt(video.substring(0, 1));
         }
 
-        // 여기서 에러뜸
+
        Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
 
 
@@ -258,14 +258,53 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
     }
 
-    public void addSystemAlarm(String subjectName, String alarmName){ //할일 체크여부에 따라 개별로 추가하기 위한 메소드
+    /* ------------------- 과제, 시험을 추가하거나 / 강의, 과제의 isDone을 바꾸는 경우 -------------------- */
+    public void addSystemAlarm(String subjectName, String alarmName, String alarmTime, AlarmInfo alarmInfo, String table){
+        //tableNum: "Lecture" or "Assignment" or "Exam"
+        SQLiteDBHelper helper = new SQLiteDBHelper();
+
+
+        // 알림 시간 설정
+        String info;
+        if(table.equals("Lecture")) info = alarmInfo.getVideoLectureAlarmDate();
+        else if(table.equals("Assignment")) info = alarmInfo.getAssignmentAlarmDate();
+        else info = alarmInfo.getExamAlarmDate();
+
+        int hourNum = 0;
+        switch (info) {
+            case "1시간 전": hourNum = 1; break;
+            case "2시간 전": hourNum = 2; break;
+            case "3시간 전": hourNum = 3; break;
+            case "5시간 전": hourNum = 4; break;
+            case "1일 전": hourNum = 24; break;
+            case "3일 전": hourNum = 24*3; break;
+            case "5일 전": hourNum = 24*5; break;
+            case "7일 전": hourNum = 24*7; break;
+        }
+
+        //알림 날짜 Date로 변환
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        Date datetime = null;
+        try {
+            datetime = dateFormat.parse(alarmTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         Calendar calendar = Calendar.getInstance();
-        SQLiteDBHelper sqLiteDBHelper = new SQLiteDBHelper();
-        int alarmNum = sqLiteDBHelper.setAlarmNum(alarmName,subjectName);
+        calendar.setTime(datetime);
+        calendar.add(Calendar.DATE, -hourNum);
+
+
+        int alarmNum = helper.setAlarmNum(alarmName,subjectName);
+        number = alarmNum;
+
+
         Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);      //여기서 에러나요~~~~~!!!!!!!!
     }
+
     public void delSubjectAlarm(String subjectName){ //과목에 대한 알람을 한꺼번에 삭제
         SQLiteDBHelper sqLiteDBHelper = new SQLiteDBHelper();
 
@@ -275,6 +314,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
         }
     }
+
     public void delSystemAlarmNum(int num){ //delSubjectAlarm에서 사용함. 번호로 삭제
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -284,6 +324,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
     }
+
     public void delSystemAlarm(String alarmName) { //할일 체크 여부에 따라 개별로 삭제하기 위한 메소드
         SQLiteDBHelper helper = new SQLiteDBHelper();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
