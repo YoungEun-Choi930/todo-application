@@ -203,7 +203,7 @@ public class SQLiteDBHelper
     }
 
 
-    public AlarmInfo loadAlarm(String subjectName)
+    public AlarmInfo loadAlarm(String subjectName)      //loadAlarmInfo라고 바꿔야겠다
     {
         try
         {
@@ -240,9 +240,10 @@ public class SQLiteDBHelper
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT startDate, startTime FROM LectureList WHERE subjectName == '"+subjectName+"';";
+            String sql = "SELECT lectureName, endDate, endTime FROM LectureList WHERE subjectName == '"+subjectName+"';";
 
-            List<String> list = new ArrayList();
+            List<String> datelist = new ArrayList();
+            List<String> list = new ArrayList<>();
 
             Cursor cursor = mDb.rawQuery(sql, null);
             if (cursor!=null)
@@ -250,13 +251,18 @@ public class SQLiteDBHelper
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    String date = Integer.toString(cursor.getInt(0));
-                    String time = Integer.toString(cursor.getInt(1));
+                    String name = cursor.getString(0);
+                    String date = Integer.toString(cursor.getInt(1));
+                    String time = Integer.toString(cursor.getInt(2));
                     if(time.length() == 1) time = "000" + time;
                     if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
-                    list.add(date+time);
+                    if(datelist.contains(date+time)) continue;
+                    else {
+                        datelist.add(date+time);
+                        list.add(date+time+)
+                    }
                 }
             }
             cursor.close();
@@ -275,7 +281,7 @@ public class SQLiteDBHelper
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT startDate, startTime FROM AssignmentList WHERE subjectName == '"+subjectName+"';";
+            String sql = "SELECT endDate, endTime FROM AssignmentList WHERE subjectName == '"+subjectName+"';";
 
             List<String> list = new ArrayList();
 
@@ -291,7 +297,8 @@ public class SQLiteDBHelper
                     if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
-                    list.add(date+time);
+                    if(list.contains(date+time)) continue;
+                    else list.add(date+time);
                 }
             }
             cursor.close();
@@ -326,7 +333,8 @@ public class SQLiteDBHelper
                     if(time.length() == 2) time = "00" + time;
                     if(time.length() == 3) time = "0" + time;
 
-                    list.add(date+time);
+                    if(list.contains(date+time)) continue;
+                    else list.add(date+time);
                 }
             }
             cursor.close();
@@ -343,19 +351,17 @@ public class SQLiteDBHelper
 
     /* 시스템 알림을 sqlite에 저장 */
 
-    public int setAlarmNum(String name) {
-        String sql = "INSERT INTO AlarmList VALUES('"+name+"', null);";
+    public int setAlarmNum(String name, String subjectName) {
+        String sql = "INSERT INTO AlarmList VALUES('"+name+"', '"+subjectName+"', null);";
         System.out.println(sql);
 
         SQLiteDatabase mDb = mDbHelper.getWritableDatabase();
         mDb.execSQL(sql);
 
-        int number = -1;
-
         return loadAlarmNum(name);
     }
 
-    /* 시스템 알림 삭제시 디비에서도 삭제 */
+    /* chang is done 하거나 과제, 시험 삭제할때 알림 설정되어있는지 확인 용도  */
     public int loadAlarmNum(String name) {
 
         int number = -1;
