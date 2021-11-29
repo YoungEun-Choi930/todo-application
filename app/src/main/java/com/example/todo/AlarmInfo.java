@@ -39,11 +39,13 @@ public class AlarmInfo {
         this.checked = checked;
     }
 
+
     public AlarmInfo(boolean checked, String subjectName, String examAlarmDate, String assignmentAlarmDate, String videoLectureAlarmDate) {
         this.checked = checked;
         this.subjectName = subjectName;
         this.examAlarmDate = examAlarmDate;
         this.assignmentAlarmDate = assignmentAlarmDate;
         this.videoLectureAlarmDate = videoLectureAlarmDate;
+
     }
 }

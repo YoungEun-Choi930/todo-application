@@ -38,9 +38,9 @@ public class AlarmManagementActivity extends AppCompatActivity {
     Button btn_del_alarm;
     private int ck=0;
     alarmAdapter alarmAdapter;
-    public static Context mContext;
+    public static AlarmManagementActivity mContext;
 
-    private AlarmManager alarmManager;
+    public AlarmManager alarmManager;
     private NotificationManager notificationManager;
     NotificationCompat.Builder builder;
 
@@ -159,7 +159,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
 
-        delSystemAlarm();
+        delSystemAlarm(subjectName);
         return result;
     }
 
@@ -186,7 +186,6 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
         // 여기서 에러뜸
        Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
 
 
         SQLiteDBHelper helper = new SQLiteDBHelper();
@@ -208,6 +207,8 @@ public class AlarmManagementActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(datetime);
             calendar.add(Calendar.HOUR_OF_DAY, -videonum); //몇시간전인지 빼
+            int alarmNum = helper.setAlarmNum(subjectName);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
 
@@ -227,6 +228,8 @@ public class AlarmManagementActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(datetime);
             calendar.add(Calendar.HOUR_OF_DAY, -assignmentnum);
+            int alarmNum = helper.setAlarmNum(subjectName);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
 
@@ -244,13 +247,27 @@ public class AlarmManagementActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(datetime);
             calendar.add(Calendar.DATE, -examnum);
+            int alarmNum = helper.setAlarmNum(subjectName);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         }
 
     }
 
-    private void delSystemAlarm() {
+    public void addSystemAlarm(String subjectName, String alarmName){
 
+    }
+
+    public void delSystemAlarm(String alarmName) {
+        SQLiteDBHelper helper = new SQLiteDBHelper();
+        int alarmNum = helper.loadAlarmNum(alarmName);
+        if(alarmNum != -1) {
+            alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(mContext.getApplicationContext(), TodoManagementActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, intent, 0);
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+        }
     }
     /*
     void creatNotification(String channelId, int id, String title, String text){
