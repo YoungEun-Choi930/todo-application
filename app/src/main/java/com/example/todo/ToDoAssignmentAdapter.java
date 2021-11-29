@@ -69,7 +69,7 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
                     }
                     else{
                         //알람추가
-                        //AlarmManagementActivity.mContext.add
+                        AlarmManagementActivity.mContext.addSystemAlarm(assignmentInfo.getSubjectName(),assignmentInfo.getAssignmentName());
                         TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);
 

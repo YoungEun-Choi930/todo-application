@@ -59,10 +59,18 @@ public class ToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView.ViewH
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                     int checked = 0;
-                    if(isChecked)
+                    if(isChecked){
                         checked = 1;
-                    (TodoManagementActivity.mContext).changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
-                    lectureInfo.setIsDone(isChecked);
+                        AlarmManagementActivity.mContext.addSystemAlarm(lectureInfo.getSubjectName(),lectureInfo.getLectureName());//알람추가
+                        (TodoManagementActivity.mContext).changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
+                        lectureInfo.setIsDone(isChecked);
+                    }
+                    else{
+                        AlarmManagementActivity.mContext.delSystemAlarm(lectureInfo.getLectureName());//알람삭제
+                        (TodoManagementActivity.mContext).changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
+                        lectureInfo.setIsDone(isChecked);
+                    }
+
 
                 }
             });
