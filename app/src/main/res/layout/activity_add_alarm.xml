@@ -14,18 +14,72 @@
         android:gravity="center"
         android:orientation="vertical">
 
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/alarmtime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="알림시간"
-                android:editable="false"
-                android:focusable="false">
-            </EditText>
+                android:text="과목명"
+                android:textSize="18dp"
+                android:layout_marginLeft="5dp"/>
+
+            <Spinner
+                android:id="@+id/spinner_sub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시험 알림"
+                android:textSize="18dp"
+                android:layout_marginLeft="5dp"/>
+
+            <Spinner
+                android:id="@+id/spinner_exam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="과제 알림"
+                android:textSize="18dp"
+                android:layout_marginLeft="5dp"/>
+
+            <Spinner
+                android:id="@+id/spinner_assignment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="강의 알림"
+                android:textSize="18dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"/>
+
+
+            <Spinner
+                android:id="@+id/spinner_lecture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 
