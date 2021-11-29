@@ -176,7 +176,7 @@ public class SQLiteDBHelper
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT * FROM AlarmList;";
+            String sql = "SELECT * FROM AlarmInfoList;";
 
             List<AlarmInfo> list = new ArrayList();
 
@@ -233,15 +233,8 @@ public class SQLiteDBHelper
         }
     }
 
-    /*String lecture = "CREATE TABLE IF NOT EXISTS LectureList (" +
-                "subjectName TEXT, lectureName TEXT, startDate INTEGER, startTime INTEGER, endDate INTEGER, endTime INTEGER, isDone INTEGER);";
-        String assignment = "CREATE TABLE IF NOT EXISTS AssignmentList ( " +
-                "subjectName TEXT NOT NULL, assignmentName TEXT NOT NULL, startDate INTEGER NOT NULL, startTIme INTEGER," +
-                "endDate INTEGER NOT NULL, endTime INTEGER, isDone INTEGER);";
-        String exam = "CREATE TABLE IF NOT EXISTS ExamList (" +
-                "subjectName TEXT NOT NULL, examName TEXT NOT NULL, date INTEGER NOT NULL, time INTEGER);";
 
-     */
+    /*알림추가할 때 사용*/
     public List<String> loadLectureDateList(String subjectName)
     {
         try
@@ -339,6 +332,54 @@ public class SQLiteDBHelper
             cursor.close();
             mDbHelper.close();
             return list;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e("DataAdapter", "getExamData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
+
+    /* 시스템 알림을 sqlite에 저장 */
+
+    public int setAlarmNum(String name) {
+        String sql = "INSERT INTO AlarmList VALUES('"+name+"', null);";
+        System.out.println(sql);
+
+        SQLiteDatabase mDb = mDbHelper.getWritableDatabase();
+        mDb.execSQL(sql);
+
+        int number = -1;
+
+        return loadAlarmNum(name);
+    }
+
+    /* 시스템 알림 삭제시 디비에서도 삭제 */
+    public int loadAlarmNum(String name) {
+
+        int number = -1;
+
+        try
+        {
+            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+            String sql = "SELECT number FROM AlarmList WHERE name == '"+name+"';";
+            System.out.print(sql);
+
+
+            Cursor cursor = mDb.rawQuery(sql, null);
+            if (cursor!=null)
+            {
+                cursor.moveToNext();
+
+                number = cursor.getInt(0);
+
+            }
+            cursor.close();
+            mDbHelper.close();
+
+            System.out.println("------------>"+number);
+            return number;
         }
         catch (SQLException mSQLException)
         {

@@ -9,7 +9,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static SQLiteDB db;
 
     private SQLiteDB() {
-        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,11);
+        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,12);
     }
 
     public static SQLiteDB getInstance(){
@@ -31,14 +31,17 @@ public class SQLiteDB extends SQLiteOpenHelper {
                 "endDate INTEGER NOT NULL, endTime INTEGER, isDone INTEGER);";
         String exam = "CREATE TABLE IF NOT EXISTS ExamList (" +
                 "subjectName TEXT NOT NULL, examName TEXT NOT NULL, date INTEGER NOT NULL, time INTEGER);";
-        String alarm = "CREATE TABLE IF NOT EXISTS AlarmList (" +
+        String alarm = "CREATE TABLE IF NOT EXISTS AlarmInfoList (" +
                 "subjectName TEXT NOT NULL, examAlarmDate TEXT, assignmentAlarmDate TEXT, videoAlarmTime TEXT, PRIMARY KEY(subjectName));";
+        String alarmlist = "CREATE TABLE IF NOT EXISTS AlarmList (" +
+                "name TEXT NOT NULL, number INTEGER PRIMARY KEY AUTOINCREMENT);";
 
         db.execSQL(subject);
         db.execSQL(lecture);
         db.execSQL(assignment);
         db.execSQL(exam);
         db.execSQL(alarm);
+        db.execSQL(alarmlist);
 
     }
 
@@ -49,14 +52,14 @@ public class SQLiteDB extends SQLiteOpenHelper {
         String assignment = "DROP TABLE IF EXISTS AssignmentList;";
         String exam = "DROP TABLE IF EXISTS ExamList;";
         String alarm = "DROP TABLE IF EXISTS AlarmList;";
-        String friend = "DROP TABLE IF EXISTS Friends;";
+        String alarminfo = "DROP TABLE IF EXISTS AlarmInfoList;";
 
         db.execSQL(subject);
         db.execSQL(lecture);
         db.execSQL(assignment);
         db.execSQL(exam);
         db.execSQL(alarm);
-        db.execSQL(friend);
+        db.execSQL(alarminfo);
 
         onCreate(db);
     }
