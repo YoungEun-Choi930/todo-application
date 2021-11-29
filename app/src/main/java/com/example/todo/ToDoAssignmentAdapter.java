@@ -63,13 +63,13 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
                     if(isChecked){
                         ck=1;
                         //알람삭제
-                        AlarmManagementActivity.mContext.delSystemAlarm(assignmentInfo.getAssignmentName());
+                        //AlarmManagementActivity.mContext.delSystemAlarm(assignmentInfo.getAssignmentName());
                         TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);
                     }
                     else{
                         //알람추가
-                        AlarmManagementActivity.mContext.addSystemAlarm(assignmentInfo.getSubjectName(),assignmentInfo.getAssignmentName());
+                        //AlarmManagementActivity.mContext.addSystemAlarm(assignmentInfo.getSubjectName(),assignmentInfo.getAssignmentName());
                         TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);
 

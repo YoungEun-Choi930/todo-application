@@ -259,6 +259,16 @@ public class SubjectManagementActivity extends AppCompatActivity {
         query = "DELETE FROM ExamList WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
 
+        // 과목에 알림이 설정되어 있다면 시스템에 알림을 지운다.
+        AlarmInfo alarmInfo = adapter.loadAlarm(subjectName);
+        if(alarmInfo != null)
+        {
+            AlarmManagementActivity activity = new AlarmManagementActivity();
+            activity.delSubjectAlarm(subjectName);
+        }
+        query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
+        adapter.excuteQuery(query);
+
         query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
         adapter.excuteQuery(query);
 

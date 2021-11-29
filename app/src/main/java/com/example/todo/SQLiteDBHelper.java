@@ -71,6 +71,38 @@ public class SQLiteDBHelper
         }
     }
 
+    public String getAlarmTime(String name, String subjectName, String table) {
+        //lecture , assignment
+        try
+        {
+            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+
+            String sql = "SELECT endDate, endTime FROM " + table + "List WHERE " + table.toLowerCase() + "Name = '" + name + "';";
+
+            Cursor cursor = mDb.rawQuery(sql, null);
+            if (cursor!=null)
+            {
+                cursor.moveToNext();
+
+                String endDate = Integer.toString(cursor.getInt(0));
+                String endTime = Integer.toString(cursor.getInt(1));
+                if(endTime.length() == 1) endTime = "000" + endTime;
+                if(endTime.length() == 2) endTime = "00" + endTime;
+                if(endTime.length() == 3) endTime = "0" + endTime;
+
+                return endDate + endTime;
+            }
+            cursor.close();
+            mDbHelper.close();
+            return "";
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e("DataAdapter", "changIsDone >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
 
     // sqliteDB에 저장된 강의 정보에서 선택된 날짜에 해당하는 강의를 반환하는 메소드이다.
     // 강의의 시작날짜가 사용자가 선택한 날짜보다 더 전이고, 강의의 종료 날짜가 선택 날짜보다 이후인
@@ -210,7 +242,7 @@ public class SQLiteDBHelper
         try
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
-            String sql = "SELECT * FROM AlarmList WHERE subjectName == '"+subjectName+"';";
+            String sql = "SELECT * FROM AlarmInfoList WHERE subjectName == '"+subjectName+"';";
 
             AlarmInfo info = null;
 
