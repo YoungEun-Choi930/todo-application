@@ -404,6 +404,42 @@ public class SQLiteDBHelper
         }
     }
 
+    public List<Integer> loadAlarmSubjectList(String subjectName) {
+        try
+        {
+            SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
+            String sql = "SELECT number FROM AlarmList WHERE subjectName == '"+subjectName+"';";
+            System.out.print(sql);
+
+            List<Integer> list = new ArrayList<>();
+
+            Cursor cursor = mDb.rawQuery(sql, null);
+            if (cursor!=null)
+            {
+                while( cursor.moveToNext() ) {
+                    int num = cursor.getInt(0);
+                    list.add(num);
+                }
+            }
+            cursor.close();
+            mDbHelper.close();
+
+
+            sql = "DELETE FROM AlarmList WHERE subjectName == '"+subjectName+"';";
+            System.out.print(sql);
+            mDb = mDbHelper.getWritableDatabase();
+            mDb.execSQL(sql);
+
+
+            return list;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e("DataAdapter", "getExamData >>"+ mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
 
 
 }
