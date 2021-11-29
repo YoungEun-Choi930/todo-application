@@ -169,11 +169,14 @@ public class AlarmManagementActivity extends AppCompatActivity {
         alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
         int examnum = Integer.parseInt(exam.substring(0,1));
+        examnum = examnum * 24;
+
         int assignmentnum;
         if(assignment.equals("1일 전"))
             assignmentnum=24;
         else
             assignmentnum=Integer.parseInt(assignment.substring(0,1));
+
         int videonum;
         if(video.equals("1일 전"))
             videonum=24;
@@ -182,105 +185,46 @@ public class AlarmManagementActivity extends AppCompatActivity {
         }
 
 
-       Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
+       //Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
 
 
         SQLiteDBHelper helper = new SQLiteDBHelper();
         List<String> list = helper.loadLectureDateList(subjectName);            // sqlite에서 강의목록 들고오기
 
         //lecture
-        for(String date: list) {
-            String from = date;
-            String name = date.substring(12,from.length());
+        for(String str: list) {
+            String date = str.substring(0,12);
+            String name = str.substring(12);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-
-            Date datetime = null;
-            try {
-                datetime = dateFormat.parse(from);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(datetime);
-            calendar.add(Calendar.HOUR_OF_DAY, -videonum); //몇시간전인지 빼
-            int alarmNum = helper.setAlarmNum(name, subjectName);
-            number = alarmNum;
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
-            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            addSystemAlarm(subjectName, name, date, videonum, "Exam");
 
         }
 
         //assignment
         list = helper.loadAssignmentDateList(subjectName);
-        for(String date: list) {
-            String from = date;
-            String name = date.substring(12,from.length());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            Date datetime = null;
-            try {
-                datetime = dateFormat.parse(from);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        for(String str: list) {
+            String date = str.substring(0,12);
+            String name = str.substring(12);
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(datetime);
-            calendar.add(Calendar.HOUR_OF_DAY, -assignmentnum);
-            int alarmNum = helper.setAlarmNum(name, subjectName);
-            number = alarmNum;
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
-            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            addSystemAlarm(subjectName, name, date, assignmentnum, "Assignment");
         }
 
         //exam
         list = helper.loadExamDateList(subjectName);
-        for(String date: list) {
-            String from = date;
-            String name = date.substring(12,from.length());
+        for(String str: list) {
+            String date = str.substring(0,12);
+            String name = str.substring(12);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            Date datetime = null;
-            try {
-                datetime = dateFormat.parse(from);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(datetime);
-            calendar.add(Calendar.DATE, -examnum);
-            int alarmNum = helper.setAlarmNum(name,subjectName);
-            number = alarmNum;
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
-            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            addSystemAlarm(subjectName, name, date, examnum, "Exam");
+
         }
 
     }
 
     /* ------------------- 과제, 시험을 추가하거나 / 강의, 과제의 isDone을 바꾸는 경우 -------------------- */
-    public void addSystemAlarm(String subjectName, String alarmName, String alarmTime, AlarmInfo alarmInfo, String table){
+    public void addSystemAlarm(String subjectName, String alarmName, String alarmTime, int hourNum, String table){
         //tableNum: "Lecture" or "Assignment" or "Exam"
-        SQLiteDBHelper helper = new SQLiteDBHelper();
 
-
-        // 알림 시간 설정
-        String info;
-        if(table.equals("Lecture")) info = alarmInfo.getVideoLectureAlarmDate();
-        else if(table.equals("Assignment")) info = alarmInfo.getAssignmentAlarmDate();
-        else info = alarmInfo.getExamAlarmDate();
-
-        int hourNum = 0;
-        switch (info) {
-            case "1시간 전": hourNum = 1; break;
-            case "2시간 전": hourNum = 2; break;
-            case "3시간 전": hourNum = 3; break;
-            case "5시간 전": hourNum = 4; break;
-            case "1일 전": hourNum = 24; break;
-            case "3일 전": hourNum = 24*3; break;
-            case "5일 전": hourNum = 24*5; break;
-            case "7일 전": hourNum = 24*7; break;
-        }
 
         //알림 날짜 Date로 변환
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
@@ -295,7 +239,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         calendar.setTime(datetime);
         calendar.add(Calendar.DATE, -hourNum);
 
-
+        SQLiteDBHelper helper = new SQLiteDBHelper();
         int alarmNum = helper.setAlarmNum(alarmName,subjectName);
         number = alarmNum;
 
@@ -316,7 +260,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
     }
 
     public void delSystemAlarmNum(int num){ //delSubjectAlarm에서 사용함. 번호로 삭제
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);     //여기 에러
         alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext.getApplicationContext(), TodoManagementActivity.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, num, intent, 0);
