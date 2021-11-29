@@ -44,7 +44,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
     private NotificationManager notificationManager;
     NotificationCompat.Builder builder;
 
-
+    int alarmNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
             for(int i=0;i<alarmAdapter.getcheckedList().size();i++){
                 alarmInfoList.remove(alarmAdapter.getcheckedList().get(i)); //체크된목록 과목목록에서 제거
-                delAlarm(alarmAdapter.getcheckedList().get(i).getSubjectName());
+                delAlarm(alarmAdapter.getcheckedList().get(i).getAlarmNumber());
             }
             if(alarmAdapter.getcheckedList().size()>0){
                 Toast.makeText(this, "알림 삭제 완료", Toast.LENGTH_SHORT).show();
@@ -141,20 +141,21 @@ public class AlarmManagementActivity extends AppCompatActivity {
         return list;
     }
 
-    // 리얼빼고 파라미터 4개인걸로 넘겼어용
-    public boolean addAlarm(String subjectName, String exam, String assignment, String video){
+    // 알람시간이랑 번호만 냅둘거에요 일단.
+    public boolean addAlarm(String alarmTime, int alarmNumber){
         String query = "INSERT INTO AlarmList VALUES('"+
                 subjectName+"','"+exam+"','"+assignment+"','"+video+"');";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
 
-        AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video);
+        AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video, alarmNumber);
         alarmInfoList.add(alarmInfo);
         alarmAdapter.notifyDataSetChanged();
         setSystemAlarm(subjectName, exam, assignment, video);
         return result;
     }
-    private boolean delAlarm(String subjectName) {
+    //일단 알람번호로 삭제하게합시다요
+    private boolean delAlarm(int alarmNumber) {
         String query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.excuteQuery(query);
@@ -185,8 +186,8 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
 
         // 여기서 에러뜸
-       Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, 0);
+       Intent receiverIntent = new Intent(mContext, AlarmRecevier.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, 0, receiverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         SQLiteDBHelper helper = new SQLiteDBHelper();
