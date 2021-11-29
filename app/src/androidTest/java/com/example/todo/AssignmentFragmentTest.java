@@ -97,11 +97,11 @@ public class AssignmentFragmentTest {
         onView(ViewMatchers.withId(R.id.number_subject)).perform(typeText("1"));       //강의갯수
         onView(ViewMatchers.withId(R.id.start_4)).perform(doubleClick());           //시작요일
         onView(ViewMatchers.withId(R.id.startTime_subject)).perform(click());       //시작시간
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(10, 10));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(10, 10));
         onView(ViewMatchers.withText("확인")).perform(click());
         onView(ViewMatchers.withId(R.id.end_3)).perform(doubleClick());             // 종료요일
         onView(ViewMatchers.withId(R.id.endTime_subject)).perform(click());         //종료시간
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(10, 10));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(10, 10));
         onView(ViewMatchers.withText("확인")).perform(click());
         onView(ViewMatchers.withId(R.id.year_subject)).perform(click());            //년도
         onView(ViewMatchers.withId(R.id.btn_confirm)).perform(click());      //년도
@@ -121,7 +121,7 @@ public class AssignmentFragmentTest {
         onView(ViewMatchers.withText("확인")).perform(click());
 
         onView(ViewMatchers.withId(R.id.starttime_a)).perform(click());         //시작시간
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(a.startHour,a.startMinute));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(a.startHour,a.startMinute));
         onView(ViewMatchers.withText("확인")).perform(click());
 
         onView(ViewMatchers.withId(R.id.enddate_a)).perform(click());           //종료날짜
@@ -129,7 +129,7 @@ public class AssignmentFragmentTest {
         onView(ViewMatchers.withText("확인")).perform(click());
 
         onView(ViewMatchers.withId(R.id.endtime_a)).perform(click());           //종료시간
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(a.endHour,a.endMinute));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(a.endHour,a.endMinute));
         onView(ViewMatchers.withText("확인")).perform(click());
 
         onView(ViewMatchers.withId(R.id.btn_yes)).perform(click());             //확인버튼
@@ -264,39 +264,6 @@ public class AssignmentFragmentTest {
         onView(ViewMatchers.withId(R.id.btn_del_sub)).perform(click());
     }
 
-
-    public static ViewAction setTime(int hour, int minute) {
-        return new ViewAction() {
-            @Override
-            public void perform(UiController uiController, View view) {
-
-                TimePicker tp = (TimePicker) view;
-                tp.setCurrentHour(hour);
-                tp.setCurrentMinute(minute);
-            }
-            @Override
-            public String getDescription() {
-                return "Set the passed time into the TimePicker";
-            }
-            @Override
-            public Matcher<View> getConstraints() {
-                return ViewMatchers.isAssignableFrom(TimePicker.class);
-            }
-        };
-    }
-
-//    public static PickerActions setDate(int year, int month,int day) {
-//         return new PickerActions() {
-//
-////            @Override
-////            public void perform(UiController uiController, View view) {
-////
-////                DatePicker dp = (DatePicker) view;
-////                dp.updateDate(year,month,day);
-////                dp.
-////            }
-//        };
-//    }
 
 
 
