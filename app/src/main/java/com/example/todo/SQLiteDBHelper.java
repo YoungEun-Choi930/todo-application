@@ -353,9 +353,6 @@ public class SQLiteDBHelper
                 // 칼럼의 마지막까지
                 while( cursor.moveToNext() ) {
 
-                    int is = cursor.getInt(3);
-                    if(is == 1) continue;
-
                     int d = cursor.getInt(1);
                     if(d < currentDate) continue;
 

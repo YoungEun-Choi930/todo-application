@@ -89,7 +89,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
 
     @Test
     public void test03AddLecture() {   //강의 추가
-        String query = "INSERT INTO LectureList VALUES('test1','lname',20210901,0000,20210908,0000,0);";
+        String query = "INSERT INTO LectureList VALUES('test1','lname',20210901,0000,20211231,0000,0);";
         boolean result = helper.excuteQuery(query);
         assertTrue(result);
 
@@ -106,7 +106,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     public void test04LoadLectureDateList() {
         List<String> resultlist = helper.loadLectureDateList("test1");
         String result = resultlist.get(0);
-        assertEquals("202109080000lname", result);
+        assertEquals("202112310000lname", result);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
 
     @Test
     public void test06AddAssignment() {   //과제 추가
-        String query = "INSERT INTO AssignmentList VALUES('test1','aname',20210901,0000,20210908,0000,0);";
+        String query = "INSERT INTO AssignmentList VALUES('test1','aname',20210901,0000,20211231,0000,0);";
         boolean result = helper.excuteQuery(query);
         assertTrue(result);
 
@@ -138,7 +138,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     public void test07LoadAssignmentDateList() {
         List<String> resultlist = helper.loadAssignmentDateList("test1");
         String result = resultlist.get(0);
-        assertEquals("202109080000ename", result);
+        assertEquals("202112310000aname", result);
     }
 
     @Test
@@ -153,11 +153,11 @@ public class SQLiteDBHelperTest {                       // Unit Test
 
     @Test
     public void test09AddExam() {   //시험 추가
-        String query = "INSERT INTO ExamList VALUES('test1', 'ename', 20211001, 0900);";
+        String query = "INSERT INTO ExamList VALUES('test1', 'ename', 20211231, 0900);";
         boolean result = helper.excuteQuery(query);
         assertTrue(result);
 
-        List<ExamInfo> resultlist = helper.loadExamList("20211001");
+        List<ExamInfo> resultlist = helper.loadExamList("20211231");
         assertEquals(1, resultlist.size());
 
         ExamInfo resultinfo = resultlist.get(0);
@@ -169,11 +169,11 @@ public class SQLiteDBHelperTest {                       // Unit Test
     public void test10LoadExamDateList() {
         List<String> resultlist = helper.loadExamDateList("test1");
         String result = resultlist.get(0);
-        assertEquals("202109080000lname", result);
+        assertEquals("202112310900ename", result);
     }
 
     @Test
-    public void test08DelExam() {   //시험 삭제
+    public void test11DelExam() {   //시험 삭제
         String query = "DELETE FROM ExamList WHERE subjectName = 'test1';";
         boolean result = helper.excuteQuery(query);
         assertTrue(result);
@@ -183,7 +183,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     }
 
     @Test
-    public void test09AddAlarm() {   //알림 정보 추가
+    public void test12AddAlarm() {   //알림 정보 추가
         String query = "INSERT INTO AlarmInfoList VALUES('test1', '1일 전', '1시간 전', '1시간 전');";
         boolean result = helper.excuteQuery(query);
         assertTrue(result);
@@ -199,7 +199,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     }
 
     @Test
-    public void test10DelAlarm() {   //알림 정보 삭제
+    public void test13DelAlarm() {   //알림 정보 삭제
         String query = "DELETE FROM AlarmInfoList WHERE subjectName = 'test1';";
         boolean result = helper.excuteQuery(query);
         assertTrue(result);
@@ -209,7 +209,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     }
 
     @Test
-    public void test11SetAlarmNum() {   //시스템 알림 추가
+    public void test14SetAlarmNum() {   //시스템 알림 추가
         int a = helper.setAlarmNum("a","test");
         assertEquals(1,a);
 
@@ -224,7 +224,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     }
 
     @Test
-    public void test12LoadAlarmNum() { //저장해둔 시스템알림 번호들고오기
+    public void test15LoadAlarmNum() { //저장해둔 시스템알림 번호들고오기
         int a = helper.loadAlarmNum("a");
         assertEquals(1,a);
 
@@ -238,7 +238,8 @@ public class SQLiteDBHelperTest {                       // Unit Test
         assertEquals(4,a);
     }
 
-    public void test13LoadAlarmSubjectList() {
+    @Test
+    public void test16LoadAlarmSubjectList() {
         List<Integer> resultlist = helper.loadAlarmSubjectList("test");
         int a = resultlist.get(0);
         int b = resultlist.get(1);
@@ -251,7 +252,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     }
 
     @Test
-    public void test14DelSysAlarm() {
+    public void test17DelSysAlarm() {
         String query = "DELETE FROM AlarmList WHERE number = 1;";
         boolean result = helper.excuteQuery(query);
         assertTrue(result);
