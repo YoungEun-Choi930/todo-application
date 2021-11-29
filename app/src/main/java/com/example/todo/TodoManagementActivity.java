@@ -248,6 +248,8 @@ public class TodoManagementActivity extends AppCompatActivity {
             case "5시간 전": hourNum = 4; break;
         }
         AlarmManagementActivity activity = new AlarmManagementActivity();
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        activity.alarmManager=alarmManager;
         activity.addSystemAlarm(subjectName, assignmentName,endDate+endTime, hourNum,"Lecture");
 
         return result;
@@ -268,7 +270,12 @@ public class TodoManagementActivity extends AppCompatActivity {
         int num = helper.loadAlarmNum(assignmentName);
         if(num != -1){
             //system delete
-            AlarmManagementActivity.mContext.delSystemAlarm(assignmentName);
+            AlarmManagementActivity activity = new AlarmManagementActivity();
+            AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);     //여기 에러
+            activity.notificationManager = notificationManager;
+            activity.alarmManager=alarmManager;
+            activity.delSystemAlarm(assignmentName);
 
             // sqlite delete
             query = "DELETE FROM AlarmList WHERE number = "+num+";";
@@ -303,6 +310,8 @@ public class TodoManagementActivity extends AppCompatActivity {
         }
 
         AlarmManagementActivity activity = new AlarmManagementActivity();
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        activity.alarmManager=alarmManager;
         activity.addSystemAlarm(subjectName, examName, date+time, hourNum, "Exam");
 
         return result;
@@ -323,7 +332,12 @@ public class TodoManagementActivity extends AppCompatActivity {
         int num = helper.loadAlarmNum(examName);
         if(num != -1){
             //system delete
-            AlarmManagementActivity.mContext.delSystemAlarm(examName);
+            AlarmManagementActivity activity = new AlarmManagementActivity();
+            AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);     //여기 에러
+            activity.notificationManager = notificationManager;
+            activity.alarmManager=alarmManager;
+            activity.delSystemAlarm(examName);
 
             // sqlite delete
             query = "DELETE FROM AlarmList WHERE number = "+num+";";
