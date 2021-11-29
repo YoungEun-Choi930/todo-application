@@ -7,28 +7,13 @@ checked에 대하여 메소드를 getter와 setter를 두어 알림 삭제 시 �
  */
 public class AlarmInfo {
     private boolean checked;
-    private String subjectName;
-    private String examAlarmDate;
-    private String assignmentAlarmDate;
-    private String videoLectureAlarmDate;
+    private String alarmTime;
 
+    private int alarmNumber;
+// 알람넘버 추가
 
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-
-    public String getExamAlarmDate() {
-        return examAlarmDate;
-    }
-
-    public String getAssignmentAlarmDate() {
-        return assignmentAlarmDate;
-    }
-
-    public String getVideoLectureAlarmDate() {
-        return videoLectureAlarmDate;
-    }
+   public String getAlarmTime() { return alarmTime; }
+    public int getAlarmNumber() { return alarmNumber; }
 
 
     public boolean getChecked() {
@@ -39,11 +24,9 @@ public class AlarmInfo {
         this.checked = checked;
     }
 
-    public AlarmInfo(boolean checked, String subjectName, String examAlarmDate, String assignmentAlarmDate, String videoLectureAlarmDate) {
+    public AlarmInfo(boolean checked, String alarmTime, int alarmNumber) {
         this.checked = checked;
-        this.subjectName = subjectName;
-        this.examAlarmDate = examAlarmDate;
-        this.assignmentAlarmDate = assignmentAlarmDate;
-        this.videoLectureAlarmDate = videoLectureAlarmDate;
+        this.alarmTime = alarmTime;
+        this.alarmNumber = alarmNumber;
     }
 }

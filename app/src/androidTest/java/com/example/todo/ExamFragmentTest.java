@@ -72,7 +72,7 @@ public class ExamFragmentTest {
         LoginActivity.USERUID = auth.getCurrentUser().getUid();
         LoginActivity.ApplicationContext = ApplicationProvider.getApplicationContext();
 
-
+        ActivityScenario.launch(SubjectManagementActivity.class);
         ActivityScenario.launch(AddSubjectActivity.class);
 
         onView(ViewMatchers.withId(R.id.name_subject)).perform(typeText("test"));     //과목이름
