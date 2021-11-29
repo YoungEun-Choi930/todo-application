@@ -9,7 +9,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static SQLiteDB db;
 
     private SQLiteDB() {
-        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,12);
+        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,13);
     }
 
     public static SQLiteDB getInstance(){
@@ -34,7 +34,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         String alarm = "CREATE TABLE IF NOT EXISTS AlarmInfoList (" +
                 "subjectName TEXT NOT NULL, examAlarmDate TEXT, assignmentAlarmDate TEXT, videoAlarmTime TEXT, PRIMARY KEY(subjectName));";
         String alarmlist = "CREATE TABLE IF NOT EXISTS AlarmList (" +
-                "name TEXT NOT NULL, number INTEGER PRIMARY KEY AUTOINCREMENT);";
+                "name TEXT NOT NULL, subjectName TEXT NOT NULL, number INTEGER PRIMARY KEY AUTOINCREMENT);";
 
         db.execSQL(subject);
         db.execSQL(lecture);
