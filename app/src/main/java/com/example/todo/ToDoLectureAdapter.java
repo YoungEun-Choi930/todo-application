@@ -71,7 +71,7 @@ public class ToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView.ViewH
                         lectureInfo.setIsDone(isChecked);
                     }
 
-
+//
                 }
             });
             ((AHolder) holder).xbutton.setVisibility(GONE);
