@@ -42,8 +42,9 @@ public class AlarmManagementActivity extends AppCompatActivity {
     public static AlarmManagementActivity mContext;
 
     public AlarmManager alarmManager;
-    private NotificationManager notificationManager;
-    NotificationCompat.Builder builder;
+
+    public NotificationManager notificationManager;
+
     public static int number;
 
 
@@ -224,6 +225,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
     /* ------------------- 과제, 시험을 추가하거나 / 강의, 과제의 isDone을 바꾸는 경우 -------------------- */
     public void addSystemAlarm(String subjectName, String alarmName, String alarmTime, int hourNum, String table){
         //tableNum: "Lecture" or "Assignment" or "Exam"
+     //   alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
 
         //알림 날짜 Date로 변환
@@ -271,11 +273,11 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
     public void delSystemAlarm(String alarmName) { //할일 체크 여부에 따라 개별로 삭제하기 위한 메소드
         SQLiteDBHelper helper = new SQLiteDBHelper();
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+      //  NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int alarmNum = helper.loadAlarmNum(alarmName);
         if(alarmNum != -1) {
-            alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(mContext.getApplicationContext(), TodoManagementActivity.class);
+        //    alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(LoginActivity.ApplicationContext.getApplicationContext(), TodoManagementActivity.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, intent, 0);
             notificationManager.cancel(alarmNum);
             alarmManager.cancel(pendingIntent);

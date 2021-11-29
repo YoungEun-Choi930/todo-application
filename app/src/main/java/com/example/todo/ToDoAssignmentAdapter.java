@@ -2,6 +2,8 @@ package com.example.todo;
 
 import static android.view.View.GONE;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +65,12 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
                     if(isChecked){
                         ck=1;
                         //알람삭제
-                        //AlarmManagementActivity.mContext.delSystemAlarm(assignmentInfo.getAssignmentName());
+                        AlarmManagementActivity activity = new AlarmManagementActivity();
+                        AlarmManager alarmManager = (AlarmManager)mcontext.getSystemService(Context.ALARM_SERVICE);
+                        NotificationManager notificationManager = (NotificationManager)mcontext.getSystemService(Context.NOTIFICATION_SERVICE);
+                        activity.alarmManager=alarmManager;
+                        activity.notificationManager = notificationManager;
+                        activity.delSystemAlarm(assignmentInfo.getAssignmentName());
                         TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);
                     }
