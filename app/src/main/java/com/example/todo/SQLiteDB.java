@@ -9,7 +9,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static SQLiteDB db;
 
     private SQLiteDB() {
-        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,13);
+        super(LoginActivity.ApplicationContext,"sqlite_file.db",null,14);
     }
 
     public static SQLiteDB getInstance(){
