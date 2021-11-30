@@ -34,10 +34,9 @@ public class AlarmManagementActivity extends AppCompatActivity {
     alarmAdapter alarmAdapter;
     public static AlarmManagementActivity mContext;
 
-    public AlarmManager alarmManager;
-
-    public NotificationManager notificationManager;
-
+    public static AlarmManager alarmManager;
+    public static NotificationManager notificationManager;
+    public static PendingIntent pendingIntent;
     public static int number;
 
 
@@ -248,7 +247,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         System.out.println(number+"알람번호");
         System.out.println("과목이름"+subjectName+"알람이름"+alarmName+"시간"+dateFormat.format(datetime)+"몇시간전에?"+hourNum+"알람울리는시간"+dateFormat.format(calendar.getTime()));
         Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
+        pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);      //여기서 에러나요~~~~~!!!!!!!!
     }
 
@@ -264,8 +263,8 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
     public void delSystemAlarmNum(int num){ //delSubjectAlarm에서 사용함. 번호로 삭제
         alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(mContext.getApplicationContext(), TodoManagementActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, num, intent, 0);
+        Intent intent = new Intent(mContext.getApplicationContext(), AlarmRecevier.class);
+        pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, num, intent, 0);
         notificationManager.cancel(num);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
@@ -273,12 +272,10 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
     public void delSystemAlarm(String alarmName) { //할일 체크 여부에 따라 개별로 삭제하기 위한 메소드
         SQLiteDBHelper helper = new SQLiteDBHelper();
-      //  NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int alarmNum = helper.loadAlarmNum(alarmName);
         if(alarmNum != -1) {
-        //    alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(LoginActivity.ApplicationContext.getApplicationContext(), TodoManagementActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, intent, 0);
+            Intent intent = new Intent(mContext.getApplicationContext(), AlarmRecevier.class);
+            pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, intent, 0);
             System.out.println(alarmNum+"삭제할알람번호!!!");
             notificationManager.cancel(alarmNum);
             alarmManager.cancel(pendingIntent);
@@ -286,22 +283,4 @@ public class AlarmManagementActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    void creatNotification(String channelId, int id, String title, String text){
-        Intent intent2 = new Intent(this, TodoManagementActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,101,intent2, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-        builder = new NotificationCompat.Builder(this, channelId)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(id,builder.build());
-    }*/
 }
