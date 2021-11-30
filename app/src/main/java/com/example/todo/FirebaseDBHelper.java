@@ -99,7 +99,7 @@ public class FirebaseDBHelper {
 
     }
 
-    /* -------------------------------- 친구 신청시 존재하는 id 인가 --------------------------------- */
+    /* ------------------------ 친구 신청시 존재하는 id 인가, 이미 친구인가 ---------------------------- */
     public void confirmFriendExist(String friendID){
 
         // 해당 아이디가 사용자로 등록되어 있는가
@@ -111,10 +111,10 @@ public class FirebaseDBHelper {
                 if(task.getResult().exists()) {
                     String friendUID = (String)(task.getResult().getValue());
                     requestFriend(friendUID);                                   // 사용자로 등록되어있으면 request Friend
-                    FriendsManagementActivity.context.showResult(true);         // true 반환
+                    FriendsManagementActivity.context.showResult(1);         // true 반환
                 }
                 else{
-                    FriendsManagementActivity.context.showResult(false);        // 사용자로 등록되어 있지 않으니 false 반환
+                    FriendsManagementActivity.context.showResult(-1);        // 사용자로 등록되어 있지 않으니 false 반환
                 }
             }
         };
@@ -126,7 +126,7 @@ public class FirebaseDBHelper {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.getResult().exists()) {
-                    FriendsManagementActivity.context.showResult(false);        // 이미 친구이면 false 반환
+                    FriendsManagementActivity.context.showResult(0);        // 이미 친구이면 false 반환
                 }
                 else{
                     userstask.addOnCompleteListener(existlistener);             // 친구가 아니면 등록되어있는 사용자인지 확인.
