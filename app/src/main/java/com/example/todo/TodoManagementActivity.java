@@ -369,6 +369,10 @@ public class TodoManagementActivity extends AppCompatActivity {
 
         //알림이 설정되 있다면
         AlarmManagementActivity activity = new AlarmManagementActivity();
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);     //여기 에러
+        activity.notificationManager = notificationManager;
+        activity.alarmManager=alarmManager;
 
         //isDone을 false로 설정해야하면
         if(value == 0) activity.delSystemAlarm(name);

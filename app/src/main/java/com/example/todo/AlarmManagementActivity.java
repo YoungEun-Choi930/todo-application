@@ -262,7 +262,6 @@ public class AlarmManagementActivity extends AppCompatActivity {
     }
 
     public void delSystemAlarmNum(int num){ //delSubjectAlarm에서 사용함. 번호로 삭제
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);     //여기 에러
         alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext.getApplicationContext(), TodoManagementActivity.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, num, intent, 0);

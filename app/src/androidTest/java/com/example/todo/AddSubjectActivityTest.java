@@ -26,11 +26,14 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AddSubjectActivityTest {
 
 
@@ -253,7 +256,7 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 정상적인과목입력() {                        //추가성공
+    public void 테스트01정상적인과목입력() {                        //추가성공
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test1","1","월","0900","월","1030");
         insertSubject(s, 2021,2);
@@ -263,7 +266,7 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 강의개수가1개인경우() {                      //저장된 강의의 개수가 16개
+    public void 테스트02강의개수가1개인경우() {                      //저장된 강의의 개수가 16개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test2","1","월","0900","월","1030");
         insertSubject(s, 2021,2);
@@ -274,7 +277,7 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 강의개수가9개인경우() {                      //저장된 강의의 개수가 144개
+    public void 테스트03강의개수가9개인경우() {                      //저장된 강의의 개수가 144개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test3","9","월","0900","월","1030");
         insertSubject(s, 2021,2);
@@ -286,7 +289,7 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 강의개수가0개인경우() {                      //저장된 강의의 개수가 0개
+    public void 테스트04강의개수가0개인경우() {                      //저장된 강의의 개수가 0개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test4","0","월","0900","월","1030");
         insertSubject(s, 2021,2);
@@ -298,7 +301,7 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 강의개수가10개인경우() {                     //10 에서 0이 입력되지 않고 1로 입력 -> 저장된 강의의 개수가 16개
+    public void 테스트05강의개수가10개인경우() {                     //10 에서 0이 입력되지 않고 1로 입력 -> 저장된 강의의 개수가 16개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test5","10","월","0900","월","1030");
         insertSubject(s, 2021,2);
@@ -310,7 +313,7 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 강의개수가소수점인경우() {                     //소수점이 입력되지 않아 11, 2자리 숫자가 입력되지 않아 1 -> 저장된 강의의 개수가 16개
+    public void 테스트06강의개수가소수점인경우() {                     //소수점이 입력되지 않아 11, 2자리 숫자가 입력되지 않아 1 -> 저장된 강의의 개수가 16개
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test6","1.1","월","0900","월","1030");
         insertSubject(s, 2021,2);
@@ -322,7 +325,7 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 시간이24시를넘는경우() {                         //23시로 표기됨.
+    public void 테스트07시간이24시인경우() {                         //23시로 표기됨.
         ActivityScenario.launch(AddSubjectActivity.class);
         subject s = new subject("test7","1","월","2401","월","2401");
         insertSubject(s, 2021,2);
@@ -336,9 +339,22 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 시간이소수점인경우() {                           //소수점이 입력되지 않아 0900, 1030으로 입력
+    public void 테스트08시간이60분인경우() {                           //59분으로 표기됨.
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test8","1","월","09.00","월","10.30");
+        subject s = new subject("test8","1","월","0960","월","1060");
+        insertSubject(s, 2021,2);
+
+        s.startTime = "0959";
+        s.endTime = "1059";
+        subjectList.add(s);
+
+        assertTrue(sqliteSubjectListTrue(s));
+    }
+
+    @Test
+    public void 테스트09시간이소수점인경우() {                           //소수점이 입력되지 않아 0900, 1030으로 입력
+        ActivityScenario.launch(AddSubjectActivity.class);
+        subject s = new subject("test9","1","월","09.00","월","10.30");
         insertSubject(s, 2021,2);
 
         s.startTime = "0900";
@@ -349,9 +365,9 @@ public class AddSubjectActivityTest {
     }
 // 1899 1900 2100 2101
     @Test
-    public void 년도가1899년인경우() {                         //1900 에서 -1이라서 2100으로 추가됨
+    public void 테스트10년도가1899년인경우() {                         //1900 에서 -1이라서 2100으로 추가됨
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test9","1","월","0900","월","1030");
+        subject s = new subject("test10","1","월","0900","월","1030");
         insertSubject(s, 1899,2);
 
         subjectList.add(s);
@@ -360,9 +376,9 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 년도가1900년인경우() {                         //추가성공
+    public void 테스트11년도가1900년인경우() {                         //추가성공
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test10","1","월","0900","월","1030");
+        subject s = new subject("test11","1","월","0900","월","1030");
         insertSubject(s, 1900,2);
 
         subjectList.add(s);
@@ -370,9 +386,9 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 년도가2100년인경우() {                         //추가성공
+    public void 테스트12년도가2100년인경우() {                         //추가성공
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test11","1","월","0900","월","1030");
+        subject s = new subject("test12","1","월","0900","월","1030");
         insertSubject(s, 2100,2);
 
         subjectList.add(s);
@@ -380,9 +396,9 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 년도가2101년인경우() {                            //2101에서 +1이라서 1900으로 추가됨
+    public void 테스트13년도가2101년인경우() {                            //2101에서 +1이라서 1900으로 추가됨
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test12","1","월","0900","월","1030");
+        subject s = new subject("test13","1","월","0900","월","1030");
         insertSubject(s, 2101,2);
 
         subjectList.add(s);
@@ -392,9 +408,9 @@ public class AddSubjectActivityTest {
 
 
     @Test
-    public void 시작요일이수요일인경우() {                         //1주차 강의 시작날짜가 0901
+    public void 테스트14시작요일이수요일인경우() {                         //1주차 강의 시작날짜가 0901
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test13","1","수","0900","수","1030");
+        subject s = new subject("test14","1","수","0900","수","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -403,9 +419,9 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 시작요일이목요일인경우() {                         //1주차 강의 시작날짜가 0902
+    public void 테스트15시작요일이목요일인경우() {                         //1주차 강의 시작날짜가 0902
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test14","1","목","0900","목","1030");
+        subject s = new subject("test15","1","목","0900","목","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -414,9 +430,9 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 시작요일이금요일인경우() {                         //1주차 강의 시작날짜가 0903
+    public void 테스트16시작요일이금요일인경우() {                         //1주차 강의 시작날짜가 0903
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test15","1","금","0900","금","1030");
+        subject s = new subject("test16","1","금","0900","금","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -425,9 +441,9 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 시작요일이월요일인경우() {                         //1주차 강의 시작날짜가 0906
+    public void 테스트17시작요일이월요일인경우() {                         //1주차 강의 시작날짜가 0906
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test16","1","월","0900","월","1030");
+        subject s = new subject("test17","1","월","0900","월","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -436,9 +452,9 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 시작요일이화요일인경우() {                         //1주차 강의 시작날짜가 0907
+    public void 테스트18시작요일이화요일인경우() {                         //1주차 강의 시작날짜가 0907
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test17","1","화","0900","화","1030");
+        subject s = new subject("test18","1","화","0900","화","1030");
         insertSubject(s, 2021,2);
 
         subjectList.add(s);
@@ -447,9 +463,9 @@ public class AddSubjectActivityTest {
     }
 
     @Test
-    public void 학기가1인경우() {                                 //1주차 강의 시작날짜가 0301
+    public void 테스트19학기가1인경우() {                                 //1주차 강의 시작날짜가 0301
         ActivityScenario.launch(AddSubjectActivity.class);
-        subject s = new subject("test18","1","월","0900","월","1030");
+        subject s = new subject("test19","1","월","0900","월","1030");
         insertSubject(s, 2021,1);
 
         subjectList.add(s);
