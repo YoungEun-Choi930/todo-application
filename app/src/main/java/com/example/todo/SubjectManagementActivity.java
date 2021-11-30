@@ -156,7 +156,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
         Date startdate = getstartDate(year, semester, startWeekNumber);         // 1주차 강의 시작 날짜 구하기
         int enddate = endWeekNumber - startWeekNumber;          // 시작날짜와 종료날짜 간의 차이 구하기
-        if(enddate <= 0)
+        if(enddate < 0)
             enddate += 7;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
