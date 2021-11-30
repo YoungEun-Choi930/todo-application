@@ -302,11 +302,15 @@ public class TodoManagementActivity extends AppCompatActivity {
             case "5일 전": hourNum = 24*5; break;
             case "7일 전": hourNum = 24*7; break;
         }
-
+        System.out.println(time+"시험시간이 왜이러지");
+        System.out.println(date+"시험날짜는 어케나오나");
+        String formattime = null;
+        if(time.length()==3) // 10시 이전은 시가 한글자라서 총 4글자가 되게 맞춰줌
+            formattime="0"+time;
         AlarmManagementActivity activity = new AlarmManagementActivity();
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         activity.alarmManager=alarmManager;
-        activity.addSystemAlarm(subjectName, examName, date+time, hourNum, "Exam");
+        activity.addSystemAlarm(subjectName, examName, date+formattime, hourNum, "Exam");
 
         return result;
     }
