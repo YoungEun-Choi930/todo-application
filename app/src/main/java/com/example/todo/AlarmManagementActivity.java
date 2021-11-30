@@ -197,7 +197,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
             String date = str.substring(0,12);
             String name = str.substring(12);
 
-            addSystemAlarm(subjectName, name, date, videonum, "Exam");
+            addSystemAlarm(subjectName, name, date, videonum, "Lecture");
 
         }
 
@@ -239,13 +239,14 @@ public class AlarmManagementActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(datetime);
-        calendar.add(Calendar.DATE, -hourNum);
+
+        calendar.add(Calendar.HOUR_OF_DAY, -hourNum);
 
         SQLiteDBHelper helper = new SQLiteDBHelper();
         int alarmNum = helper.setAlarmNum(alarmName,subjectName);
         number = alarmNum;
-
-
+        System.out.println(number+"알람번호");
+        System.out.println("과목이름"+subjectName+"알람이름"+alarmName+"시간"+dateFormat.format(datetime)+"몇시간전에?"+hourNum+"알람울리는시간"+dateFormat.format(calendar.getTime()));
         Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);      //여기서 에러나요~~~~~!!!!!!!!
