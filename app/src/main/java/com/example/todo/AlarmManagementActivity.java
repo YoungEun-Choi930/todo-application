@@ -1,23 +1,17 @@
 package com.example.todo;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class AlarmManagementActivity extends AppCompatActivity {
@@ -148,18 +141,20 @@ public class AlarmManagementActivity extends AppCompatActivity {
         String query = "INSERT INTO AlarmInfoList VALUES('"+
                 subjectName+"','"+exam+"','"+assignment+"','"+video+"');";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
-        boolean result = adapter.excuteQuery(query);
+        boolean result = adapter.executeQuery(query);
+
+        if(result == false) return false;
 
         AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video);
         alarmInfoList.add(alarmInfo);
         alarmAdapter.notifyDataSetChanged();
         setSystemAlarm(subjectName, exam, assignment, video);
-        return result;
+        return true;
     }
     private boolean delAlarm(String subjectName) {
         String query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
-        boolean result = adapter.excuteQuery(query);
+        boolean result = adapter.executeQuery(query);
         delSubjectAlarm(subjectName);
         return result;
     }

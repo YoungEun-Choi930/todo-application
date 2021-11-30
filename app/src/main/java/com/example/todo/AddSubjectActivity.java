@@ -138,13 +138,14 @@ public class AddSubjectActivity extends AppCompatActivity {
                 int semester_sub = Integer.parseInt(semester.getText().toString());
 
 
-                boolean result = SubjectManagementActivity.addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,year_sub,semester_sub);
+                int result = SubjectManagementActivity.addSubject(name_sub,number_sub,startweeknumber_sub,starttime_sub,endweeknumber_sub,endtime_sub,year_sub,semester_sub);
 
-                if(result){
+                if(result == 1){
                     Toast.makeText(this, "과목추가 완료", Toast.LENGTH_SHORT).show();
+                }else if(result == 0){
+                    Toast.makeText(this, "동일한 이름의 과목이 이미 존재합니다.", Toast.LENGTH_SHORT).show();
                 }else
-                    Toast.makeText(this, "과목추가 실패", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(this,"과목추가 실패", Toast.LENGTH_SHORT).show();
                 finish();
 
             }
