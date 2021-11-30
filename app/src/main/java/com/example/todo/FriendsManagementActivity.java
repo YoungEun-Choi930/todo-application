@@ -220,13 +220,15 @@ public class FriendsManagementActivity extends AppCompatActivity {
     }
 
     /* -------------------------------------- 친구 신청 결과 -------------------------------------- */
-    public void showResult(boolean result) {                        //firebase에서 호출하는 메소드
-        if(result){
+    public void showResult(int result) {                        //firebase에서 호출하는 메소드
+        if(result == 1){
             Toast.makeText(FriendsManagementActivity.this, "친구신청 완료", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
 
-        }else {
-            Toast.makeText(FriendsManagementActivity.this, "친구신청 실패", Toast.LENGTH_SHORT).show();
+        }else if(result == -1){
+            Toast.makeText(FriendsManagementActivity.this, "존재하지 않는 사용자 입니다.", Toast.LENGTH_SHORT).show();
+        }else if(result == 0){
+            Toast.makeText(FriendsManagementActivity.this, "이미 친구인 사용자 입니다.", Toast.LENGTH_SHORT).show();
         }
     }
 
