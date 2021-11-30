@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ToDoAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
-
     HashMap<String, Object> todoList;
     Context mcontext;
     LayoutInflater inflater;

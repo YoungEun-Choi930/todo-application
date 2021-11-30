@@ -113,18 +113,24 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
                     if(time[0].length() == 1) time[0] = "0"+time[0];
                     if(time[1].length() == 1) time[1] = "0"+time[1];
                     s_endtime = time[0]+time[1];
+                    if(Integer.parseInt(s_enddate)<Integer.parseInt(s_startdate)){
+                        Toast.makeText(getActivity(),"시작날짜가 종료날짜보다 뒤일 수 없습니다.",Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        boolean result = TodoManagementActivity.mContext.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
+                        if(result){
+                            Toast.makeText(getActivity(),"과제추가 완료",Toast.LENGTH_SHORT).show();
+                            System.out.println("추가완료");
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "과제추가 실패", Toast.LENGTH_SHORT).show();
+                            System.out.println("추가실패");
+                        }
+                        TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
+                        AddAssignmentExamActivity.context.finish();
+                    }
 
-                    boolean result = TodoManagementActivity.mContext.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
-                    if(result){
-                        Toast.makeText(getActivity(),"과제추가 완료",Toast.LENGTH_SHORT).show();
-                        System.out.println("추가완료");
-                    }
-                    else {
-                        Toast.makeText(getActivity(), "과제추가 실패", Toast.LENGTH_SHORT).show();
-                        System.out.println("추가실패");
-                    }
-                    TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
-                    AddAssignmentExamActivity.context.finish();
+
                 }
 
                 break;
