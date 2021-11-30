@@ -279,6 +279,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         //    alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(LoginActivity.ApplicationContext.getApplicationContext(), TodoManagementActivity.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, intent, 0);
+            System.out.println(alarmNum+"삭제할알람번호!!!");
             notificationManager.cancel(alarmNum);
             alarmManager.cancel(pendingIntent);
             pendingIntent.cancel();
