@@ -116,6 +116,23 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
                     if(Integer.parseInt(s_enddate)<Integer.parseInt(s_startdate)){
                         Toast.makeText(getActivity(),"시작날짜가 종료날짜보다 뒤일 수 없습니다.",Toast.LENGTH_SHORT).show();
                     }
+                    else if(Integer.parseInt(s_enddate)==Integer.parseInt(s_startdate)){
+                        if(Integer.parseInt(s_endtime)<Integer.parseInt(s_starttime))
+                            Toast.makeText(getActivity(),"시작시간이 종료시간보다 뒤일 수 없습니다.",Toast.LENGTH_SHORT).show();
+                        else{
+                            boolean result = TodoManagementActivity.mContext.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
+                            if(result){
+                                Toast.makeText(getActivity(),"과제추가 완료",Toast.LENGTH_SHORT).show();
+                                System.out.println("추가완료");
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "과제추가 실패", Toast.LENGTH_SHORT).show();
+                                System.out.println("추가실패");
+                            }
+                            TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
+                            AddAssignmentExamActivity.context.finish();
+                        }
+                    }
                     else{
                         boolean result = TodoManagementActivity.mContext.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
                         if(result){
