@@ -47,6 +47,11 @@ public class AlarmManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm_management);
         mContext=this;
 
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);     //여기 에러
+        this.notificationManager = notificationManager;
+        this.alarmManager = alarmManager;
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.alarm_toolbar);
         setSupportActionBar(myToolbar);//툴바달기
 
