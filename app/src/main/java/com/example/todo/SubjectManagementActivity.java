@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -264,6 +267,10 @@ public class SubjectManagementActivity extends AppCompatActivity {
         if(alarmInfo != null)
         {
             AlarmManagementActivity activity = new AlarmManagementActivity();
+            AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);     //여기 에러
+            activity.notificationManager = notificationManager;
+            activity.alarmManager=alarmManager;
             activity.delSubjectAlarm(subjectName);
         }
         query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
