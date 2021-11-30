@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,12 +19,7 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -230,7 +224,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO AssignmentList VALUES('" +
                 subjectName+"','"+assignmentName+"',"+startDate+","+startTime+","+endDate+","+endTime+",0);";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
 
         // firebase insert
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
@@ -260,7 +254,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         // sqlite delete
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "DELETE FROM AssignmentList WHERE assignmentName = '"+assignmentName+"';";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
 
         // firebase delete
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
@@ -279,7 +273,7 @@ public class TodoManagementActivity extends AppCompatActivity {
 
             // sqlite delete
             query = "DELETE FROM AlarmList WHERE number = "+num+";";
-            helper.excuteQuery(query);
+            helper.executeQuery(query);
         }
 
         return result;
@@ -291,7 +285,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO ExamList VALUES('" +
                 subjectName+"','"+examName+"',"+date+","+time+");";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
 
         // firebase insert
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
@@ -322,7 +316,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         // sqlite delete
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "DELETE FROM ExamList WHERE examName = '"+examName+"';";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
 
         // firebase delete
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
@@ -341,7 +335,7 @@ public class TodoManagementActivity extends AppCompatActivity {
 
             // sqlite delete
             query = "DELETE FROM AlarmList WHERE number = "+num+";";
-            helper.excuteQuery(query);
+            helper.executeQuery(query);
         }
 
         return result;
@@ -357,7 +351,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         // sqlite update
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "UPDATE "+table+"List SET isDone = "+value+" WHERE "+table.toLowerCase()+"Name = '"+name+"';";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
 
         // firebase update
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();

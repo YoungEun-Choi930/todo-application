@@ -22,7 +22,7 @@ public class SQLiteDBHelper
         mDbHelper = SQLiteDB.getInstance();
     }
 
-    public Boolean excuteQuery(String sql)
+    public Boolean executeQuery(String sql)
     {
         System.out.println(sql);
         try
@@ -35,8 +35,8 @@ public class SQLiteDBHelper
         }
         catch (SQLException mSQLException)
         {
-            Log.e("DataAdapter", "excuteQuery >>"+ mSQLException.toString());
-            throw mSQLException;
+            Log.e("DataAdapter", "executeQuery >>"+ mSQLException.toString());
+            return false;
         }
     }
 

@@ -12,10 +12,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.internal.MethodSorter;
 import org.junit.runners.MethodSorters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -40,26 +38,26 @@ public class SQLiteDBHelperTest {                       // Unit Test
         //sqlite 초기화
         helper = new SQLiteDBHelper();
         String query = "DELETE FROM SubjectList;";
-        helper.excuteQuery(query);
+        helper.executeQuery(query);
 
         query = "DELETE FROM LectureList;";
-        helper.excuteQuery(query);
+        helper.executeQuery(query);
 
         query = "DELETE FROM AssignmentList;";
-        helper.excuteQuery(query);
+        helper.executeQuery(query);
 
         query = "DELETE FROM ExamList;";
-        helper.excuteQuery(query);
+        helper.executeQuery(query);
 
         query = "DELETE FROM AlarmInfoList;";
-        helper.excuteQuery(query);
+        helper.executeQuery(query);
 
         query = "DROP TABLE AlarmList";
-        helper.excuteQuery(query);
+        helper.executeQuery(query);
 
         query = "CREATE TABLE IF NOT EXISTS AlarmList (" +
                 "name TEXT NOT NULL, subjectName TEXT NOT NULL, number INTEGER PRIMARY KEY AUTOINCREMENT);";
-        helper.excuteQuery(query);
+        helper.executeQuery(query);
     }
 
 
@@ -67,7 +65,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test01AddSubject() {   //과목 추가
         String query = "INSERT INTO SubjectList VALUES('test1', 1, 2, 0000, 2, 0000);";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<SubjectInfo> resultlist = helper.loadSubjectList();
@@ -80,7 +78,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test02DelSubject() {   //과목 삭제
         String query = "DELETE FROM SubjectList WHERE subjectName = 'test1';";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<SubjectInfo> resultlist = helper.loadSubjectList();
@@ -90,7 +88,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test03AddLecture() {   //강의 추가
         String query = "INSERT INTO LectureList VALUES('test1','lname',20210901,0000,20211231,0000,0);";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<LectureInfo> resultlist = helper.loadLectureList("20210902");
@@ -112,7 +110,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test05DelLecture() {   //강의 삭제
         String query = "DELETE FROM LectureList WHERE subjectName = 'test1';";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<LectureInfo> resultlist = helper.loadLectureList("20210902");
@@ -122,7 +120,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test06AddAssignment() {   //과제 추가
         String query = "INSERT INTO AssignmentList VALUES('test1','aname',20210901,0000,20211231,0000,0);";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<AssignmentInfo> resultlist = helper.loadAssignmentList("20210902");
@@ -144,7 +142,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test08DelAssignment() {   //과제 삭제
         String query = "DELETE FROM AssignmentList WHERE subjectName = 'test1';";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<AssignmentInfo> resultlist = helper.loadAssignmentList("20210902");
@@ -154,7 +152,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test09AddExam() {   //시험 추가
         String query = "INSERT INTO ExamList VALUES('test1', 'ename', 20211231, 0900);";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<ExamInfo> resultlist = helper.loadExamList("20211231");
@@ -175,7 +173,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test11DelExam() {   //시험 삭제
         String query = "DELETE FROM ExamList WHERE subjectName = 'test1';";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<ExamInfo> resultlist = helper.loadExamList("20211001");
@@ -185,7 +183,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test12AddAlarm() {   //알림 정보 추가
         String query = "INSERT INTO AlarmInfoList VALUES('test1', '1일 전', '1시간 전', '1시간 전');";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<AlarmInfo> resultlist = helper.loadAlarmList();
@@ -201,7 +199,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test13DelAlarm() {   //알림 정보 삭제
         String query = "DELETE FROM AlarmInfoList WHERE subjectName = 'test1';";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         List<AlarmInfo> resultlist = helper.loadAlarmList();
@@ -254,7 +252,7 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @Test
     public void test17DelSysAlarm() {
         String query = "DELETE FROM AlarmList WHERE number = 1;";
-        boolean result = helper.excuteQuery(query);
+        boolean result = helper.executeQuery(query);
         assertTrue(result);
 
         int a = helper.loadAlarmNum("a");
@@ -264,26 +262,26 @@ public class SQLiteDBHelperTest {                       // Unit Test
     @AfterClass
     public static void finish() {
         String sql = "DELETE FROM SubjectList";
-        helper.excuteQuery(sql);
+        helper.executeQuery(sql);
 
         sql = "DELETE FROM LectureList";
-        helper.excuteQuery(sql);
+        helper.executeQuery(sql);
 
         sql = "DELETE FROM AssignmentList";
-        helper.excuteQuery(sql);
+        helper.executeQuery(sql);
 
         sql = "DELETE FROM ExamList";
-        helper.excuteQuery(sql);
+        helper.executeQuery(sql);
 
         sql = "DELETE FROM AlarmInfoList";
-        helper.excuteQuery(sql);
+        helper.executeQuery(sql);
 
         sql = "DROP TABLE AlarmList";
-        helper.excuteQuery(sql);
+        helper.executeQuery(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS AlarmList (" +
                 "name TEXT NOT NULL, subjectName TEXT NOT NULL, number INTEGER PRIMARY KEY AUTOINCREMENT);";
-        helper.excuteQuery(sql);
+        helper.executeQuery(sql);
     }
 
 

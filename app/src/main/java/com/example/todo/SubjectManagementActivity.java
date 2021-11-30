@@ -1,7 +1,5 @@
 package com.example.todo;
 
-import static java.sql.Types.NULL;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -139,22 +137,22 @@ public class SubjectManagementActivity extends AppCompatActivity {
     }
 
     /* ------------------------------- 과목 추가, 강의추가 ----------------------------------------- */
-    public static boolean addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime, int year, int semester) {
+    public static int addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime, int year, int semester) {
         //startWeekNumber 1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토
 
-        if(Integer.parseInt(startTime) > 2400) return false;
-        if(Integer.parseInt(endTime) > 2400) return false;
+        if(Integer.parseInt(startTime) > 2400) return -1;
+        if(Integer.parseInt(endTime) > 2400) return -1;
 
-        if(year < 1900) return false;
-        else if(year > 2100) return false;
+        if(year < 1900) return -1;
+        else if(year > 2100) return -1;
 
         // sqlite에 과목 추가
         String query = "INSERT INTO SubjectList VALUES('"+
                 subjectName+"',"+number+","+startWeekNumber+","+startTime+","+endWeekNumber+","+endTime+");";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
-        boolean result = adapter.excuteQuery(query);
+        boolean result = adapter.executeQuery(query);
 
-        if(result == false) return false;
+        if(result == false) return 0;
 
 
         Date startdate = getstartDate(year, semester, startWeekNumber);         // 1주차 강의 시작 날짜 구하기
@@ -189,7 +187,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 lectureName = subjectName+" "+i+"주차"+j;
                 query = "INSERT INTO LectureList VALUES('" +
                         subjectName+"','"+lectureName+"',"+strstartdate+","+startTime+","+strenddate+","+endTime+",0);";
-                result = adapter.excuteQuery(query);
+                result = adapter.executeQuery(query);
 
                 //firebase insert
                 HashMap<String, Object> map = new HashMap<>();
@@ -203,8 +201,8 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
                 if(result == false) {
                     query = "DELETE FROM SubjectList WHERE subjectName = '" + subjectName + "';";
-                    adapter.excuteQuery(query);
-                    return false;
+                    adapter.executeQuery(query);
+                    return -1;
                 }
             }
 
@@ -216,15 +214,15 @@ public class SubjectManagementActivity extends AppCompatActivity {
         subjectlist.add(new SubjectInfo(subjectName));
         subjectAdapter.notifyDataSetChanged();          // 화면 강의목록 새로고침
 
-        return result;
+        return 1;
     }
 
     /* --------------------------- 1주차 강의 시작날짜를 구하는 메소드 -------------------------------- */
     private static Date getstartDate(int year, int semester, int startWeekNumber) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = Integer.toString(year);
-        if(semester == 1)               // 1학기라면 3월 1일 부터
-            date += "0301";
+        if(semester == 1)               // 1학기라면 3월 2일 부터
+            date += "0302";
         else if(semester == 2)          // 2학기라면 9월 1일 부터
             date += "0901";
 
@@ -251,16 +249,16 @@ public class SubjectManagementActivity extends AppCompatActivity {
         // sqlite delete
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
-        adapter.excuteQuery(query);
+        adapter.executeQuery(query);
 
         query = "DELETE FROM LectureList WHERE subjectName = '"+subjectName+"';";
-        adapter.excuteQuery(query);
+        adapter.executeQuery(query);
 
         query = "DELETE FROM AssignmentList WHERE subjectName = '"+subjectName+"';";
-        adapter.excuteQuery(query);
+        adapter.executeQuery(query);
 
         query = "DELETE FROM ExamList WHERE subjectName = '"+subjectName+"';";
-        adapter.excuteQuery(query);
+        adapter.executeQuery(query);
 
         // 과목에 알림이 설정되어 있다면 시스템에 알림을 지운다.
         AlarmInfo alarmInfo = adapter.loadAlarm(subjectName);
@@ -274,10 +272,10 @@ public class SubjectManagementActivity extends AppCompatActivity {
             activity.delSubjectAlarm(subjectName);
         }
         query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
-        adapter.excuteQuery(query);
+        adapter.executeQuery(query);
 
         query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
-        adapter.excuteQuery(query);
+        adapter.executeQuery(query);
 
         // firebase delete
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
