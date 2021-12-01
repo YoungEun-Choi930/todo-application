@@ -61,23 +61,22 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
             ((AHolder) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    AlarmManagement alarmManagement = new AlarmManagement();
+
+
                     int ck=0;
                     if(isChecked){
                         ck=1;
                         //알람삭제
-                        AlarmManagementActivity activity = new AlarmManagementActivity();
-                        AlarmManager alarmManager = (AlarmManager)mcontext.getSystemService(Context.ALARM_SERVICE);
-                        NotificationManager notificationManager = (NotificationManager)mcontext.getSystemService(Context.NOTIFICATION_SERVICE);
-                        activity.alarmManager=alarmManager;
-                        activity.notificationManager = notificationManager;
-                        activity.delSystemAlarm(assignmentInfo.getAssignmentName());
-                        TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
+                        alarmManagement.delSystemAlarm(assignmentInfo.getAssignmentName());
+                        ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                        toDoManagement.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);
                     }
                     else{
                         //알람추가
-                        //AlarmManagementActivity.mContext.addSystemAlarm(assignmentInfo.getSubjectName(),assignmentInfo.getAssignmentName());
-                        TodoManagementActivity.mContext.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
+                        ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                        toDoManagement.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);
 
                     }
@@ -88,7 +87,8 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
             ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    boolean result = TodoManagementActivity.mContext.delAssignment(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName());
+                    ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                    boolean result = toDoManagement.delAssignment(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName());
                     if(result){
                         todoAssignment.remove(assignmentInfo);
                         Toast.makeText(view.getContext(),"과제삭제 성공",Toast.LENGTH_SHORT).show();

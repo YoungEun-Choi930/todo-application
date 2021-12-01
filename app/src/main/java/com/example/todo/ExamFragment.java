@@ -1,7 +1,9 @@
 package com.example.todo;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -86,8 +88,9 @@ public class ExamFragment extends Fragment implements View.OnClickListener, Time
                     if(splittime[1].length() == 1) splittime[1] = "0"+splittime[1];
                     s_time = splittime[0]+splittime[1];
                     System.out.println(s_time+"설정한시험시간");
+                    ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
 
-                    boolean result = TodoManagementActivity.mContext.addExam(subjectName,todoName,s_date,s_time);
+                    boolean result = toDoManagement.addExam(subjectName,todoName,s_date,s_time);
                     if(result){
                         Toast.makeText(getActivity(),"시험추가 완료",Toast.LENGTH_SHORT).show();
                         //날짜에 데코레이트 추가하면 될 듯?

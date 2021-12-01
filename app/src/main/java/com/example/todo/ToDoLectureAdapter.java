@@ -62,12 +62,14 @@ public class ToDoLectureAdapter extends RecyclerView.Adapter <RecyclerView.ViewH
                     if(isChecked){
                         checked = 1;
                         //AlarmManagementActivity.mContext.addSystemAlarm(lectureInfo.getSubjectName(),lectureInfo.getLectureName());//알람추가
-                        (TodoManagementActivity.mContext).changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
+                        ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                        toDoManagement.changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
                         lectureInfo.setIsDone(isChecked);
                     }
                     else{
-                        //AlarmManagementActivity.mContext.delSystemAlarm(lectureInfo.getLectureName());//알람삭제
-                        (TodoManagementActivity.mContext).changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
+                        ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+
+                        toDoManagement.changeIsDone(lectureInfo.getLectureName(),lectureInfo.getSubjectName(),"Lecture",checked);
                         lectureInfo.setIsDone(isChecked);
                     }
 

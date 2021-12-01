@@ -84,6 +84,9 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
     public ArrayList<AlarmInfo> getcheckedList() {
         return checkedList;
     }
+    public void setList(ArrayList<AlarmInfo> list){
+        myAlarmList = list;
+    }
 
 }
 
