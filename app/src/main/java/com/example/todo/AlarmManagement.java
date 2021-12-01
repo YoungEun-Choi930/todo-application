@@ -14,7 +14,6 @@ import java.util.List;
 
 public class AlarmManagement {
 
-    public static AlarmManagementActivity mContext;
 
     public static AlarmManager alarmManager;
     public static NotificationManager notificationManager;
@@ -42,6 +41,13 @@ public class AlarmManagement {
         return true;
     }
     public boolean delAlarm(String subjectName) {
+
+        SQLiteDBHelper helper = new SQLiteDBHelper();
+        AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
+        if(alarmInfo == null){
+            return false;
+        }
+
         String query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.executeQuery(query);
@@ -51,8 +57,6 @@ public class AlarmManagement {
 
 
     private void setSystemAlarm(String subjectName, String exam, String assignment, String video) {
-     //  notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-      //  alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
         int examnum = Integer.parseInt(exam.substring(0,1));
         examnum = examnum * 24;
@@ -69,9 +73,6 @@ public class AlarmManagement {
         else {
             videonum = Integer.parseInt(video.substring(0, 1));
         }
-
-
-        //Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
 
 
         SQLiteDBHelper helper = new SQLiteDBHelper();
@@ -148,8 +149,8 @@ public class AlarmManagement {
     }
 
     public void delSystemAlarmNum(int num){ //delSubjectAlarm에서 사용함. 번호로 삭제
-      //  alarmManager = (AlarmManager) mContext.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(mContext.getApplicationContext(), AlarmRecevier.class);
+
+        Intent intent = new Intent(LoginActivity.ApplicationContext, AlarmRecevier.class);
         pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, num, intent, 0);
         notificationManager.cancel(num);
         alarmManager.cancel(pendingIntent);
@@ -160,7 +161,7 @@ public class AlarmManagement {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         int alarmNum = helper.loadAlarmNum(alarmName);
         if(alarmNum != -1) {
-            Intent intent = new Intent(LoginActivity.ApplicationContext.getApplicationContext(), AlarmRecevier.class);
+            Intent intent = new Intent(LoginActivity.ApplicationContext, AlarmRecevier.class);
             pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, intent, 0);
             System.out.println(alarmNum+"삭제할알람번호!!!");
             notificationManager.cancel(alarmNum);
