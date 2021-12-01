@@ -138,13 +138,20 @@ public class SubjectManagementActivity extends AppCompatActivity {
 
     /* ------------------------------- 과목 추가, 강의추가 ----------------------------------------- */
     public static int addSubject(String subjectName, int number, int startWeekNumber, String startTime, int endWeekNumber, String endTime, int year, int semester) {
-        //startWeekNumber 1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토
+        //startWeekNumber  2:월, 3:화, 4:수, 5:목, 6:금
 
-        if(Integer.parseInt(startTime) > 2400) return -1;
-        if(Integer.parseInt(endTime) > 2400) return -1;
+        // 예외처리
+        // -1은 화면에서 올 수 없는 경우
+        if(number < 0 || number > 9) return -1;
+        if(startWeekNumber < 2 || startWeekNumber > 6) return -1;
+        if(Integer.parseInt(startTime) >= 2400) return -1;
+        if((Integer.parseInt(startTime) % 100) >= 60) return -1;
+        if(endWeekNumber < 2 || endWeekNumber > 6) return -1;
+        if(Integer.parseInt(endTime) >= 2400) return -1;
+        if((Integer.parseInt(endTime) % 100) >= 60) return -1;
+        if(year < 1900 || year > 2100) return -1;
+        if(semester != 1 && semester != 2) return -1;
 
-        if(year < 1900) return -1;
-        else if(year > 2100) return -1;
 
         // sqlite에 과목 추가
         String query = "INSERT INTO SubjectList VALUES('"+
@@ -218,7 +225,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
     }
 
     /* --------------------------- 1주차 강의 시작날짜를 구하는 메소드 -------------------------------- */
-    private static Date getstartDate(int year, int semester, int startWeekNumber) {
+    public static Date getstartDate(int year, int semester, int startWeekNumber) {  //test때문에 public
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = Integer.toString(year);
         if(semester == 1)               // 1학기라면 3월 2일 부터
@@ -245,7 +252,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
     }
 
     /* ------------------------------------- 과목 삭제 --------------------------------------- */
-    private void delSubject(String subjectName) {
+    public void delSubject(String subjectName) {        //test때문에 일단 public
         // sqlite delete
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         String query = "DELETE FROM SubjectList WHERE subjectName = '"+subjectName+"';";
@@ -266,16 +273,17 @@ public class SubjectManagementActivity extends AppCompatActivity {
         {
             AlarmManagementActivity activity = new AlarmManagementActivity();
             AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);     //여기 에러
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             activity.notificationManager = notificationManager;
             activity.alarmManager=alarmManager;
             activity.delSubjectAlarm(subjectName);
-        }
-        query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
-        adapter.executeQuery(query);
 
-        query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
-        adapter.executeQuery(query);
+            query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
+            adapter.executeQuery(query);
+
+            query = "DELETE FROM AlarmList WHERE subjectName = '"+subjectName+"';";
+            adapter.executeQuery(query);
+        }
 
         // firebase delete
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();

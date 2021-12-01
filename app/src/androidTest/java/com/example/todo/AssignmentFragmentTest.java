@@ -27,8 +27,11 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AssignmentFragmentTest {
 
     class assignment {
@@ -144,7 +147,6 @@ public class AssignmentFragmentTest {
 
         Cursor cursor = mDb.rawQuery(sql, null);
 
-
         if (cursor!=null) {
 
             // 칼럼의 마지막까지
@@ -165,7 +167,7 @@ public class AssignmentFragmentTest {
     }
 
     @Test
-    public void 정상적인과제추가() {                //추가성공
+    public void 테스트01정상적인과제추가() {                //추가성공
         ActivityScenario.launch(TodoManagementActivity.class);
         Context mcontext = TodoManagementActivity.mContext;
 
@@ -180,8 +182,9 @@ public class AssignmentFragmentTest {
         assertTrue(sqliteAssignmnetListTrue(a));
     }
 
+    // 과목추가와는 다른 피커라서 년도에 대한 피커 테스트만 함
     @Test
-    public void 년도가1899일경우() {              //1899가 1900으로 변경되어 입력
+    public void 테스트02년도가1899일경우() {              //1899가 1900으로 변경되어 입력
         ActivityScenario.launch(TodoManagementActivity.class);
         Context mcontext = TodoManagementActivity.mContext;
 
@@ -200,7 +203,7 @@ public class AssignmentFragmentTest {
     }
 
     @Test
-    public void 년도가1900일경우() {              //추가성공
+    public void 테스트03년도가1900일경우() {              //추가성공
         ActivityScenario.launch(TodoManagementActivity.class);
         Context mcontext = TodoManagementActivity.mContext;
 
@@ -217,7 +220,7 @@ public class AssignmentFragmentTest {
     }
 
     @Test
-    public void 년도가2100일경우() {              //추가성공
+    public void 테스트04년도가2100일경우() {              //추가성공
         ActivityScenario.launch(TodoManagementActivity.class);
         Context mcontext = TodoManagementActivity.mContext;
 
@@ -234,7 +237,7 @@ public class AssignmentFragmentTest {
     }
 
     @Test
-    public void 년도가2101일경우() {              //2101이 2100으로 입력
+    public void 테스트05년도가2101일경우() {              //2101이 2100으로 입력
         ActivityScenario.launch(TodoManagementActivity.class);
         Context mcontext = TodoManagementActivity.mContext;
 
@@ -250,6 +253,40 @@ public class AssignmentFragmentTest {
         a.startDate = 21000901;
         a.endDate = 21001001;
         assertTrue(sqliteAssignmnetListTrue(a));
+    }
+
+    @Test
+    public void 테스트06날짜가거꾸로() {             // 추가실패
+        ActivityScenario.launch(TodoManagementActivity.class);
+        Context mcontext = TodoManagementActivity.mContext;
+
+        Intent intent = new Intent(mcontext, AddAssignmentExamActivity.class);
+        intent.putExtra("subjectName", "assignmentTest");
+        mcontext.startActivity(intent);
+
+        ActivityScenario.launch(intent);
+
+        assignment a = new assignment("test6","20211001","0000","20210901","0000");
+        insertAssignment(a);
+
+        assertFalse(sqliteAssignmnetListTrue(a));
+    }
+
+    @Test
+    public void 테스트07시간이거꾸로() {             // 추가실패
+        ActivityScenario.launch(TodoManagementActivity.class);
+        Context mcontext = TodoManagementActivity.mContext;
+
+        Intent intent = new Intent(mcontext, AddAssignmentExamActivity.class);
+        intent.putExtra("subjectName", "assignmentTest");
+        mcontext.startActivity(intent);
+
+        ActivityScenario.launch(intent);
+
+        assignment a = new assignment("test7","20210901","1200","20210901","1100");
+        insertAssignment(a);
+
+        assertFalse(sqliteAssignmnetListTrue(a));
     }
 
 
