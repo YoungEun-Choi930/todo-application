@@ -22,7 +22,7 @@ public class FirebaseDBHelper {
         userUID = LoginActivity.USERUID;
     }
 
-    public void login(){
+    public void userRegistration(){
         databaseReference.child("USERS").child(LoginActivity.USERID).setValue(userUID);
     }
 

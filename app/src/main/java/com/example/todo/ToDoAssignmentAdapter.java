@@ -61,14 +61,11 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
             ((AHolder) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    AlarmManagement alarmManagement = new AlarmManagement();
-
 
                     int ck=0;
                     if(isChecked){
                         ck=1;
                         //알람삭제
-                        alarmManagement.delSystemAlarm(assignmentInfo.getAssignmentName());
                         ToDoManagement toDoManagement = new ToDoManagement();
                         toDoManagement.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);

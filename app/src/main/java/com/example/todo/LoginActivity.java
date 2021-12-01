@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             USERUID = auth.getCurrentUser().getUid();
 
             FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-            firebaseDB.login();
+            firebaseDB.userRegistration();
 
             startActivity(intent);
             finish();
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             USERUID = auth.getCurrentUser().getUid();
 
                             FirebaseDBHelper firebase = new FirebaseDBHelper();
-                            firebase.login();   //DB에 사용자 등록
+                            firebase.userRegistration();   //DB에 사용자 등록
 
 
 //                            intent.putExtra("nickname", account.getDisplayName());
