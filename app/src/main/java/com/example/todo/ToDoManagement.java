@@ -1,9 +1,5 @@
 package com.example.todo;
 
-import android.app.AlarmManager;
-import android.app.NotificationManager;
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,7 +125,7 @@ public class ToDoManagement {
         firebaseDB.uploadMyAssignment(subjectName,assignmentName, startDate, startTime, endDate, endTime);
 
         // 과목에 알림이 설정되어 있다면 추가한 시험에 대하여 알림 설정
-        AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
+        AlarmInfo alarmInfo = helper.loadAlarmInfo(subjectName);
         if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
 
         int hourNum = 0;
@@ -195,7 +191,7 @@ public class ToDoManagement {
         firebaseDB.uploadMyExam(subjectName,examName, date, time);
 
         // 과목에 알림이 설정되어 있다면 추가한 시험에 대하여 알림 설정
-        AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
+        AlarmInfo alarmInfo = helper.loadAlarmInfo(subjectName);
         if(alarmInfo == null)   return result;              // 알림이 설정되어 있지 않으면 종료
 
         int hourNum = 0;
@@ -262,7 +258,7 @@ public class ToDoManagement {
         firebaseDB.changeMyIsDone(name, subjectName, table, value);
 
         // 과목에 알림이 설정되어 있다면 알림 설정을 바꿔주어야함.
-        AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
+        AlarmInfo alarmInfo = helper.loadAlarmInfo(subjectName);
         if(alarmInfo == null)   return result;     // 알림이 설정되어 있지 않으면 종료
 
         //알림이 설정되 있다면

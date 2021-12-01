@@ -3,7 +3,6 @@ package com.example.todo;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 
 import java.text.ParseException;
@@ -43,7 +42,7 @@ public class AlarmManagement {
     public boolean delAlarm(String subjectName) {
 
         SQLiteDBHelper helper = new SQLiteDBHelper();
-        AlarmInfo alarmInfo = helper.loadAlarm(subjectName);
+        AlarmInfo alarmInfo = helper.loadAlarmInfo(subjectName);
         if(alarmInfo == null){
             return false;
         }

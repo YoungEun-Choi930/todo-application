@@ -237,7 +237,7 @@ public class SQLiteDBHelper
     }
 
 
-    public AlarmInfo loadAlarm(String subjectName)      //loadAlarmInfo라고 바꿔야겠다
+    public AlarmInfo loadAlarmInfo(String subjectName)      //loadAlarmInfo라고 바꿔야겠다
     {
         try
         {
