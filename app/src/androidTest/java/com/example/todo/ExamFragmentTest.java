@@ -33,12 +33,15 @@ import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ExamFragmentTest {
 
     class exam {
@@ -75,16 +78,16 @@ public class ExamFragmentTest {
 
         ActivityScenario.launch(AddSubjectActivity.class);
 
-        onView(ViewMatchers.withId(R.id.name_subject)).perform(typeText("test"));     //과목이름
+        onView(ViewMatchers.withId(R.id.name_subject)).perform(typeText("examTest"));     //과목이름
         onView(ViewMatchers.withId(R.id.semester2)).perform(doubleClick());         // 학기
         onView(ViewMatchers.withId(R.id.number_subject)).perform(typeText("1"));         //강의갯수
         onView(ViewMatchers.withId(R.id.start_4)).perform(doubleClick());       //시작요일
         onView(ViewMatchers.withId(R.id.startTime_subject)).perform(click());         //시작시간
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(00, 00));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(00, 00));
         onView(ViewMatchers.withText("확인")).perform(click());
         onView(ViewMatchers.withId(R.id.end_3)).perform(doubleClick());               // 종료요일
         onView(ViewMatchers.withId(R.id.endTime_subject)).perform(click());         //종료시간
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(00, 00));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(00, 00));
         onView(ViewMatchers.withText("확인")).perform(click());
         onView(ViewMatchers.withId(R.id.year_subject)).perform(click());            //년도
         onView(ViewMatchers.withId(R.id.btn_confirm)).perform(click());      //년도
@@ -92,26 +95,6 @@ public class ExamFragmentTest {
         onView(ViewMatchers.withId(R.id.yes_subject)).perform(click());         //확인버튼
         // 과목 test - 2021 2학기 - 강의1개 - 수~화 - 0000,0000 생성
 
-
-    }
-    public static ViewAction setTime(int hour, int minute) {
-        return new ViewAction() {
-            @Override
-            public void perform(UiController uiController, View view) {
-
-                TimePicker tp = (TimePicker) view;
-                tp.setCurrentHour(hour);
-                tp.setCurrentMinute(minute);
-            }
-            @Override
-            public String getDescription() {
-                return "Set the passed time into the TimePicker";
-            }
-            @Override
-            public Matcher<View> getConstraints() {
-                return ViewMatchers.isAssignableFrom(TimePicker.class);
-            }
-        };
     }
 
     public boolean sqliteExamListTrue(exam e){    //examList에서의 번호
@@ -136,7 +119,7 @@ public class ExamFragmentTest {
         }
         cursor.close();
         db.close();
-        return true;
+        return false;
     }
 
     public void insertExam(exam e) {
@@ -149,11 +132,12 @@ public class ExamFragmentTest {
         onView(ViewMatchers.withText("확인")).perform(click());
         //시간
         onView(ViewMatchers.withId(R.id.time_e)).perform(click());
-        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(setTime(e.hour, e.minute));
+        onView(ViewMatchers.withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(e.hour, e.minute));
         onView(ViewMatchers.withText("확인")).perform(click());
         //확인
         onView(ViewMatchers.withId(R.id.btn_yes)).perform(click());             //확인버튼
     }
+
     @Test
     public void 정상적인시험추가() {
 

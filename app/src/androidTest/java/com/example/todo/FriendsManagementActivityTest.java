@@ -16,14 +16,18 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.ArrayList;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FriendsManagementActivityTest {
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         String userID = auth.getCurrentUser().getEmail();
@@ -46,30 +50,23 @@ public class FriendsManagementActivityTest {
         onView(ViewMatchers.withText("확인")).perform(click());
     }
 
-    @Test
-    public void 존재하는사용자추가() {   //친구신청이 성공함.
-        addFriend("test1");
-
+    public void 테스트01존재하는사용자추가() {   //친구신청이 성공함.
 
     }
 
-    @Test
-    public void 존재하지않는사용자추가() {     //친구신청 실패.
-        addFriend("test3");
-    }
-
-    @Test
-    public void 이미친구인사용자추가() {      //친구신청 실패해야함
+    public void 테스트02존재하지않는사용자추가() {     //친구신청 실패.
 
     }
 
-    @Test
-    public void 친구신청수락() {      //친구에 추가되어야함
+    public void 테스트03이미친구인사용자추가() {      //친구신청 실패해야함
 
     }
 
-    @Test
-    public void 친구삭제() {        //친구가 삭제됨.
+    public void 테스트04친구신청수락() {      //친구에 추가되어야함
+
+    }
+
+    public void 테스트05친구삭제() {        //친구가 삭제됨.
 
     }
 }
