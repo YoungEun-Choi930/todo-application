@@ -61,8 +61,6 @@ public class ToDoExamAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                     ToDoManagement toDoManagement = new ToDoManagement();
                     boolean result = toDoManagement.delExam(examInfo.getExamName(),examInfo.getSubjectName());
                     if(result){
-                        AlarmManagement alarmManagement = new AlarmManagement();
-                        alarmManagement.delSystemAlarm(examInfo.getExamName()); //알람삭제
                         todoExam.remove(examInfo);
                         Toast.makeText(view.getContext(),"시험삭제 성공",Toast.LENGTH_SHORT).show();
                         System.out.println("시험삭제성공");

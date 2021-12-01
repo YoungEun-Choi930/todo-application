@@ -159,7 +159,7 @@ public class ToDoManagement {
             //system delete
 
             AlarmManagement alarmManagement = new AlarmManagement();
-            alarmManagement.delSystemAlarm(assignmentName);
+            alarmManagement.delSystemAlarm(num);
 
             // sqlite delete
             query = "DELETE FROM AlarmList WHERE number = "+num+";";
@@ -230,7 +230,7 @@ public class ToDoManagement {
         if(num != -1){
             //system delete
             AlarmManagement alarmManagement = new AlarmManagement();
-            alarmManagement.delSystemAlarm(examName);
+            alarmManagement.delSystemAlarm(num);
             // sqlite delete
             query = "DELETE FROM AlarmList WHERE number = "+num+";";
             helper.executeQuery(query);
@@ -264,7 +264,10 @@ public class ToDoManagement {
         //알림이 설정되 있다면
         AlarmManagement alarmManagement = new AlarmManagement();
         //isDone을 false로 설정해야하면
-        if(value == 0) alarmManagement.delSystemAlarm(name);
+        if(value == 0) {
+            int num = helper.loadAlarmNum(name);
+            alarmManagement.delSystemAlarm(num);
+        }
         else {  //isDone을 true로 설정해야하면
             String alarmTime = helper.getAlarmTime(name, subjectName, table);
 

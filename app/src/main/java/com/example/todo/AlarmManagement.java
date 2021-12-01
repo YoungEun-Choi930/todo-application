@@ -142,31 +142,18 @@ public class AlarmManagement {
 
         List<Integer> alarmNumber = sqLiteDBHelper.loadAlarmSubjectList(subjectName);
         for(int i=0;i<alarmNumber.size();i++){
-            delSystemAlarmNum(alarmNumber.get(i));
+            delSystemAlarm(alarmNumber.get(i));
 
         }
     }
 
-    public void delSystemAlarmNum(int num){ //delSubjectAlarm에서 사용함. 번호로 삭제
+    public void delSystemAlarm(int num){ //delSubjectAlarm에서 사용함. 번호로 삭제
 
         Intent intent = new Intent(LoginActivity.ApplicationContext, AlarmRecevier.class);
         pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, num, intent, 0);
         notificationManager.cancel(num);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
-    }
-
-    public void delSystemAlarm(String alarmName) { //할일 체크 여부에 따라 개별로 삭제하기 위한 메소드
-        SQLiteDBHelper helper = new SQLiteDBHelper();
-        int alarmNum = helper.loadAlarmNum(alarmName);
-        if(alarmNum != -1) {
-            Intent intent = new Intent(LoginActivity.ApplicationContext, AlarmRecevier.class);
-            pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, intent, 0);
-            System.out.println(alarmNum+"삭제할알람번호!!!");
-            notificationManager.cancel(alarmNum);
-            alarmManager.cancel(pendingIntent);
-            pendingIntent.cancel();
-        }
     }
 
 
