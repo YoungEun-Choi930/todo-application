@@ -156,8 +156,8 @@ public class SubjectManagement {
         AlarmInfo alarmInfo = adapter.loadAlarm(subjectName);
         if(alarmInfo != null)
         {
-            AlarmManagementActivity activity = new AlarmManagementActivity();
-            activity.delSubjectAlarm(subjectName);
+            AlarmManagement alarmManagement = new AlarmManagement();
+            alarmManagement.delSubjectAlarm(subjectName);
 
             query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
             adapter.executeQuery(query);

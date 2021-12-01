@@ -31,7 +31,6 @@ public class AddAlarmActivity extends AppCompatActivity {
     String lecturetype;
     List<SubjectInfo> subjectList;
     List<String> sub=new ArrayList<>();
-    String[] timeList = {"10분 전","15분 전","30분 전","1시간 전"};
     String[] dayList = {"1일 전", "3일 전","5일 전","7일 전"};
     String[] hourList = {"1시간 전", "2시간 전", "3시간 전", "5시간 전", "1일 전"};
     ArrayAdapter hourAdapter, dayAdapter;
@@ -43,7 +42,8 @@ public class AddAlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_alarm);
 
-        subjectList = SubjectManagementActivity.getSubjectList();
+        SubjectManagement management =  new SubjectManagement();
+        subjectList = management.getSubjectList();
 
         Button btn_no = (Button) findViewById(R.id.no_subject); //취소
         Button btn_yes = (Button) findViewById(R.id.yes_subject); // 확인
@@ -119,9 +119,11 @@ public class AddAlarmActivity extends AppCompatActivity {
                     }
                     else{
                         System.out.println(selected_assignment+"과제"+selected_lecture+"강의"+selected_exam+"시험"+selected_sub);
-                        boolean result = ((AlarmManagementActivity) AlarmManagementActivity.mContext).addAlarm(selected_sub, selected_exam, selected_assignment, selected_lecture);
+                        AlarmManagement alarmManagement = new AlarmManagement();
+                        boolean result = alarmManagement.addAlarm(selected_sub, selected_exam, selected_assignment, selected_lecture);
 
                         if (result) {
+
                             System.out.println("알림추가 성공");
                             Toast.makeText(this, "알림추가 완료", Toast.LENGTH_SHORT).show();
                         } else

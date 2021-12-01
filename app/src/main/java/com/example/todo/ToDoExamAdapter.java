@@ -58,14 +58,11 @@ public class ToDoExamAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    boolean result = TodoManagementActivity.mContext.delExam(examInfo.getExamName(),examInfo.getSubjectName());
+                    ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                    boolean result = toDoManagement.delExam(examInfo.getExamName(),examInfo.getSubjectName());
                     if(result){
-                        AlarmManagementActivity activity = new AlarmManagementActivity();
-                        AlarmManager alarmManager = (AlarmManager)mcontext.getSystemService(Context.ALARM_SERVICE);
-                        NotificationManager notificationManager = (NotificationManager)mcontext.getSystemService(Context.NOTIFICATION_SERVICE);
-                        activity.alarmManager=alarmManager;
-                        activity.notificationManager = notificationManager;
-                        activity.delSystemAlarm(examInfo.getExamName()); //알람삭제
+                        AlarmManagement alarmManagement = new AlarmManagement();
+                        alarmManagement.delSystemAlarm(examInfo.getExamName()); //알람삭제
                         todoExam.remove(examInfo);
                         Toast.makeText(view.getContext(),"시험삭제 성공",Toast.LENGTH_SHORT).show();
                         System.out.println("시험삭제성공");
