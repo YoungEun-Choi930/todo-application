@@ -69,13 +69,13 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
                         ck=1;
                         //알람삭제
                         alarmManagement.delSystemAlarm(assignmentInfo.getAssignmentName());
-                        ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                        ToDoManagement toDoManagement = new ToDoManagement();
                         toDoManagement.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);
                     }
                     else{
                         //알람추가
-                        ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                        ToDoManagement toDoManagement = new ToDoManagement();
                         toDoManagement.changeIsDone(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName(),"Assignment",ck);
                         assignmentInfo.setIsDone(isChecked);
 
@@ -87,7 +87,7 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
             ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                    ToDoManagement toDoManagement = new ToDoManagement();
                     boolean result = toDoManagement.delAssignment(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName());
                     if(result){
                         todoAssignment.remove(assignmentInfo);

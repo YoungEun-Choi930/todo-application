@@ -9,12 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ToDoManagement {
-    Context context;
-    public ToDoManagement(Context context){
-        context = context;
-    }
-
-
 
 
     /* -------------------------- 선택한 날짜에 대한 to do 목록 불러오기 ------------------------------ */
@@ -108,6 +102,22 @@ public class ToDoManagement {
 
     /* --------------------------- 선택한 과목에 대하여 과제를 추가하기 -------------------------------- */
     public boolean addAssignment(String subjectName, String assignmentName, String startDate, String startTime, String endDate, String endTime) {
+        int istartd = Integer.parseInt(startDate);
+        int istartt = Integer.parseInt(startTime);
+        int iendd = Integer.parseInt(endDate);
+        int iendt = Integer.parseInt(endTime);
+
+        if((istartd/10000) > 2100 || (istartd/10000) < 1900) return false;
+        if((istartd%10000)/ 100 > 12 || (istartd%10000) / 100 < 1) return false;
+        if((istartd%100) > 31 || (istartd%100) < 1) return false;
+        if(istartt >= 2400) return false;
+        if((istartt % 100) >= 60) return false;
+        if((iendd/10000) > 2100 || (iendd/10000) < 1900) return false;
+        if((iendd%10000)/ 100 > 12 || (iendd%10000) / 100 < 1) return false;
+        if((iendd%100) > 31 || (iendd%100) < 1) return false;
+        if(iendt >= 2400) return false;
+        if((iendt % 100) >= 60) return false;
+
         // sqlite insert
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO AssignmentList VALUES('" +
@@ -165,6 +175,15 @@ public class ToDoManagement {
 
     /* --------------------------- 선택한 과목에 대하여 시험을 추가하기 -------------------------------- */
     public boolean addExam(String subjectName, String examName, String date, String time) {
+        int idate = Integer.parseInt(date);
+        int itime = Integer.parseInt(time);
+
+        if((idate/10000) > 2100 || (idate/10000) < 1900) return false;
+        if((idate%10000)/ 100 > 12 || (idate%10000) / 100 < 1) return false;
+        if((idate%100) > 31 || (idate%100) < 1) return false;
+        if(itime >= 2400) return false;
+        if((itime % 100) >= 60) return false;
+
         // sqlite insert
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "INSERT INTO ExamList VALUES('" +
@@ -235,6 +254,8 @@ public class ToDoManagement {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         String query = "UPDATE "+table+"List SET isDone = "+value+" WHERE "+table.toLowerCase()+"Name = '"+name+"';";
         boolean result = helper.executeQuery(query);
+
+        if(result == false) return false;
 
         // firebase update
         FirebaseDBHelper firebaseDB = new FirebaseDBHelper();

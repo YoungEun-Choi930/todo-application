@@ -88,7 +88,7 @@ public class ExamFragment extends Fragment implements View.OnClickListener, Time
                     if(splittime[1].length() == 1) splittime[1] = "0"+splittime[1];
                     s_time = splittime[0]+splittime[1];
                     System.out.println(s_time+"설정한시험시간");
-                    ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                    ToDoManagement toDoManagement = new ToDoManagement();
 
                     boolean result = toDoManagement.addExam(subjectName,todoName,s_date,s_time);
                     if(result){
