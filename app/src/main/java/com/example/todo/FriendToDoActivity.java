@@ -67,7 +67,8 @@ public class FriendToDoActivity extends AppCompatActivity {
 
 
                 System.out.println("-----------------------------get");
-                getFriendToDoList(uid, Integer.parseInt(sdate));
+                FriendsManagement management = new FriendsManagement();
+                management.getFriendToDoList(uid, Integer.parseInt(sdate));
 
 
             }
@@ -82,7 +83,8 @@ public class FriendToDoActivity extends AppCompatActivity {
         if(strdate[2].length() == 1)
             sdate += "0";
         sdate += strdate[2];
-        getFriendToDoList(uid, Integer.parseInt(sdate));
+        FriendsManagement management = new FriendsManagement();
+        management.getFriendToDoList(uid, Integer.parseInt(sdate));
         //들어가면 오늘날짜 선택된채로 리스트 띄울라고
 
 
@@ -100,11 +102,6 @@ public class FriendToDoActivity extends AppCompatActivity {
 
 
 
-    }
-
-    private void getFriendToDoList(String friendUID, int sdate) {
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        firebaseDB.loadFriendToDoList(friendUID, sdate);
     }
 
     public void notifyFriendToDoList(List<List> list) {

@@ -1,13 +1,9 @@
 package com.example.todo;
 
-import android.app.AlarmManager;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -153,7 +149,7 @@ public class SubjectManagement {
         adapter.executeQuery(query);
 
         // 과목에 알림이 설정되어 있다면 시스템에 알림을 지운다.
-        AlarmInfo alarmInfo = adapter.loadAlarm(subjectName);
+        AlarmInfo alarmInfo = adapter.loadAlarmInfo(subjectName);
         if(alarmInfo != null)
         {
             AlarmManagement alarmManagement = new AlarmManagement();
