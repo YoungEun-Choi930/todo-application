@@ -90,7 +90,8 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
 
             ((BHolder) holder).accept_ac.setOnClickListener(view -> {
                 myFriendsList.remove(friendInfo);
-                (FriendsManagementActivity.context).acceptFriend(friendInfo.getFriendName(), friendInfo.getFriendUID());
+                FriendsManagement management = new FriendsManagement();
+                management.acceptFriend(friendInfo.getFriendName(), friendInfo.getFriendUID());
                 notifyDataSetChanged();
                 Toast.makeText(context, "친구 수락 완료", Toast.LENGTH_SHORT).show();
             });

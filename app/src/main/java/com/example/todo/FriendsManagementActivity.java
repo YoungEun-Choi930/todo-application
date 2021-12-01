@@ -28,7 +28,7 @@ import java.util.List;
 
 public class FriendsManagementActivity extends AppCompatActivity {
      //firebase에서 정보 가져오면 넣어주고 notify 왜냐면 정보 가져오는데 시간이 걸려서
-    private Button btn_del_friend, friends, friends_request, accept_friend;
+    private Button btn_del_friend, friends, friends_request;
     private static ArrayList<FriendInfo> friendsList;
     public friendAdapter friendAdapter;
     public AlertDialog dialog;
@@ -45,7 +45,9 @@ public class FriendsManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friends_management);
         friendsList = new ArrayList<>();
         friendAdapter = new friendAdapter(friendsList);
-        getFriendsList();   //friendlist에 정보 넣고 notify
+
+        FriendsManagement management = new FriendsManagement();
+        management.getFriendsList();   //friendlist에 정보 넣고 notify
         System.out.println("영은5");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.friend_toolbar);
@@ -84,7 +86,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friends.setOnClickListener(view -> { //서로친구목록
             friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_500));
             friends.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
-            getFriendsList();
+            management.getFriendsList();
             friendAdapter.notifyDataSetChanged();
         });
 
@@ -93,7 +95,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
             friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
             friends.setBackgroundColor(context.getResources().getColor(R.color.purple_500));
-            getFriendsRequestList();
+            management.getFriendsRequestList();
             friendAdapter.setData(friendsList);
             friendAdapter.notifyDataSetChanged();
         });
@@ -107,7 +109,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
             for(int i=0;i<friendAdapter.getcheckedList().size();i++){
                 FriendInfo friendInfo = friendAdapter.getcheckedList().get(i);
                 friendsList.remove(friendInfo);  //친구리스트에서 삭제
-                delFriend(friendInfo.getFriendName(), friendInfo.getFriendUID()); //디비가 안만들어졌네용
+                management.delFriend(friendInfo.getFriendName(), friendInfo.getFriendUID()); //디비가 안만들어졌네용
             }
             if(friendAdapter.getcheckedList().size()>0){
                 Toast.makeText(this, "친구 삭제 완료", Toast.LENGTH_SHORT).show();
@@ -159,7 +161,8 @@ public class FriendsManagementActivity extends AppCompatActivity {
                             Toast.makeText(FriendsManagementActivity.this,"아이디를 입력하세요",Toast.LENGTH_SHORT).show();
                         }
                         else{
-                          requestFriend(et.getText().toString());
+                            FriendsManagement management = new FriendsManagement();
+                            management.requestFriend(et.getText().toString());
                         }
 
                     }
@@ -190,33 +193,12 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friendAdapter.notifyDataSetChanged();
     }
 
-    /* ------------------------------------ 친구 목록 불러오기 ------------------------------------- */
-    private void getFriendsList(){
-        // firebase에서 가져오고 notifyFriendsList로 결과 받음.
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        firebaseDB.loadFriendsList();
-    }
-
-    /* ---------------------------------- 친구 신청 목록 불러오기 ----------------------------------- */
-    private void getFriendsRequestList(){
-        // firebase에서 가져오고 notifyFriendsList로 결과 받음.
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        firebaseDB.loadFriendsRequestList();
-    }
-
     /* ------------------------------- 친구 목록, 친구 신청 목록 결과 -------------------------------- */
-        public void notifyFriendsList(ArrayList<FriendInfo> list) {     //firebase에서 호출하는 메소드
+    public void notifyFriendsList(ArrayList<FriendInfo> list) {     //firebase에서 호출하는 메소드
         friendAdapter.setData(list);
         friendsList = list;
         friendAdapter.notifyDataSetChanged();           // 목록 화면 업데이트
 
-    }
-
-    /* ----------------------------- 친구 ID를 받아서 존재하면 친구신청 ------------------------------- */
-    public void requestFriend(String friendID) {
-        // firebase에서 confirm하고 showResult로 결과 받음.
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        firebaseDB.confirmFriendExist(friendID);
     }
 
     /* -------------------------------------- 친구 신청 결과 -------------------------------------- */
@@ -230,26 +212,6 @@ public class FriendsManagementActivity extends AppCompatActivity {
         }else if(result == 0){
             Toast.makeText(FriendsManagementActivity.this, "이미 친구인 사용자 입니다.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    /* ------------------------------------ 친구 신청 수락하기 ------------------------------------- */
-    public void acceptFriend(String friendID, String friendUID) {
-        // firebase update
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        firebaseDB.acceptFriend(friendID, friendUID);
-    }
-
-    /* ---------------------------------------- 친구 삭제 ----------------------------------------- */
-    public void delFriend(String friendID, String friendUID) {
-        // firebase update
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        firebaseDB.delFriend(friendID, friendUID);
-    }
-
-    /* --------------------------------------- 친구 일정 조회 -------------------------------------- */
-    public void getFriendToDoList(String friendID, int date) {
-        FirebaseDBHelper firebaseDB = new FirebaseDBHelper();
-        firebaseDB.loadFriendToDoList(friendID, date);
     }
 
 

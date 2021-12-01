@@ -11,9 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.List;
 
 public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemViewHolder> {
-    ArrayList<SubjectInfo> mySubjectList;
+    List<SubjectInfo> mySubjectList;
     ArrayList<SubjectInfo> checkedList = new ArrayList();
     private int ck = 0;
 
@@ -85,4 +86,7 @@ public class subjectAdapter extends RecyclerView.Adapter <subjectAdapter.ItemVie
         return checkedList;
     }
 
+    public void setList(List<SubjectInfo> list) {
+        mySubjectList = list;
+    }
 }
