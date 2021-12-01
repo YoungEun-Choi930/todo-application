@@ -87,7 +87,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         if(strdate[2].length() == 1) strdate[2] = "0" + strdate[2];
         sdate = strdate[0] + strdate[1] + strdate[2];
 
-        ToDoManagement toDoManagement = new ToDoManagement(mContext);
+        ToDoManagement toDoManagement = new ToDoManagement();
         todoList = toDoManagement.getToDoList(sdate);
        // todoList = getToDoList(sdate);      // to do list 가져오기
 
@@ -104,7 +104,7 @@ public class TodoManagementActivity extends AppCompatActivity {
                 if(strdate[2].length() == 1) strdate[2] = "0" + strdate[2];
                 sdate = strdate[0] + strdate[1] + strdate[2];
 
-                ToDoManagement toDoManagement = new ToDoManagement(mContext);
+                ToDoManagement toDoManagement = new ToDoManagement();
                 todoList = toDoManagement.getToDoList(sdate);
                 //todoList = getToDoList(sdate);          // to do list 가져오기
                 System.out.println(todoList.size()+"현재과목몇개니");
@@ -132,7 +132,7 @@ public class TodoManagementActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ToDoManagement toDoManagement = new ToDoManagement(mContext);
+        ToDoManagement toDoManagement = new ToDoManagement();
         todoList = toDoManagement.getToDoList(sdate);
         toDoAdapter.setList(todoList);
         toDoAdapter.notifyDataSetChanged();

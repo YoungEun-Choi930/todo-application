@@ -120,7 +120,7 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
                         if(Integer.parseInt(s_endtime)<Integer.parseInt(s_starttime))
                             Toast.makeText(getActivity(),"시작시간이 종료시간보다 뒤일 수 없습니다.",Toast.LENGTH_SHORT).show();
                         else{
-                            ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                            ToDoManagement toDoManagement = new ToDoManagement();
 
                             boolean result = toDoManagement.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
                             if(result){
@@ -136,7 +136,7 @@ public class AssignmentFragment extends Fragment implements View.OnClickListener
                         }
                     }
                     else{
-                        ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                        ToDoManagement toDoManagement = new ToDoManagement();
 
                         boolean result = toDoManagement.addAssignment(subjectName,todoName,s_startdate,s_starttime,s_enddate,s_endtime);
                         if(result){

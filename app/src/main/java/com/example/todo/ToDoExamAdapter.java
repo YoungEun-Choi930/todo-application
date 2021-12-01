@@ -58,7 +58,7 @@ public class ToDoExamAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
             ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ToDoManagement toDoManagement = new ToDoManagement(TodoManagementActivity.mContext);
+                    ToDoManagement toDoManagement = new ToDoManagement();
                     boolean result = toDoManagement.delExam(examInfo.getExamName(),examInfo.getSubjectName());
                     if(result){
                         AlarmManagement alarmManagement = new AlarmManagement();
