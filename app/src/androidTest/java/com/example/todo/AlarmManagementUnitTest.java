@@ -43,36 +43,48 @@ public class AlarmManagementUnitTest {
     }
 
    @Test
-    public void 테스트1_01정상적인알림추가() {
+    public void 테스트1정상적인알림추가() {
         boolean result = alarmManagement.addAlarm("testAlarm","1일 전","1시간 전","1시간 전");
        assertEquals(true, result);
        alarmList.add(new AlarmInfo(false,"testAlarm","1일 전", "1시간 전", "1시간 전"));
-       List<AlarmInfo> resultList = alarmManagement.getAlarmList();
-       assertEquals(alarmList.size(),resultList.size());
+
 
    }
+
    @Test
-   public void 테스트1_02이미존재하는알림추가() {
+   public void 테스트2알림목록조회 () {
+       List<AlarmInfo> resultList = alarmManagement.getAlarmList();
+       assertEquals(alarmList.size(),resultList.size());
+   }
+
+   @Test
+   public void 테스트3이미존재하는알림추가() {
        boolean result = alarmManagement.addAlarm("testAlarm","1일 전","1시간 전","1시간 전");
        assertEquals(false, result);
    }
+
    @Test
-   public void 테스트2_01정상적인알림삭제(){
+   public void 테스트4정상적인알림삭제(){
 
         boolean result = alarmManagement.delAlarm("testAlarm");
         alarmList.remove(0);
-       System.out.println(result+"false?");
-        List<AlarmInfo> resultList = alarmManagement.getAlarmList();
-       System.out.println(alarmList.size()+"dd"+resultList.size());
 
-       assertEquals(alarmList.size(),resultList.size());
        assertEquals(true, result);
    }
+
    @Test
-   public void 테스트2_02존재하지않는알림삭제(){
+   public void 테스트5알림목록조회() {
+       List<AlarmInfo> resultList = alarmManagement.getAlarmList();
+
+       assertEquals(0,resultList.size());
+   }
+   @Test
+   public void 테스트6존재하지않는알림삭제(){
         boolean result = alarmManagement.delAlarm("test0");
         assertEquals(false, result);
    }
+
+
 
 
     @AfterClass

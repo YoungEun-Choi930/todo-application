@@ -55,12 +55,135 @@ public class ToDoManagementUnitTest {
     }
 
     @Test
+    public void 테스트0_02년도가1899과제추가() {
+        boolean result = management.addAssignment("test","asstest2", "18991001", "0000", "18991101", "0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트0_03년도가2101과제추가() {
+        boolean result = management.addAssignment("test","asstest3", "21011001", "0000", "21011101", "0000");
+        assertFalse(result);
+
+    }
+
+    @Test
+    public void 테스트0_04월이0과제추가() {
+        boolean result = management.addAssignment("test","asstest4", "20210001", "0000", "20210002", "0000");
+        assertFalse(result);
+
+    }
+
+    @Test
+    public void 테스트0_05월이13과제추가() {
+        boolean result = management.addAssignment("test","asstest5", "20211301", "0000", "20211302", "0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트0_06일이0과제추가() {
+        boolean result = management.addAssignment("test","asstest6", "20211000", "0000", "2021100", "0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트0_07일이32과제추가() {
+        boolean result = management.addAssignment("test","asstest7", "20211032", "0000", "2021132", "0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트0_08시가24과제추가() {
+        boolean result = management.addAssignment("test","asstest8", "20211001", "2400", "20211101", "2400");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트0_09분이60과제추가() {
+        boolean result = management.addAssignment("test","asstest9", "20211001", "0060", "20211101", "0060");
+        assertFalse(result);
+
+    }
+
+
+    @Test
     public void 테스트1_01시험추가() {
         boolean result = management.addExam("test","examtest1","20211001","0000");
         assertTrue(result);
 
     }
 
+    @Test
+    public void 테스트1_02년도가1899시험추가() {
+        boolean result = management.addExam("test","examtest2","18991001","0000");
+        assertFalse(result);
+
+    }
+
+    @Test
+    public void 테스트1_03년도가2101시험추가() {
+        boolean result = management.addExam("test","examtest3","21011001","0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트1_04월이0시험추가() {
+        boolean result = management.addExam("test","examtest4","20210001","0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트1_05월이13시험추가() {
+        boolean result = management.addExam("test","examtest5","20211301","0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트1_06일이0시험추가() {
+        boolean result = management.addExam("test","examtest6","202111000","0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트1_07일이32시험추가() {
+        boolean result = management.addExam("test","examtest7","202111032","0000");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트1_08시가24시험추가() {
+        boolean result = management.addExam("test","examtest8","20211001","2400");
+        assertFalse(result);
+
+    }
+
+
+    @Test
+    public void 테스트1_09분이60시험추가() {
+        boolean result = management.addExam("test","examtest9","20211001","0060");
+        assertFalse(result);
+
+    }
 
     @Test
     public void 테스트2_01getToDo() {
@@ -72,6 +195,16 @@ public class ToDoManagementUnitTest {
 
         assignmentList = new ArrayList<>();
         examList = new ArrayList<>();
+
+    }
+
+
+    @Test
+    public void 테스트2_02getToDo() {
+        HashMap<String, Object> resulthashmap = management.getToDoList("20211002");
+
+        assignmentList.add(new AssignmentInfo("test","asstest1",true));
+        assertHashmap(resulthashmap);
 
     }
 
@@ -95,13 +228,13 @@ public class ToDoManagementUnitTest {
     }
 
     @Test
-    public void 테스트2_02ChangeisDone() {
+    public void 테스트2_03ChangeisDone() {
         boolean result = management.changeIsDone("asstest1", "test", "assignment", 1);
         assertTrue(result);
     }
 
     @Test
-    public void 테스트2_03getToDo() {
+    public void 테스트2_04getToDo() {
         HashMap<String, Object> resulthashmap = management.getToDoList("20211001");
 
         assignmentList.add(new AssignmentInfo("test","asstest1",true));
@@ -115,7 +248,6 @@ public class ToDoManagementUnitTest {
     @Test
     public void 테스트3_01과제삭제() {
         management.delAssignment("asstest1", "test");
-
 
     }
 

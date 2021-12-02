@@ -69,6 +69,11 @@ public class SQLiteDBHelperTest {                       // Unit Test
         boolean result = helper.executeQuery(query);
         assertTrue(result);
 
+
+    }
+
+    @Test
+    public void test011loadSubjectList() {
         List<SubjectInfo> resultlist = helper.loadSubjectList();
         assertEquals(1, resultlist.size());
 
@@ -100,7 +105,23 @@ public class SQLiteDBHelperTest {                       // Unit Test
         boolean result = helper.executeQuery(query);
         assertTrue(result);
 
+
+    }
+
+    @Test
+    public void test05LoadLectureList() {
         List<LectureInfo> resultlist = helper.loadLectureList("20210902");
+        assertEquals(1, resultlist.size());
+
+        LectureInfo resultinfo = resultlist.get(0);
+        assertEquals("test1", resultinfo.getSubjectName());
+        assertEquals("lname", resultinfo.getLectureName());
+        assertEquals(false, resultinfo.getIsDone());
+    }
+
+    @Test
+    public void test06LoadLectureList() {
+        List<LectureInfo> resultlist = helper.loadLectureList("20210801");
         assertEquals(1, resultlist.size());
 
         LectureInfo resultinfo = resultlist.get(0);
@@ -122,6 +143,11 @@ public class SQLiteDBHelperTest {                       // Unit Test
         boolean result = helper.executeQuery(query);
         assertTrue(result);
 
+
+    }
+
+    @Test
+    public void test10LoadLecture() {
         List<LectureInfo> resultlist = helper.loadLectureList("20210902");
         assertEquals(0, resultlist.size());
     }
@@ -132,6 +158,11 @@ public class SQLiteDBHelperTest {                       // Unit Test
         boolean result = helper.executeQuery(query);
         assertTrue(result);
 
+    }
+
+    @Test
+    public void test11loadAssignment() {
+
         List<AssignmentInfo> resultlist = helper.loadAssignmentList("20210902");
         assertEquals(1, resultlist.size());
 
@@ -140,6 +171,19 @@ public class SQLiteDBHelperTest {                       // Unit Test
         assertEquals("aname", resultinfo.getAssignmentName());
         assertEquals(false, resultinfo.getIsDone());
     }
+
+    @Test
+    public void test13loadAssignment() {
+
+        List<AssignmentInfo> resultlist = helper.loadAssignmentList("20210801");
+        assertEquals(1, resultlist.size());
+
+        AssignmentInfo resultinfo = resultlist.get(0);
+        assertEquals("test1", resultinfo.getSubjectName());
+        assertEquals("aname", resultinfo.getAssignmentName());
+        assertEquals(false, resultinfo.getIsDone());
+    }
+
 
     @Test
     public void test08LoadAssignmentDateList() {
@@ -159,17 +203,42 @@ public class SQLiteDBHelperTest {                       // Unit Test
     }
 
     @Test
+    public void test16oadAssignment() {
+
+        List<AssignmentInfo> resultlist = helper.loadAssignmentList("20210902");
+        assertEquals(1, resultlist.size());
+
+        AssignmentInfo resultinfo = resultlist.get(0);
+        assertEquals("test1", resultinfo.getSubjectName());
+        assertEquals("aname", resultinfo.getAssignmentName());
+        assertEquals(false, resultinfo.getIsDone());
+    }
+
+
+    @Test
     public void test10AddExam() {   //시험 추가
         String query = "INSERT INTO ExamList VALUES('test1', 'ename', 20211231, 0900);";
         boolean result = helper.executeQuery(query);
         assertTrue(result);
 
+
+    }
+
+    @Test
+    public void test18() {
         List<ExamInfo> resultlist = helper.loadExamList("20211231");
         assertEquals(1, resultlist.size());
 
         ExamInfo resultinfo = resultlist.get(0);
         assertEquals("test1", resultinfo.getSubjectName());
         assertEquals("ename", resultinfo.getExamName());
+    }
+
+    @Test
+    public void test19() {
+        List<ExamInfo> resultlist = helper.loadExamList("20210901");
+        assertEquals(0, resultlist.size());
+
     }
 
     @Test
@@ -189,6 +258,14 @@ public class SQLiteDBHelperTest {                       // Unit Test
         assertEquals(0, resultlist.size());
     }
 
+
+    @Test
+    public void test22() {
+        List<ExamInfo> resultlist = helper.loadExamList("20211231");
+        assertEquals(0, resultlist.size());
+
+    }
+
     @Test
     public void test13AddAlarm() {   //알림 정보 추가
         String query = "INSERT INTO AlarmInfoList VALUES('test1', '1일 전', '1시간 전', '1시간 전');";
@@ -206,6 +283,11 @@ public class SQLiteDBHelperTest {                       // Unit Test
     }
 
     @Test
+    public void test24loadAlarmInfo() {
+        List<AlarmInfo> resultlist = helper.loadAlarmList();
+    }
+
+    @Test
     public void test14AddAlarmEquls() {   //동일한 알림 정보 추가
         String query = "INSERT INTO AlarmInfoList VALUES('test1', '1일 전', '1시간 전', '1시간 전');";
         boolean result = helper.executeQuery(query);
@@ -220,6 +302,11 @@ public class SQLiteDBHelperTest {                       // Unit Test
 
         List<AlarmInfo> resultlist = helper.loadAlarmList();
         assertEquals(0, resultlist.size());
+    }
+
+    @Test
+    public void test27loadAlarmInfo() {
+        List<AlarmInfo> resultlist = helper.loadAlarmList();
     }
 
     @Test
@@ -270,6 +357,11 @@ public class SQLiteDBHelperTest {                       // Unit Test
         String query = "DELETE FROM AlarmList WHERE number = 1;";
         boolean result = helper.executeQuery(query);
         assertTrue(result);
+
+    }
+
+    @Test
+    public void test32() {
 
         int a = helper.loadAlarmNum("a");
         assertEquals(-1,a);

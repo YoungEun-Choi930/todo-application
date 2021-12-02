@@ -269,7 +269,7 @@ public class SubjectManagementUnitTest {
     }
 
     @Test
-    public void 테스트3_01존재하는과목삭제() {
+    public void 테스트3존재하는과목삭제() {
 
         management.delSubject("test1");
 
@@ -283,17 +283,6 @@ public class SubjectManagementUnitTest {
         }
     }
 
-    @Test
-    public void 테스트3_02존재하지않는과목삭제() {
-        management.delSubject("test0");
-
-        List<SubjectInfo> resultList = management.getSubjectList();
-
-        assertEquals(subjectlist.size(), resultList.size());
-        for(int i = 0; i < resultList.size(); i++){
-            assertEquals(subjectlist.get(i).getSubjectName(), resultList.get(i).getSubjectName());
-        }
-    }
 
 
     @AfterClass
