@@ -82,7 +82,6 @@ public class FirebaseDBHelper {
                             FriendInfo info = new FriendInfo(id, uid);
                             result.add(info);
 
-                            System.out.println("--------------"+id);
                         }
                     }
                     FriendsManagementActivity.context.notifyFriendsList(result);
@@ -158,7 +157,9 @@ public class FirebaseDBHelper {
     /* -------------------------------------- 친구 삭제 ------------------------------------------- */
     public void delFriend(String friendID, String friendUID) {
         databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("value").setValue(null);
+        databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("friendUID").setValue(null);
         databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).child("value").setValue(null);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).child("friendUID").setValue(null);
     }
 
     /* ---------------------------------- 친구 to do list 가져오기---------------------------------- */
@@ -259,10 +260,6 @@ public class FirebaseDBHelper {
                     result.add(lectureInfolist);
                     result.add(assingmentInfolist);
                     result.add(examInfolist);
-
-                    List<LectureInfo> lectureInfos = result.get(0);
-                    for(LectureInfo info: lectureInfos)
-                        System.out.println(info.getSubjectName());
 
                     FriendToDoActivity.context.notifyFriendToDoList(result);
 

@@ -28,10 +28,14 @@ public class FriendToDoActivity extends AppCompatActivity {
     public ToDoAdapter toDoAdapter;
     public static FriendToDoActivity context;
     String sdate;
+    private long start;     // 일정 목록 출력 시간 계산.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        start = System.currentTimeMillis();
+
         setContentView(R.layout.activity_friend_to_do);
 
         Intent intent = getIntent();
@@ -52,6 +56,7 @@ public class FriendToDoActivity extends AppCompatActivity {
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                start = System.currentTimeMillis();
                 //CalendarDay -> String으로 변환
                 String stringdate = date.toString().replace("CalendarDay{","").replace("}","");
                 String[] strdate = stringdate.split("-");
@@ -66,7 +71,6 @@ public class FriendToDoActivity extends AppCompatActivity {
                 sdate += strdate[2];
 
 
-                System.out.println("-----------------------------get");
                 FriendsManagement management = new FriendsManagement();
                 management.getFriendToDoList(uid, Integer.parseInt(sdate));
 
@@ -108,19 +112,16 @@ public class FriendToDoActivity extends AppCompatActivity {
 //        friendAdapter.setData(list);
       //  friendToDoList = list;
 //        friendAdapter.notifyDataSetChanged();
-        System.out.println("----notify friend to do ------------");
 
 
         HashMap<String, Object> map = new HashMap<>();
 
 
         List<LectureInfo> lectureList = list.get(0);
-        System.out.println(lectureList.size()+"강의몇개?");
         for (LectureInfo lectureInfo : lectureList) {
             if(map.containsKey(lectureInfo.getSubjectName())) {
                 List<List> todolist = (List<List>) map.get(lectureInfo.getSubjectName());
                 List<LectureInfo> lecture = todolist.get(0);
-                System.out.println(lectureInfo.getSubjectName()+" 강의의 과목이름"+ lectureInfo.getLectureName());
                 lecture.add(lectureInfo);
                 todolist.set(0,lecture);
                 map.put(lectureInfo.getSubjectName(), todolist);
@@ -194,6 +195,11 @@ public class FriendToDoActivity extends AppCompatActivity {
         }
         toDoAdapter.setList(map);
         toDoAdapter.notifyDataSetChanged();
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("----------------------------- 친구 일정 조회 화면 출력에 걸린 시간:" + (end - start)/1000.0 +"-------------------------------");
+
 
     }
 
