@@ -191,7 +191,7 @@ public class ToDoManagementUnitTest {
 
         assignmentList.add(new AssignmentInfo("test","asstest1",false));
         examList.add(new ExamInfo("test","examtest1"));
-        assertHashmap(resulthashmap);
+        assertTrue(assertHashmap(resulthashmap));
 
         assignmentList = new ArrayList<>();
         examList = new ArrayList<>();
@@ -201,20 +201,27 @@ public class ToDoManagementUnitTest {
 
     @Test
     public void 테스트2_02getToDo() {
-        HashMap<String, Object> resulthashmap = management.getToDoList("20211002");
+        HashMap<String, Object> resulthashmap = management.getToDoList("20211102");
 
-        assignmentList.add(new AssignmentInfo("test","asstest1",true));
-        assertHashmap(resulthashmap);
+        assertNull(resulthashmap.get(0));
+        assertNull(resulthashmap.get(1));
+        assertNull(resulthashmap.get(2));
 
     }
 
-    private void assertHashmap(HashMap<String, Object> result) {
+    private boolean assertHashmap(HashMap<String, Object> result) {
         List<List> resultlist = (List<List>) result.get("test");
+
+
         List<AssignmentInfo> resultassignment = resultlist.get(1);
         List<ExamInfo> resultexam = resultlist.get(2);
 
-        assertEquals(assignmentList.size(), resultassignment.size());
-        assertEquals(examList.size(), resultexam.size());
+        if(assignmentList.size()!=resultassignment.size())
+            return false;
+        if(examList.size()!=resultexam.size())
+            return false;
+     //   assertEquals(assignmentList.size(), resultassignment.size());
+     //   assertEquals(examList.size(), resultexam.size());
 
         for(int i = 0; i < assignmentList.size(); i++) {
             assertEquals(assignmentList.get(i).getSubjectName(), resultassignment.get(i).getSubjectName());
@@ -225,6 +232,7 @@ public class ToDoManagementUnitTest {
             assertEquals(examList.get(i).getSubjectName(), resultexam.get(i).getSubjectName());
             assertEquals(examList.get(i).getExamName(), resultexam.get(i).getExamName());
         }
+        return true;
     }
 
     @Test
@@ -239,7 +247,7 @@ public class ToDoManagementUnitTest {
 
         assignmentList.add(new AssignmentInfo("test","asstest1",true));
         examList.add(new ExamInfo("test","examtest1"));
-        assertHashmap(resulthashmap);
+        assertTrue(assertHashmap(resulthashmap));
 
         assignmentList = new ArrayList<>();
         examList = new ArrayList<>();
@@ -257,7 +265,8 @@ public class ToDoManagementUnitTest {
         HashMap<String, Object> resulthashmap = management.getToDoList("20211001");
 
         examList.add(new ExamInfo("test","examtest1"));
-        assertHashmap(resulthashmap);
+        assertTrue(assertHashmap(resulthashmap));
+
 
         assignmentList = new ArrayList<>();
         examList = new ArrayList<>();

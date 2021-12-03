@@ -43,7 +43,7 @@ public class AlarmManagementUnitTest {
     }
 
    @Test
-    public void 테스트1정상적인알림추가() {
+    public void 테스트1_01정상적인알림추가() {
         boolean result = alarmManagement.addAlarm("testAlarm","1일 전","1시간 전","1시간 전");
        assertEquals(true, result);
        alarmList.add(new AlarmInfo(false,"testAlarm","1일 전", "1시간 전", "1시간 전"));
@@ -52,15 +52,20 @@ public class AlarmManagementUnitTest {
    }
 
    @Test
-   public void 테스트2알림목록조회 () {
+   public void 테스트1_02알림목록조회 () {
        List<AlarmInfo> resultList = alarmManagement.getAlarmList();
        assertEquals(alarmList.size(),resultList.size());
    }
 
    @Test
-   public void 테스트3이미존재하는알림추가() {
+   public void 테스트1_03이미존재하는알림추가() {
        boolean result = alarmManagement.addAlarm("testAlarm","1일 전","1시간 전","1시간 전");
        assertEquals(false, result);
+   }
+   @Test
+   public void 테스트1_04알림파라미터가형식을벗어나는경우(){
+        boolean result = alarmManagement.addAlarm("testAlarm","a","b","c");
+        assertEquals(false,result);
    }
 
    @Test

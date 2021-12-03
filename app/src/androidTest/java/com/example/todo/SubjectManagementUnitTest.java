@@ -259,7 +259,7 @@ public class SubjectManagementUnitTest {
     }
 
     @Test
-    public void 테스트2_getSubjectList() {
+    public void 테스트2_과목목록조회() {
         List<SubjectInfo> resultList = management.getSubjectList();
 
         assertEquals(subjectlist.size(), resultList.size());
