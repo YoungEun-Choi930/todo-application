@@ -115,7 +115,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
                 management.delFriend(friendInfo.getFriendName(), friendInfo.getFriendUID()); //디비가 안만들어졌네용
             }
             if(friendAdapter.getcheckedList().size()>0){
-                Toast.makeText(this, "친구 삭제 완료", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "친구삭제 완료", Toast.LENGTH_SHORT).show();
             }
           //  Toast.makeText(this, "친구 삭제 완료", Toast.LENGTH_SHORT).show();
             btn_del_friend.setVisibility(View.GONE);

@@ -58,7 +58,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
                 alarmManagement.delAlarm(alarmAdapter.getcheckedList().get(i).getSubjectName());
             }
             if(alarmAdapter.getcheckedList().size()>0){
-                Toast.makeText(this, "알림 삭제 완료", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "알림삭제 완료", Toast.LENGTH_SHORT).show();
             }
             btn_del_alarm.setVisibility(View.GONE);
             btnCheck(0);
