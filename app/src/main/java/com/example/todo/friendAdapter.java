@@ -93,7 +93,7 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
                 FriendsManagement management = new FriendsManagement();
                 management.acceptFriend(friendInfo.getFriendName(), friendInfo.getFriendUID());
                 notifyDataSetChanged();
-                Toast.makeText(context, "친구 수락 완료", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "친구수락 완료", Toast.LENGTH_SHORT).show();
             });
 
             if(ck==1){
