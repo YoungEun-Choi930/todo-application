@@ -203,13 +203,10 @@ public class ToDoManagement {
         }
         System.out.println(time+"시험시간이 왜이러지");
         System.out.println(date+"시험날짜는 어케나오나");
-        String formattime = null;
-        if(time.length()==3) // 10시 이전은 시가 한글자라서 총 4글자가 되게 맞춰줌
-            formattime="0"+time;
 
         AlarmManagement alarmManagement = new AlarmManagement();
 
-        alarmManagement.addSystemAlarm(subjectName, examName, date+formattime, hourNum, "Exam");
+        alarmManagement.addSystemAlarm(subjectName, examName, date+time, hourNum, "Exam");
 
         return result;
     }

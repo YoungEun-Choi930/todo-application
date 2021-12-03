@@ -85,6 +85,7 @@ public class ExamFragment extends Fragment implements View.OnClickListener, Time
 
                     String s_time = this.time.getText().toString();
                     String[] splittime = s_time.split(":");
+                    if(splittime[0].length() == 1) splittime[0] = "0"+splittime[0];
                     if(splittime[1].length() == 1) splittime[1] = "0"+splittime[1];
                     s_time = splittime[0]+splittime[1];
                     System.out.println(s_time+"설정한시험시간");
