@@ -136,6 +136,7 @@ public class ToDoManagement {
             case "5시간 전": hourNum = 4; break;
         }
 
+        // system alarm add
         AlarmManagement alarmManagement = new AlarmManagement();
         alarmManagement.addSystemAlarm(subjectName, assignmentName,endDate+endTime, hourNum,"Lecture");
 
@@ -156,8 +157,7 @@ public class ToDoManagement {
         // 알림이 존재한다면 삭제
         int num = helper.loadAlarmNum(assignmentName);
         if(num != -1){
-            //system delete
-
+            //system alarm delete
             AlarmManagement alarmManagement = new AlarmManagement();
             alarmManagement.delSystemAlarm(num);
 
@@ -201,11 +201,9 @@ public class ToDoManagement {
             case "5일 전": hourNum = 24*5; break;
             case "7일 전": hourNum = 24*7; break;
         }
-        System.out.println(time+"시험시간이 왜이러지");
-        System.out.println(date+"시험날짜는 어케나오나");
 
+        // system alarm add
         AlarmManagement alarmManagement = new AlarmManagement();
-
         alarmManagement.addSystemAlarm(subjectName, examName, date+time, hourNum, "Exam");
 
         return result;
@@ -225,7 +223,7 @@ public class ToDoManagement {
         // 알림이 존재한다면 삭제
         int num = helper.loadAlarmNum(examName);
         if(num != -1){
-            //system delete
+            //system alarm delete
             AlarmManagement alarmManagement = new AlarmManagement();
             alarmManagement.delSystemAlarm(num);
             // sqlite delete
@@ -284,14 +282,7 @@ public class ToDoManagement {
                 else
                     hourNum=Integer.parseInt(alarmInfo.getVideoLectureAlarmDate().substring(0,1));
             }
-            // int hourNum = 0;
-            /*
-            switch (num) {
-                case "1일 전": hourNum = 24; break;
-                case "3일 전": hourNum = 24*3; break;
-                case "5일 전": hourNum = 24*5; break;
-                case "7일 전": hourNum = 24*7; break;
-            }*/
+            //system alarm add
             alarmManagement.addSystemAlarm(subjectName, name, alarmTime, hourNum, table);
         }
 

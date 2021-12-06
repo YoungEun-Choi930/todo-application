@@ -24,7 +24,6 @@ public class SQLiteDBHelper
 
     public Boolean executeQuery(String sql)
     {
-        System.out.println(sql);
         try
         {
             SQLiteDatabase mDb = mDbHelper.getWritableDatabase();
@@ -113,7 +112,6 @@ public class SQLiteDBHelper
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
             String sql = "SELECT subjectName, lectureName, isDone FROM LectureList WHERE startDate <= "+date+" AND endDate >= "+date+";";
-            System.out.println(sql);
             List<LectureInfo> list = new ArrayList();
 
             Cursor cursor = mDb.rawQuery(sql, null);
@@ -417,7 +415,6 @@ public class SQLiteDBHelper
     /* -------------------------------- 시스템 알림을 sqlite에 저장 ----------------------------------*/
     public int setAlarmNum(String name, String subjectName) {
         String sql = "INSERT INTO AlarmList VALUES('"+name+"', '"+subjectName+"', null);";
-        System.out.println(sql);
 
         SQLiteDatabase mDb = mDbHelper.getWritableDatabase();
         mDb.execSQL(sql);
@@ -434,8 +431,6 @@ public class SQLiteDBHelper
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
             String sql = "SELECT number FROM AlarmList WHERE name == '"+name+"';";
-            System.out.print(sql);
-
 
             Cursor cursor = mDb.rawQuery(sql, null);
             if (cursor!=null)
@@ -449,7 +444,6 @@ public class SQLiteDBHelper
             cursor.close();
             mDbHelper.close();
 
-            System.out.println("------------>"+number);
             return number;
         }
         catch (SQLException mSQLException)
@@ -465,7 +459,6 @@ public class SQLiteDBHelper
         {
             SQLiteDatabase mDb = mDbHelper.getReadableDatabase();
             String sql = "SELECT number FROM AlarmList WHERE subjectName == '"+subjectName+"';";
-            System.out.print(sql);
 
             List<Integer> list = new ArrayList<>();
 
@@ -482,7 +475,6 @@ public class SQLiteDBHelper
 
 
             sql = "DELETE FROM AlarmList WHERE subjectName == '"+subjectName+"';";
-            System.out.print(sql);
             mDb = mDbHelper.getWritableDatabase();
             mDb.execSQL(sql);
 

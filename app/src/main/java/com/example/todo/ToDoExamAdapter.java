@@ -63,7 +63,6 @@ public class ToDoExamAdapter extends RecyclerView.Adapter <RecyclerView.ViewHold
                     if(result){
                         todoExam.remove(examInfo);
                         Toast.makeText(view.getContext(),"시험삭제 완료",Toast.LENGTH_SHORT).show();
-                        System.out.println("시험삭제완료");
                         TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
                     }
                     else{

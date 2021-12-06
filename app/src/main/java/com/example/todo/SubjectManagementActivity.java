@@ -82,7 +82,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.subject_menu, menu); //툴바에 ㅇ메뉴 설정
+        menuInflater.inflate(R.menu.subject_menu, menu); //툴바에 메뉴 설정
         return true;
     }
 
@@ -112,19 +112,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
         subjectAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode != Activity.RESULT_OK) {
-                return;
-            }
-            subjectAdapter.notifyDataSetChanged();
 
-        }
-    }
-*/
     public void btnCheck(int n){
         subjectAdapter.updateCheckBox(n);
         subjectAdapter.notifyDataSetChanged();
