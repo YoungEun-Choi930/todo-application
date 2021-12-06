@@ -40,7 +40,7 @@ public class AddAssignmentExamActivity extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment exam = new ExamFragment();
-        transaction.replace(R.id.frame,exam);
+        transaction.replace(R.id.frame,exam); //처음 접속하면 examFragment 설정
 
         transaction.commit();
 
@@ -52,7 +52,7 @@ public class AddAssignmentExamActivity extends AppCompatActivity {
                 typeName = type.getResources().getResourceName(id);
                 String[] split = typeName.split("/");
                 typeName = split[1];
-                if(typeName.equals("exam")){
+                if(typeName.equals("exam")){ //버튼이 시험 버튼이면
                     tv_todoname.setText("시험명");
                     et_todoname.setText(null);
                     et_todoname.setHint("시험명을 입력하세요.");
@@ -63,7 +63,7 @@ public class AddAssignmentExamActivity extends AppCompatActivity {
                     transaction.commit();
 
                 }
-                else{
+                else{ // 버튼이 과제 버튼이면
                     tv_todoname.setText("과제명");
                     et_todoname.setText(null);
                     et_todoname.setHint("과제명을 입력하세요.");
@@ -76,8 +76,6 @@ public class AddAssignmentExamActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
     }
 

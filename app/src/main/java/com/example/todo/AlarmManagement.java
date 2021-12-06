@@ -19,27 +19,27 @@ public class AlarmManagement {
     public static PendingIntent pendingIntent;
     public static int number;
 
-    public List<AlarmInfo> getAlarmList(){
+    public List<AlarmInfo> getAlarmList(){ //알림리스트 리턴
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         List<AlarmInfo> list = adapter.loadAlarmList();
         return list;
     }
 
-    // 리얼빼고 파라미터 4개인걸로 넘겼어용
-    public boolean addAlarm(String subjectName, String exam, String assignment, String video){
+
+    public boolean addAlarm(String subjectName, String exam, String assignment, String video){ //알림추가
         String query = "INSERT INTO AlarmInfoList VALUES('"+
                 subjectName+"','"+exam+"','"+assignment+"','"+video+"');";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
-        boolean result = adapter.executeQuery(query);
+        boolean result = adapter.executeQuery(query); //쿼리문 날려서
 
-        if(result == false) return false;
+        if(result == false) return false; //실패면 false
 
         AlarmInfo alarmInfo = new AlarmInfo(false,subjectName,exam,assignment,video);
-        AlarmManagementActivity.alarmInfoList.add(alarmInfo);
-        setSystemAlarm(subjectName, exam, assignment, video);
+        AlarmManagementActivity.alarmInfoList.add(alarmInfo); //화면의 리스트에 추가
+        setSystemAlarm(subjectName, exam, assignment, video);//시스템알림 추가
         return true;
     }
-    public boolean delAlarm(String subjectName) {
+    public boolean delAlarm(String subjectName) {//알림삭제
 
         SQLiteDBHelper helper = new SQLiteDBHelper();
         AlarmInfo alarmInfo = helper.loadAlarmInfo(subjectName);
@@ -50,12 +50,12 @@ public class AlarmManagement {
         String query = "DELETE FROM AlarmInfoList WHERE subjectName = '"+subjectName+"';";
         SQLiteDBHelper adapter = new SQLiteDBHelper();
         boolean result = adapter.executeQuery(query);
-        delSubjectAlarm(subjectName);
+        delSubjectAlarm(subjectName);//과목에 설정된 알림 삭제
         return result;
     }
 
 
-    private void setSystemAlarm(String subjectName, String exam, String assignment, String video) {
+    private void setSystemAlarm(String subjectName, String exam, String assignment, String video) {//시스템알림 설정
 
         int examnum = Integer.parseInt(exam.substring(0,1));
         examnum = examnum * 24;
@@ -72,7 +72,7 @@ public class AlarmManagement {
         else {
             videonum = Integer.parseInt(video.substring(0, 1));
         }
-
+        //알림시간 계산
 
         SQLiteDBHelper helper = new SQLiteDBHelper();
         List<String> list = helper.loadLectureDateList(subjectName);            // sqlite에서 강의목록 들고오기
@@ -130,11 +130,9 @@ public class AlarmManagement {
         SQLiteDBHelper helper = new SQLiteDBHelper();
         int alarmNum = helper.setAlarmNum(alarmName,subjectName);
         number = alarmNum;
-        System.out.println(number+"알람번호");
-        System.out.println("과목이름"+subjectName+"알람이름"+alarmName+"시간"+dateFormat.format(datetime)+"몇시간전에?"+hourNum+"알람울리는시간"+dateFormat.format(calendar.getTime()));
         Intent receiverIntent = new Intent(TodoManagementActivity.mContext, AlarmRecevier.class);
         pendingIntent = PendingIntent.getBroadcast(TodoManagementActivity.mContext, alarmNum, receiverIntent, 0);
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);      //여기서 에러나요~~~~~!!!!!!!!
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
     }
 
     public void delSubjectAlarm(String subjectName){ //과목에 대한 알람을 한꺼번에 삭제

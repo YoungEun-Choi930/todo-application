@@ -9,7 +9,6 @@ public class AssignmentInfo {
     private String subjectName;
     private String assignmentName;
     private Boolean isDone;
-    private int viewTipe=0;
 
     public AssignmentInfo(String subjectName, String assignmentName, Boolean isDone) {
         this.subjectName = subjectName;
@@ -33,14 +32,7 @@ public class AssignmentInfo {
         return isDone;
     }
 
-    public void setIsDone(Boolean isDone) {
-        isDone = isDone;
-    }
-    public int getViewTipe() {
-        return viewTipe;
+    public void setIsDone(Boolean isDone) { this.isDone = isDone;
     }
 
-    public void setViewTipe(int viewTipe) {
-        this.viewTipe = viewTipe;
-    }
 }

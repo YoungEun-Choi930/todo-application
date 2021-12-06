@@ -28,7 +28,6 @@ public class AlarmRecevier extends BroadcastReceiver {
         manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             manager.createNotificationChannel(new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH));
-         //   builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         } else {
             builder = new NotificationCompat.Builder(context);
         }
