@@ -473,12 +473,6 @@ public class SQLiteDBHelper
             cursor.close();
             mDbHelper.close();
 
-
-            sql = "DELETE FROM AlarmList WHERE subjectName == '"+subjectName+"';";
-            mDb = mDbHelper.getWritableDatabase();
-            mDb.execSQL(sql);
-
-
             return list;
         }
         catch (SQLException mSQLException)
