@@ -48,6 +48,8 @@ public class SubjectManagementActivity extends AppCompatActivity {
         SubjectManagement management = new SubjectManagement();
         subjectlist = management.getSubjectList();
 
+
+        //리사이클러뷰
         RecyclerView recyclerView = findViewById(R.id.recy_sub);
         subjectAdapter = new subjectAdapter((ArrayList<SubjectInfo>) subjectlist);
         recyclerView.setAdapter(subjectAdapter);
@@ -59,7 +61,7 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-
+        //삭제버튼
         btn_del_sub= (Button)findViewById(R.id.btn_del_sub);
         btn_del_sub.setOnClickListener(view -> { //삭제버튼 선택되면
 
@@ -94,17 +96,17 @@ public class SubjectManagementActivity extends AppCompatActivity {
                 startActivity(intent);
 
                 break;
-            case R.id.del_subject:
-                if(ck==0){
-                    btnCheck(1);
+            case R.id.del_subject: // 과목삭제버튼 누른 경우
+                if(ck==0){//삭제기능을 사용중이지 않다면
+                    btnCheck(1);//체크박스 보이게
                     ck=1;
-                    btn_del_sub.setVisibility(View.VISIBLE);
+                    btn_del_sub.setVisibility(View.VISIBLE);//삭제버튼 보이게
                     break;
                 }
-                else if(ck==1){
-                   btnCheck(0);
+                else if(ck==1){//이미 삭제기능을 사용중이라면
+                   btnCheck(0);//체크박스 안보이게
                    ck=0;
-                    btn_del_sub.setVisibility(View.GONE);
+                    btn_del_sub.setVisibility(View.GONE);//삭제버튼 안보이게
                     break;
                 }
 
