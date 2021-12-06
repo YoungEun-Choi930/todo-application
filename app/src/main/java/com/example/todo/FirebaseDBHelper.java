@@ -53,7 +53,7 @@ public class FirebaseDBHelper {
 
                 }
                 else{
-                    System.out.println("디비실패");
+                   //실패
                 }
             }
         };
@@ -88,7 +88,7 @@ public class FirebaseDBHelper {
 
                 }
                 else{
-                    System.out.println("디비실패");
+                    //실패
                 }
             }
         };
@@ -229,7 +229,7 @@ public class FirebaseDBHelper {
                                             isDone = false;
 
                                         AssignmentInfo assignmentInfo = new AssignmentInfo(subjectName,lectureName,isDone);
-                                        assignmentInfo.setViewTipe(1);
+                                       // assignmentInfo.setViewTipe(1);
                                         assingmentInfolist.add(assignmentInfo);
                                     }
 
@@ -247,7 +247,7 @@ public class FirebaseDBHelper {
                                             String subjectName = subjectlist.getKey();
 
                                             ExamInfo examInfo = new ExamInfo(subjectName,lectureName);
-                                            examInfo.setViewTipe(1);
+                                          //  examInfo.setViewTipe(1);
                                             examInfolist.add(examInfo);
                                         }
                                     }
@@ -265,7 +265,7 @@ public class FirebaseDBHelper {
 
                 }
                 else{
-                    System.out.println("디비실패");     //여기로 올 수도 있음
+                    //실패
                 }
             }
         };

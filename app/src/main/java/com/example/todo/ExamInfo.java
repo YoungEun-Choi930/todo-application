@@ -7,7 +7,7 @@ subjectName과 examName에 대하여 메소드를 getter만 두어 Constructor�
 public class ExamInfo {
     private String subjectName;
     private String examName;
-    private int viewTipe=0;
+    //private int viewTipe=0;
 
     public ExamInfo(String subjectName, String examName) {
 
@@ -22,11 +22,11 @@ public class ExamInfo {
     public String getExamName() {
         return examName;
     }
-    public int getViewTipe() {
-        return viewTipe;
-    }
+   // public int getViewTipe() {
+   //     return viewTipe;
+   // }
 
-    public void setViewTipe(int viewTipe) {
-        this.viewTipe = viewTipe;
-    }
+  //  public void setViewTipe(int viewTipe) {
+  //      this.viewTipe = viewTipe;
+  //  }
 }
