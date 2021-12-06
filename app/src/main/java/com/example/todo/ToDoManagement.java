@@ -98,6 +98,8 @@ public class ToDoManagement {
 
     /* --------------------------- 선택한 과목에 대하여 과제를 추가하기 -------------------------------- */
     public boolean addAssignment(String subjectName, String assignmentName, String startDate, String startTime, String endDate, String endTime) {
+        // 예외처리
+        // 화면에서 올 수 없는 경우
         int istartd = Integer.parseInt(startDate);
         int istartt = Integer.parseInt(startTime);
         int iendd = Integer.parseInt(endDate);
@@ -171,6 +173,8 @@ public class ToDoManagement {
 
     /* --------------------------- 선택한 과목에 대하여 시험을 추가하기 -------------------------------- */
     public boolean addExam(String subjectName, String examName, String date, String time) {
+        // 예외처리
+        // 화면에서 올 수 없는 경우
         int idate = Integer.parseInt(date);
         int itime = Integer.parseInt(time);
 
@@ -265,8 +269,6 @@ public class ToDoManagement {
         }
         else {  //isDone을 true로 설정해야하면
             String alarmTime = helper.getAlarmTime(name, subjectName, table);
-
-            //String num = "";
 
             int hourNum = 0;
 
