@@ -65,8 +65,6 @@ public class FriendToDoActivity extends AppCompatActivity {
                     sdate += "0";
                 sdate += strdate[2];
 
-
-                System.out.println("-----------------------------get");
                 FriendsManagement management = new FriendsManagement();
                 management.getFriendToDoList(uid, Integer.parseInt(sdate));
 
@@ -105,22 +103,14 @@ public class FriendToDoActivity extends AppCompatActivity {
     }
 
     public void notifyFriendToDoList(List<List> list) {
-//        friendAdapter.setData(list);
-      //  friendToDoList = list;
-//        friendAdapter.notifyDataSetChanged();
-        System.out.println("----notify friend to do ------------");
-
 
         HashMap<String, Object> map = new HashMap<>();
 
-
         List<LectureInfo> lectureList = list.get(0);
-        System.out.println(lectureList.size()+"강의몇개?");
         for (LectureInfo lectureInfo : lectureList) {
             if(map.containsKey(lectureInfo.getSubjectName())) {
                 List<List> todolist = (List<List>) map.get(lectureInfo.getSubjectName());
                 List<LectureInfo> lecture = todolist.get(0);
-                System.out.println(lectureInfo.getSubjectName()+" 강의의 과목이름"+ lectureInfo.getLectureName());
                 lecture.add(lectureInfo);
                 todolist.set(0,lecture);
                 map.put(lectureInfo.getSubjectName(), todolist);
@@ -148,7 +138,6 @@ public class FriendToDoActivity extends AppCompatActivity {
                 lecture.add(assignmentInfo);
                 todolist.set(1,lecture);
                 map.put(assignmentInfo.getSubjectName(), todolist);
-                System.out.println(assignmentInfo.getSubjectName()+" 강의의 과목이름"+ assignmentInfo.getAssignmentName());
 
             }
             else {
@@ -174,7 +163,6 @@ public class FriendToDoActivity extends AppCompatActivity {
                 lecture.add(examInfo);
                 todolist.set(2,lecture);
                 map.put(examInfo.getSubjectName(), todolist);
-                System.out.println(examInfo.getSubjectName()+" 강의의 과목이름"+ examInfo.getExamName());
 
 
             }

@@ -87,18 +87,15 @@ public class ExamFragment extends Fragment implements View.OnClickListener, Time
                     String[] splittime = s_time.split(":");
                     if(splittime[1].length() == 1) splittime[1] = "0"+splittime[1];
                     s_time = splittime[0]+splittime[1];
-                    System.out.println(s_time+"설정한시험시간");
                     ToDoManagement toDoManagement = new ToDoManagement();
 
                     boolean result = toDoManagement.addExam(subjectName,todoName,s_date,s_time);
                     if(result){
                         Toast.makeText(getActivity(),"시험추가 완료",Toast.LENGTH_SHORT).show();
                         //날짜에 데코레이트 추가하면 될 듯?
-                        System.out.println("추가완료");
                     }
                     else {
                         Toast.makeText(getActivity(), "시험추가 실패", Toast.LENGTH_SHORT).show();
-                        System.out.println("추가실패");
                     }
                     AddAssignmentExamActivity.context.finish();
                 }

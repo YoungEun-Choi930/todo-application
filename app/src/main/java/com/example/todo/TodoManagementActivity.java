@@ -106,8 +106,6 @@ public class TodoManagementActivity extends AppCompatActivity {
 
                 ToDoManagement toDoManagement = new ToDoManagement();
                 todoList = toDoManagement.getToDoList(sdate);
-                //todoList = getToDoList(sdate);          // to do list 가져오기
-                System.out.println(todoList.size()+"현재과목몇개니");
                 toDoAdapter.setList(todoList);
                 toDoAdapter.notifyDataSetChanged();     // 화면 새로고침
 

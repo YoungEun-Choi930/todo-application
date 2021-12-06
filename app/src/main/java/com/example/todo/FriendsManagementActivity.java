@@ -35,7 +35,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
     private int ck=0;
 
 
-    public static FriendsManagementActivity context; //수정해놨는데오류생ㅅ기면바꿔야댐
+    public static FriendsManagementActivity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
         FriendsManagement management = new FriendsManagement();
         management.getFriendsList();   //friendlist에 정보 넣고 notify
-        System.out.println("영은5");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.friend_toolbar);
         setSupportActionBar(myToolbar);//툴바달기
@@ -101,8 +100,6 @@ public class FriendsManagementActivity extends AppCompatActivity {
         });
 
 
-
-
         btn_del_friend = (Button)findViewById(R.id.btn_del_friend);
         btn_del_friend.setOnClickListener(view -> { //삭제버튼 선택되면
 
@@ -114,14 +111,12 @@ public class FriendsManagementActivity extends AppCompatActivity {
             if(friendAdapter.getcheckedList().size()>0){
                 Toast.makeText(this, "친구 삭제 완료", Toast.LENGTH_SHORT).show();
             }
-          //  Toast.makeText(this, "친구 삭제 완료", Toast.LENGTH_SHORT).show();
             btn_del_friend.setVisibility(View.GONE);
             btnCheck(0);
             ck=0;
             friendAdapter.setData(friendsList);
             friendAdapter.notifyDataSetChanged();
         });
-        System.out.println("영은6");
 
     }
 

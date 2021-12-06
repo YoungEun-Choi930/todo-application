@@ -1,5 +1,7 @@
 package com.example.todo;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,7 +55,6 @@ public class FirebaseDBHelper {
 
                 }
                 else{
-                    System.out.println("디비실패");
                 }
             }
         };
@@ -81,15 +82,12 @@ public class FirebaseDBHelper {
                             String uid = (String) map.get("friendUID");
                             FriendInfo info = new FriendInfo(id, uid);
                             result.add(info);
-
-                            System.out.println("--------------"+id);
                         }
                     }
                     FriendsManagementActivity.context.notifyFriendsList(result);
 
                 }
                 else{
-                    System.out.println("디비실패");
                 }
             }
         };
@@ -260,15 +258,10 @@ public class FirebaseDBHelper {
                     result.add(assingmentInfolist);
                     result.add(examInfolist);
 
-                    List<LectureInfo> lectureInfos = result.get(0);
-                    for(LectureInfo info: lectureInfos)
-                        System.out.println(info.getSubjectName());
-
                     FriendToDoActivity.context.notifyFriendToDoList(result);
 
                 }
                 else{
-                    System.out.println("디비실패");     //여기로 올 수도 있음
                 }
             }
         };
