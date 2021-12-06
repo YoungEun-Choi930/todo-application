@@ -41,18 +41,17 @@ public class alarmAdapter extends RecyclerView.Adapter <alarmAdapter.ItemViewHol
         holder.checkBoxAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) { //체크변경
                 alarmInfo.setChecked(isChecked);
-                if(alarmInfo.getChecked()){
-                    checkedList.add(alarmInfo);
+                if(alarmInfo.getChecked()){ //선택되었으면
+                    checkedList.add(alarmInfo); // 체크리스트에 추가
 
                 }else{
-                    checkedList.remove(alarmInfo);
+                    checkedList.remove(alarmInfo); //체크리스트에서 삭제
                 }
 
             }
         });
-
         if(ck==1){
             holder.checkBoxAlarm.setVisibility(View.VISIBLE);
         }

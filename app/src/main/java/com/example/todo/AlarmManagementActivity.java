@@ -38,6 +38,7 @@ public class AlarmManagementActivity extends AppCompatActivity {
         AlarmManagement alarmManagement = new AlarmManagement();
         alarmInfoList = alarmManagement.getAlarmList();
 
+        //리사이클러뷰
         RecyclerView recyclerView = findViewById(R.id.recy_alarm);
         alarmAdapter = new alarmAdapter((ArrayList<AlarmInfo>) alarmInfoList);
         recyclerView.setAdapter(alarmAdapter);
@@ -50,14 +51,16 @@ public class AlarmManagementActivity extends AppCompatActivity {
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+
+        //삭제버튼
         btn_del_alarm = (Button)findViewById(R.id.btn_del_alarm);
         btn_del_alarm.setOnClickListener(view -> { //삭제버튼 선택되면
 
             for(int i=0;i<alarmAdapter.getcheckedList().size();i++){
-                alarmInfoList.remove(alarmAdapter.getcheckedList().get(i)); //체크된목록 과목목록에서 제거
+                alarmInfoList.remove(alarmAdapter.getcheckedList().get(i)); //체크된 목록 과목목록에서 제거
                 alarmManagement.delAlarm(alarmAdapter.getcheckedList().get(i).getSubjectName());
             }
-            if(alarmAdapter.getcheckedList().size()>0){
+            if(alarmAdapter.getcheckedList().size()>0){ //체크된 목록이 있었으면
                 Toast.makeText(this, "알림삭제 완료", Toast.LENGTH_SHORT).show();
             }
             btn_del_alarm.setVisibility(View.GONE);
@@ -85,17 +88,17 @@ public class AlarmManagementActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AddAlarmActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.del_alarm:
-                if(ck==0){
-                    btnCheck(1);
+            case R.id.del_alarm: //알림삭제버튼 누른 경우
+                if(ck==0){//삭제기능을 선택한 경우
+                    btnCheck(1); //체크박스 보이게
                     ck=1;
-                    btn_del_alarm.setVisibility(View.VISIBLE);
+                    btn_del_alarm.setVisibility(View.VISIBLE); //삭제버튼 보이게
                     break;
                 }
-                else if(ck==1){
-                    btnCheck(0);
+                else if(ck==1){//다시 눌러서 취소하는 경우
+                    btnCheck(0); //체크박스 안보이게
                     ck=0;
-                    btn_del_alarm.setVisibility(View.GONE);
+                    btn_del_alarm.setVisibility(View.GONE); // 삭제버튼 안보이게
                     break;
                 }
 
@@ -104,9 +107,9 @@ public class AlarmManagementActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void btnCheck(int i) {
+    private void btnCheck(int i) {//체크박스 보이게 함
         alarmAdapter.updateCheckBox(i);
-        alarmAdapter.notifyDataSetChanged();;
+        alarmAdapter.notifyDataSetChanged();
     }
 
     @Override
