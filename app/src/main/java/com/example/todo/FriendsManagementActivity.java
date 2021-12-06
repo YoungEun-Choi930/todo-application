@@ -33,6 +33,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
     public friendAdapter friendAdapter;
     public AlertDialog dialog;
     private int ck=0;
+    private long start;     //목록 출력 시간 계산.
 
 
     public static FriendsManagementActivity context;
@@ -41,6 +42,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        start = System.currentTimeMillis();
         context = this;
         setContentView(R.layout.activity_friends_management);
         friendsList = new ArrayList<>();
@@ -83,6 +85,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friends.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
 
         friends.setOnClickListener(view -> { //서로친구목록
+            start = System.currentTimeMillis();
             friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_500));
             friends.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
             management.getFriendsList();
@@ -91,7 +94,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
         friends_request=findViewById(R.id.friends_request); //받은신청목록버튼
         friends_request.setOnClickListener(view -> {
-
+            start = System.currentTimeMillis();
             friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
             friends.setBackgroundColor(context.getResources().getColor(R.color.purple_500));
             management.getFriendsRequestList();
@@ -109,7 +112,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
                 management.delFriend(friendInfo.getFriendName(), friendInfo.getFriendUID()); //디비가 안만들어졌네용
             }
             if(friendAdapter.getcheckedList().size()>0){
-                Toast.makeText(this, "친구 삭제 완료", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "친구삭제 완료", Toast.LENGTH_SHORT).show();
             }
             btn_del_friend.setVisibility(View.GONE);
             btnCheck(0);
@@ -193,6 +196,11 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friendAdapter.setData(list);
         friendsList = list;
         friendAdapter.notifyDataSetChanged();           // 목록 화면 업데이트
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("----------------------------- 친구 목록 조회 화면 출력에 걸린 시간:" + (end - start)/1000.0 +"----------------------------------");
+
 
     }
 

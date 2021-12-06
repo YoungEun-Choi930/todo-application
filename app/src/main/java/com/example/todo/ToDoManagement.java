@@ -98,9 +98,6 @@ public class ToDoManagement {
 
     /* --------------------------- 선택한 과목에 대하여 과제를 추가하기 -------------------------------- */
     public boolean addAssignment(String subjectName, String assignmentName, String startDate, String startTime, String endDate, String endTime) {
-
-        // 예외처리
-        // -1은 화면에서 올 수 없는 경우
         int istartd = Integer.parseInt(startDate);
         int istartt = Integer.parseInt(startTime);
         int iendd = Integer.parseInt(endDate);
@@ -136,10 +133,9 @@ public class ToDoManagement {
             case "1시간 전": hourNum = 1; break;
             case "2시간 전": hourNum = 2; break;
             case "3시간 전": hourNum = 3; break;
-            case "5시간 전": hourNum = 5; break;
+            case "5시간 전": hourNum = 4; break;
         }
 
-        // system alarm add
         AlarmManagement alarmManagement = new AlarmManagement();
         alarmManagement.addSystemAlarm(subjectName, assignmentName,endDate+endTime, hourNum,"Lecture");
 
@@ -160,7 +156,8 @@ public class ToDoManagement {
         // 알림이 존재한다면 삭제
         int num = helper.loadAlarmNum(assignmentName);
         if(num != -1){
-            //system alarm delete
+            //system delete
+
             AlarmManagement alarmManagement = new AlarmManagement();
             alarmManagement.delSystemAlarm(num);
 
@@ -204,14 +201,12 @@ public class ToDoManagement {
             case "5일 전": hourNum = 24*5; break;
             case "7일 전": hourNum = 24*7; break;
         }
-        String formattime = null;
-        if(time.length()==3) // 10시 이전은 시가 한글자라서 총 4글자가 되게 맞춰줌
-            formattime="0"+time;
+        System.out.println(time+"시험시간이 왜이러지");
+        System.out.println(date+"시험날짜는 어케나오나");
 
         AlarmManagement alarmManagement = new AlarmManagement();
 
-        // system alarm add
-        alarmManagement.addSystemAlarm(subjectName, examName, date+formattime, hourNum, "Exam");
+        alarmManagement.addSystemAlarm(subjectName, examName, date+time, hourNum, "Exam");
 
         return result;
     }
@@ -230,7 +225,7 @@ public class ToDoManagement {
         // 알림이 존재한다면 삭제
         int num = helper.loadAlarmNum(examName);
         if(num != -1){
-            //system alarm delete
+            //system delete
             AlarmManagement alarmManagement = new AlarmManagement();
             alarmManagement.delSystemAlarm(num);
             // sqlite delete
@@ -268,15 +263,15 @@ public class ToDoManagement {
         //isDone을 false로 설정해야하면
         if(value == 0) {
             int num = helper.loadAlarmNum(name);
-            alarmManagement.delSystemAlarm(num);    // system alarm delete
+            alarmManagement.delSystemAlarm(num);
         }
         else {  //isDone을 true로 설정해야하면
             String alarmTime = helper.getAlarmTime(name, subjectName, table);
 
+            //String num = "";
 
             int hourNum = 0;
 
-            // 알림 설정 시간 가져오기
             if(table.equals("Lecture")){
                 if(alarmInfo.getVideoLectureAlarmDate().equals("1일 전"))
                     hourNum=24;
@@ -289,7 +284,14 @@ public class ToDoManagement {
                 else
                     hourNum=Integer.parseInt(alarmInfo.getVideoLectureAlarmDate().substring(0,1));
             }
-            // system alarm add
+            // int hourNum = 0;
+            /*
+            switch (num) {
+                case "1일 전": hourNum = 24; break;
+                case "3일 전": hourNum = 24*3; break;
+                case "5일 전": hourNum = 24*5; break;
+                case "7일 전": hourNum = 24*7; break;
+            }*/
             alarmManagement.addSystemAlarm(subjectName, name, alarmTime, hourNum, table);
         }
 

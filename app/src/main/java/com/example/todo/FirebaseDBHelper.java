@@ -1,7 +1,5 @@
 package com.example.todo;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,6 +53,7 @@ public class FirebaseDBHelper {
 
                 }
                 else{
+                    System.out.println("디비실패");
                 }
             }
         };
@@ -82,12 +81,14 @@ public class FirebaseDBHelper {
                             String uid = (String) map.get("friendUID");
                             FriendInfo info = new FriendInfo(id, uid);
                             result.add(info);
+
                         }
                     }
                     FriendsManagementActivity.context.notifyFriendsList(result);
 
                 }
                 else{
+                    System.out.println("디비실패");
                 }
             }
         };
@@ -156,7 +157,9 @@ public class FirebaseDBHelper {
     /* -------------------------------------- 친구 삭제 ------------------------------------------- */
     public void delFriend(String friendID, String friendUID) {
         databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("value").setValue(null);
+        databaseReference.child("INFO").child(userUID).child("friend").child(friendID).child("friendUID").setValue(null);
         databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).child("value").setValue(null);
+        databaseReference.child("INFO").child(friendUID).child("friend").child(LoginActivity.USERID).child("friendUID").setValue(null);
     }
 
     /* ---------------------------------- 친구 to do list 가져오기---------------------------------- */
@@ -262,6 +265,7 @@ public class FirebaseDBHelper {
 
                 }
                 else{
+                    System.out.println("디비실패");     //여기로 올 수도 있음
                 }
             }
         };

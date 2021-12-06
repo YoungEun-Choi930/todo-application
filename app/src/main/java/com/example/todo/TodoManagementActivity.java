@@ -29,9 +29,13 @@ public class TodoManagementActivity extends AppCompatActivity {
     public static TodoManagementActivity mContext;
     String sdate;
     MaterialCalendarView materialCalendarView;
+    private long start;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        start = System.currentTimeMillis();
+
         setContentView(R.layout.activity_todo);
         mContext=this;
         Toolbar myToolbar = (Toolbar) findViewById(R.id.todo_toolbar);
@@ -96,7 +100,7 @@ public class TodoManagementActivity extends AppCompatActivity {
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
+                start = System.currentTimeMillis();
                 String stringdate = date.toString().replace("CalendarDay{","").replace("}",""); //선택된 날짜
 
                 String[] strdate = stringdate.split("-");               // 날짜 형식을 20210901 과 같이 변환
@@ -106,8 +110,15 @@ public class TodoManagementActivity extends AppCompatActivity {
 
                 ToDoManagement toDoManagement = new ToDoManagement();
                 todoList = toDoManagement.getToDoList(sdate);
+                //todoList = getToDoList(sdate);          // to do list 가져오기
+
                 toDoAdapter.setList(todoList);
                 toDoAdapter.notifyDataSetChanged();     // 화면 새로고침
+
+                long end = System.currentTimeMillis();
+
+                System.out.println("--------------------------------- 일정 조회 화면 출력에 걸린 시간:" + (end - start)/1000.0 +"---------------------------------");
+
 
             }
         });
@@ -119,6 +130,10 @@ public class TodoManagementActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         toDoAdapter.notifyDataSetChanged();
+        long end = System.currentTimeMillis();
+
+        System.out.println("--------------------------------- 일정 조회 화면 출력에 걸린 시간:" + (end - start)/1000.0 +"---------------------------------");
+
 
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);

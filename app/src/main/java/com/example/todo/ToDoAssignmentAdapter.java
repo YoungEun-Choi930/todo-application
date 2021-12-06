@@ -78,6 +78,7 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
 
                     }
 
+
                 }
             });
             ((AHolder) holder).xbutton.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +88,8 @@ public class ToDoAssignmentAdapter extends RecyclerView.Adapter <RecyclerView.Vi
                     boolean result = toDoManagement.delAssignment(assignmentInfo.getAssignmentName(),assignmentInfo.getSubjectName());
                     if(result){
                         todoAssignment.remove(assignmentInfo);
-                        Toast.makeText(view.getContext(),"과제삭제 성공",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(),"과제삭제 완료",Toast.LENGTH_SHORT).show();
+                        System.out.println("과제삭제완료");
                         TodoManagementActivity.mContext.toDoAdapter.notifyDataSetChanged();
                     }
                     else{
