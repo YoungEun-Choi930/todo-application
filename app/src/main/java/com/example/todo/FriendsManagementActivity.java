@@ -54,26 +54,24 @@ public class FriendsManagementActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.friend_toolbar);
         setSupportActionBar(myToolbar);//툴바달기
 
+        //리사이클러뷰
         RecyclerView recyclerView = findViewById(R.id.recy_friend);
 
         recyclerView.setAdapter(friendAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-
-
-
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        friendAdapter.setOnItemClickListener(new friendAdapter.OnItemClickListener() {
+        friendAdapter.setOnItemClickListener(new friendAdapter.OnItemClickListener() { //어댑터아이템 클릭되면
             @Override
             public void onItemClick(View v, int pos) {
                 String name =friendAdapter.getName(pos);
                 String uid = friendAdapter.getUid(pos);
 
-                if(ck==0){
+                if(ck==0){ //친구삭제 기능을 사용중이지 않은 경우
                     Intent intent = new Intent(getApplicationContext(), FriendToDoActivity.class);  //친구 일정 조회
                     intent.putExtra("name",name);
                     intent.putExtra("UID",uid);
@@ -84,7 +82,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
         friends = findViewById(R.id.friends);
         friends.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
 
-        friends.setOnClickListener(view -> { //서로친구목록
+        friends.setOnClickListener(view -> { //서로친구목록 버튼
             start = System.currentTimeMillis();
             friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_500));
             friends.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
@@ -92,7 +90,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
             friendAdapter.notifyDataSetChanged();
         });
 
-        friends_request=findViewById(R.id.friends_request); //받은신청목록버튼
+        friends_request=findViewById(R.id.friends_request); //받은친구신청 버튼
         friends_request.setOnClickListener(view -> {
             start = System.currentTimeMillis();
             friends_request.setBackgroundColor(context.getResources().getColor(R.color.purple_200));
@@ -109,7 +107,7 @@ public class FriendsManagementActivity extends AppCompatActivity {
             for(int i=0;i<friendAdapter.getcheckedList().size();i++){
                 FriendInfo friendInfo = friendAdapter.getcheckedList().get(i);
                 friendsList.remove(friendInfo);  //친구리스트에서 삭제
-                management.delFriend(friendInfo.getFriendName(), friendInfo.getFriendUID()); //디비가 안만들어졌네용
+                management.delFriend(friendInfo.getFriendName(), friendInfo.getFriendUID());
             }
             if(friendAdapter.getcheckedList().size()>0){
                 Toast.makeText(this, "친구삭제 완료", Toast.LENGTH_SHORT).show();
@@ -133,12 +131,11 @@ public class FriendsManagementActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
-            case R.id.add_friend:
-               // View dialogView = getLayoutInflater().inflate(R.layout.add_friend, null);
+            case R.id.add_friend://친구신청버튼
                 final EditText et = new EditText(this);
                 et.setHint("신청을 보낼 아이디를 입력하세요.");
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setView(et);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this); //다이얼로그
+                builder.setView(et);// 다이얼로그에 editText 넣기
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -155,11 +152,11 @@ public class FriendsManagementActivity extends AppCompatActivity {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(et.getText().toString().equals("")){
+                        if(et.getText().toString().equals("")){ //아이디를 입력하지 않은 경우
                             Toast.makeText(FriendsManagementActivity.this,"아이디를 입력하세요",Toast.LENGTH_SHORT).show();
                         }
-                        else{
-                            FriendsManagement management = new FriendsManagement();
+                        else{ //입력 되었으면 친구요청
+                           FriendsManagement management = new FriendsManagement();
                             management.requestFriend(et.getText().toString());
                         }
 
@@ -168,17 +165,17 @@ public class FriendsManagementActivity extends AppCompatActivity {
 
                 break;
 
-            case R.id.del_friend:
-                if(ck==0){
-                    btnCheck(1);
+            case R.id.del_friend://친구삭제버튼
+                if(ck==0){//삭제기능을 사용중이지 않으면
+                    btnCheck(1);//체크박스 보이게
                     ck=1;
-                    btn_del_friend.setVisibility(View.VISIBLE);
+                    btn_del_friend.setVisibility(View.VISIBLE);//삭제버튼 보이게
                     break;
                 }
-                else if(ck==1){
-                    btnCheck(0);
+                else if(ck==1){//이미 삭제기능 사용중이면
+                    btnCheck(0);//체크박스 안보이게
                     ck=0;
-                    btn_del_friend.setVisibility(View.GONE);
+                    btn_del_friend.setVisibility(View.GONE);//삭제버튼 안보이게
                     break;
                 }
         }

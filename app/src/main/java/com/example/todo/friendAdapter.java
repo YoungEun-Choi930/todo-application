@@ -37,10 +37,10 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == noButtonType) {
+        if (viewType == noButtonType) { //서로친구목록
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend, parent, false);
             return new AHolder(v);
-        } else {
+        } else { //받은친구신청
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend_accept , parent, false);
 
             return new BHolder(v);
@@ -51,7 +51,7 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         FriendInfo friendInfo= myFriendsList.get(position);
-        if (holder instanceof AHolder) {
+        if (holder instanceof AHolder) { //서로친구목록
             ((AHolder) holder).tv_name_friend.setText(friendInfo.getFriendName());
             ((AHolder) holder).checkBox.setChecked(friendInfo.getChecked());
             ((AHolder) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -72,7 +72,7 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
             else
                 ((AHolder) holder).checkBox.setVisibility(View.GONE);
 
-        } else { //수락버튼 있는 뷰
+        } else { //수락버튼 있는 뷰 = 받은친구신청
             ((BHolder) holder).tv_name_friend_ac.setText(friendInfo.getFriendName());
             ((BHolder) holder).checkBox_ac.setChecked(friendInfo.getChecked());
             ((BHolder) holder).checkBox_ac.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -88,7 +88,7 @@ public class friendAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder
                 }
             });
 
-            ((BHolder) holder).accept_ac.setOnClickListener(view -> {
+            ((BHolder) holder).accept_ac.setOnClickListener(view -> { //수락버튼 누르면
                 myFriendsList.remove(friendInfo);
                 FriendsManagement management = new FriendsManagement();
                 management.acceptFriend(friendInfo.getFriendName(), friendInfo.getFriendUID());

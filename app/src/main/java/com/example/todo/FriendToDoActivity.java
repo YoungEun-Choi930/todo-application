@@ -88,10 +88,10 @@ public class FriendToDoActivity extends AppCompatActivity {
             sdate += "0";
         sdate += strdate[2];
         FriendsManagement management = new FriendsManagement();
-        management.getFriendToDoList(uid, Integer.parseInt(sdate));
-        //들어가면 오늘날짜 선택된채로 리스트 띄울라고
+        management.getFriendToDoList(uid, Integer.parseInt(sdate)); //들어가면 오늘날짜 선택된채로 리스트 띄우려고
 
 
+        //리사이클러뷰
         RecyclerView recyclerView = findViewById(R.id.rcy_friend_todolist);
         toDoAdapter = new ToDoAdapter(context, friendToDoList,1);
         recyclerView.setAdapter(toDoAdapter);
@@ -108,14 +108,8 @@ public class FriendToDoActivity extends AppCompatActivity {
 
     }
 
-    public void notifyFriendToDoList(List<List> list) {
-//        friendAdapter.setData(list);
-      //  friendToDoList = list;
-//        friendAdapter.notifyDataSetChanged();
-
-
+    public void notifyFriendToDoList(List<List> list) { //프렌드리스트업데이트
         HashMap<String, Object> map = new HashMap<>();
-
 
         List<LectureInfo> lectureList = list.get(0);
         for (LectureInfo lectureInfo : lectureList) {
@@ -204,7 +198,7 @@ public class FriendToDoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.friendtodo_menu, menu); //툴바에 ㅇ메뉴 설정
+        menuInflater.inflate(R.menu.friendtodo_menu, menu); //툴바에 메뉴 설정
         return true;
     }
 
