@@ -149,7 +149,6 @@ public class FriendToDoActivity extends AppCompatActivity {
                 lecture.add(assignmentInfo);
                 todolist.set(1,lecture);
                 map.put(assignmentInfo.getSubjectName(), todolist);
-                System.out.println(assignmentInfo.getSubjectName()+" 강의의 과목이름"+ assignmentInfo.getAssignmentName());
 
             }
             else {
@@ -175,7 +174,6 @@ public class FriendToDoActivity extends AppCompatActivity {
                 lecture.add(examInfo);
                 todolist.set(2,lecture);
                 map.put(examInfo.getSubjectName(), todolist);
-                System.out.println(examInfo.getSubjectName()+" 강의의 과목이름"+ examInfo.getExamName());
 
 
             }
