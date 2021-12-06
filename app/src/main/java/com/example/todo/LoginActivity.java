@@ -113,11 +113,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                             FirebaseDBHelper firebase = new FirebaseDBHelper();
                             firebase.userRegistration();   //DB에 사용자 등록
-
-
-//                            intent.putExtra("nickname", account.getDisplayName());
-//                            intent.putExtra("userID", userID);
-//                            intent.putExtra("photoUrl", String.valueOf(account.getPhotoUrl()));
                             startActivity(intent);
                         } else {
                             Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
