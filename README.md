@@ -13,6 +13,8 @@
 OS: Windows 10 64bit   
 개발 TOOL: 안드로이드 스튜디오 2020.3.1 for Windows 64-bit    
 개발 언어: JAVA   
-서버 : Firebase Realtime Database
+외부 데이터베이스 : Firebase Realtime Database
+내부 데이터베이스 : SQLiteDB
 
-## 2. 화면 UI 설계
+## 2. Architecture 구조도
+### 2.1 소프트웨어 구조도
