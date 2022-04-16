@@ -15,6 +15,3 @@ OS: Windows 10 64bit
 개발 언어: JAVA   
 외부 데이터베이스 : Firebase Realtime Database
 내부 데이터베이스 : SQLiteDB
-
-## 2. Architecture 구조도
-### 2.1 소프트웨어 구조도
