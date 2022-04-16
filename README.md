@@ -15,3 +15,11 @@ OS: Windows 10 64bit
 개발 언어: JAVA   
 외부 데이터베이스 : Firebase Realtime Database
 내부 데이터베이스 : SQLiteDB
+
+## 2. 프로젝트 설계
+file '소프트웨어설계서.docx'는 다음 항목을 포함한다.
+- 화면 UI설계   
+- Use case Diagram
+- State Diagram
+- Class Diagram
+- Sequence Diagram
