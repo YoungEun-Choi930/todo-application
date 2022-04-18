@@ -16,7 +16,10 @@ OS: Windows 10 64bit
 외부 데이터베이스 : Firebase Realtime Database   
 내부 데이터베이스 : SQLiteDB
 
-## 2. 설계
+## 2. 요구사항 명세
+file '소프트웨어요구사항명세서.docx'
+
+## 3. 설계
 file '소프트웨어설계서.docx'는 다음 항목을 포함한다.
 - 화면 UI설계   
 - Use case Diagram
@@ -24,7 +27,7 @@ file '소프트웨어설계서.docx'는 다음 항목을 포함한다.
 - Class Diagram
 - Sequence Diagram
 
-## 3. 테스트
+## 4. 테스트
 file '소프트웨어결과보고서.docx'는 다음 항목을 포함한다.
 - test 시나리오
 - test case
