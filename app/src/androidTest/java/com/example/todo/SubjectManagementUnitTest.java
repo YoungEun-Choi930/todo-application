@@ -1,34 +1,28 @@
 package com.example.todo;
 
-import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static org.junit.Assert.*;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Looper;
-
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.example.todo.subject.SubjectInfo;
+import com.example.todo.subject.SubjectManagement;
+import com.example.todo.subject.SubjectManagementActivity;
+import com.example.todo.util.SQLiteDBHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Handler;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SubjectManagementUnitTest {

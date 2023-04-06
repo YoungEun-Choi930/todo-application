@@ -5,6 +5,11 @@ import static org.junit.Assert.*;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.todo.subject.SubjectManagementActivity;
+import com.example.todo.assignmentexam.AssignmentInfo;
+import com.example.todo.assignmentexam.ExamInfo;
+import com.example.todo.todo.ToDoManagement;
+import com.example.todo.util.SQLiteDBHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.AfterClass;

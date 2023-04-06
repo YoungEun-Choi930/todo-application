@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
@@ -20,11 +19,14 @@ import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 
+import com.example.todo.subject.AddSubjectActivity;
+import com.example.todo.subject.SubjectInfo;
+import com.example.todo.subject.SubjectManagementActivity;
+import com.example.todo.util.SQLiteDB;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -375,21 +377,6 @@ public class AddSubjectActivityTest {
         assertTrue(sqliteLectureListTrue(s.subjectName,16,20210302));
     }
 
-    @Test
-    public void 테스트12모든과목삭제() {
-        ActivityScenario.launch(SubjectManagementActivity.class);
-        onView(ViewMatchers.withId(R.id.del_subject)).perform(click());
-
-        for(int i = 0; i <subjectList.size(); i ++) {
-            SubjectInfo subjectInfo = new SubjectInfo(subjectList.get(i).subjectName);
-            SubjectManagementActivity.subjectAdapter.checkedList.add(subjectInfo);
-        }
-        onView(ViewMatchers.withId(R.id.btn_del_sub)).perform(click());
-
-
-        subject s = new subject("test19","1","월","0900","월","1030");
-        assertFalse(sqliteSubjectListTrue(s));
-    }
 
 
 

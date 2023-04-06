@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    tools:context=".AddAlarmActivity"
+    tools:context=".alarm.AddAlarmActivity"
     android:orientation="vertical"
     android:layout_gravity="center">
 

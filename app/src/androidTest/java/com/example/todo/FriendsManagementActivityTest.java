@@ -3,25 +3,17 @@ package com.example.todo;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
-import static org.junit.Assert.*;
-
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.view.View;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.matcher.ViewMatchers;
 
+import com.example.todo.friends.FriendsManagementActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
-import java.util.ArrayList;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FriendsManagementActivityTest {

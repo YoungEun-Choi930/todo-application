@@ -10,35 +10,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.view.View;
 import android.widget.DatePicker;
-import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.UiController;
-import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.todo.assignmentexam.AddAssignmentExamActivity;
+import com.example.todo.subject.AddSubjectActivity;
+import com.example.todo.subject.SubjectInfo;
+import com.example.todo.subject.SubjectManagementActivity;
+import com.example.todo.todo.TodoManagementActivity;
+import com.example.todo.util.SQLiteDB;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -226,14 +220,4 @@ public class ExamFragmentTest {
 
 
 
-    @AfterClass
-    public static void deleteSubject() {
-        ActivityScenario.launch(SubjectManagementActivity.class);
-        onView(ViewMatchers.withId(R.id.del_subject)).perform(click());
-
-        SubjectInfo subjectInfo = new SubjectInfo("test");
-        SubjectManagementActivity.subjectAdapter.checkedList.add(subjectInfo);
-
-        onView(ViewMatchers.withId(R.id.btn_del_sub)).perform(click());
-    }
 }

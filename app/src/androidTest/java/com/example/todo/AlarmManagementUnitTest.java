@@ -5,6 +5,11 @@ import static org.junit.Assert.assertEquals;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.todo.alarm.AlarmInfo;
+import com.example.todo.alarm.AlarmManagement;
+import com.example.todo.alarm.AlarmManagementActivity;
+import com.example.todo.subject.SubjectManagement;
+import com.example.todo.todo.TodoManagementActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.AfterClass;

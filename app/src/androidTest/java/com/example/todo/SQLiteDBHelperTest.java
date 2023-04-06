@@ -7,6 +7,12 @@ import static org.junit.Assert.assertTrue;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.todo.alarm.AlarmInfo;
+import com.example.todo.subject.SubjectInfo;
+import com.example.todo.assignmentexam.AssignmentInfo;
+import com.example.todo.assignmentexam.ExamInfo;
+import com.example.todo.todo.LectureInfo;
+import com.example.todo.util.SQLiteDBHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.AfterClass;

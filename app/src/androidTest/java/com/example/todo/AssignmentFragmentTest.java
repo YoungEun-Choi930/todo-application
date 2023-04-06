@@ -19,6 +19,12 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 
+import com.example.todo.assignmentexam.AddAssignmentExamActivity;
+import com.example.todo.subject.AddSubjectActivity;
+import com.example.todo.subject.SubjectInfo;
+import com.example.todo.subject.SubjectManagementActivity;
+import com.example.todo.todo.TodoManagementActivity;
+import com.example.todo.util.SQLiteDB;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.hamcrest.Matchers;
@@ -27,8 +33,6 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
-import java.util.List;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AssignmentFragmentTest {
